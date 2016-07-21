@@ -1,0 +1,140 @@
+<?php
+/**
+ * The CreativeWork Schema.
+ *
+ * @package Schemify
+ * @link    http://schema.org/CreativeWork
+ */
+
+namespace Schemify\Schemas;
+
+class CreativeWork extends Thing {
+
+	/**
+	 * The properties this schema may utilize.
+	 *
+	 * @var array $properties
+	 */
+	protected static $properties = array(
+		'about',
+		'accessibilityAPI',
+		'accessibilityControl',
+		'accessibilityFeature',
+		'accessibilityHazard',
+		'accountablePerson',
+		'aggregateRating',
+		'alternativeHeadline',
+		'associatedMedia',
+		'audience',
+		'audio',
+		'author',
+		'award',
+		'character',
+		'citation',
+		'comment',
+		'commentCount',
+		'contentLocation',
+		'contentRating',
+		'contributor',
+		'copyrightHolder',
+		'copyrightYear',
+		'creator',
+		'dateCreated',
+		'dateModified',
+		'datePublished',
+		'discussionUrl',
+		'editor',
+		'educationalAlignment',
+		'educationalUse',
+		'encoding',
+		'exampleOfWork',
+		'fileFormat',
+		'genre',
+		'hasPart',
+		'headline',
+		'inLanguage',
+		'interactionStatistic',
+		'interactivityType',
+		'isBasedOn',
+		'isFamilyFriendly',
+		'isPartOf',
+		'keywords',
+		'learningResourceType',
+		'license',
+		'locationCreated',
+		'mainEntity',
+		'mentions',
+		'offers',
+		'position',
+		'producer',
+		'provider',
+		'publication',
+		'publisher',
+		'publishingPrinciples',
+		'recordedAt',
+		'releasedEvent',
+		'review',
+		'schemaVersion',
+		'sourceOrganization',
+		'text',
+		'thumbnailUrl',
+		'timeRequired',
+		'translator',
+		'typicalAgeRange',
+		'version',
+		'video',
+		'workExample',
+	);
+
+	/**
+	 * Get the post creation date.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The post creation date.
+	 */
+	public function getDateCreated( $post_id ) {
+		return get_post_time( 'c', true, $post_id );
+	}
+
+	/**
+	 * Get the post creation date.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The post creation date.
+	 */
+	public function getDateModified( $post_id ) {
+		return get_post_modified_time( 'c', true, $post_id );
+	}
+
+	/**
+	 * Get the post creation date.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The post creation date.
+	 */
+	public function getDatePublished( $post_id ) {
+		return $this->getDateCreated( $post_id );
+	}
+
+	/**
+	 * Get the headline for a post.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The post headline.
+	 */
+	public function getHeadline( $post_id ) {
+		return $this->getName( $post_id );
+	}
+
+	/**
+	 * Retrieve the thumbnail URL for a post.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The post's thumbnail URL.
+	 */
+	public function getThumbnailUrl( $post_id ) {
+		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'thumbnail', true );
+
+		return $thumbnail ? $thumbnail[0] : null;
+	}
+}

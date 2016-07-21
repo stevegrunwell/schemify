@@ -1,0 +1,25 @@
+{
+    "name": "stevegrunwell/schemify",
+    "description": "Automatically generate Schema.org JSON+LD markup for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Grunwell",
+            "email": "steve@stevegrunwell.com"
+        }
+    ],
+    "require-dev": {
+        "stevegrunwell/wp-enforcer": "^0.4.1",
+        "10up/wp_mock": "^0.1.1",
+        "phpunit/phpunit": "^5.2",
+        "codeclimate/php-test-reporter": "^0.3.0",
+        "antecedent/patchwork": "1.4.0"
+    },
+    "post-install-cmd": [
+        "wp-enforcer"
+    ],
+    "post-update-cmd": [
+        "wp-enforcer"
+    ]
+}
