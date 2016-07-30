@@ -87,6 +87,22 @@ class CreativeWork extends Thing {
 	);
 
 	/**
+	 * Get the post author.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The post creation date.
+	 */
+	public function getAuthor( $post_id ) {
+		if ( ! $this->isMain ) {
+			return null;
+		}
+
+		$post = get_post( $post_id );
+
+		return new Person( $post->post_author );
+	}
+
+	/**
 	 * Get the post creation date.
 	 *
 	 * @param int $post_id The post ID.

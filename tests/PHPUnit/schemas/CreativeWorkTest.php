@@ -20,6 +20,29 @@ class CreativeWorkTest extends Schemify\TestCase {
 		'schemas.php',
 	);
 
+	public function testGetAuthor() {
+		$instance = new CreativeWork( 123, true );
+		$post     = new \stdClass;
+		$post->post_author = 5;
+
+		M::wpFunction( 'get_post', array(
+			'times'  => 1,
+			'return' => $post,
+		) );
+
+		$this->assertInstanceOf( __NAMESPACE__ . '\Person', $instance->getAuthor( 5 ) );
+	}
+
+	public function testGetAuthorReturnsNullIfNotMain() {
+		$instance = new CreativeWork( 123, false );
+
+		M::wpFunction( 'get_post', array(
+			'times'  => 0,
+		) );
+
+		$this->assertNull( $instance->getAuthor( 5 ) );
+	}
+
 	public function testGetDateCreated() {
 		$instance = new CreativeWork( 123 );
 
