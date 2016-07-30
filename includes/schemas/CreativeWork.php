@@ -143,6 +143,16 @@ class CreativeWork extends Thing {
 	}
 
 	/**
+	 * Retrieve the work's publisher.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return Organization The publisher/organization.
+	 */
+	public function getPublisher( $post_id ) {
+		return null;
+	}
+
+	/**
 	 * Retrieve the thumbnail URL for a post.
 	 *
 	 * @param int $post_id The post ID.

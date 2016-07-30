@@ -87,6 +87,10 @@ class CreativeWorkTest extends Schemify\TestCase {
 		$this->assertEquals( 'Name', $instance->getHeadline( 123 ) );
 	}
 
+	public function testGetPublisher() {
+		$this->markTestIncomplete();
+	}
+
 	public function testGetThumbnailUrl() {
 		$instance = new CreativeWork( 123 );
 
