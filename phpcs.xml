@@ -17,6 +17,12 @@
 	<rule ref="Squiz.Commenting.ClassComment.Missing">
 		<exclude-pattern>*/includes/schemas/*</exclude-pattern>
 	</rule>
+	<rule ref="WordPress.Files.FileName.UnderscoresNotAllowed">
+		<exclude-pattern>*/includes/schemas/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid">
+		<exclude-pattern>*/includes/schemas/*</exclude-pattern>
+	</rule>
 
 	<!--
 		Don't get angry about checking files that don't contain code
