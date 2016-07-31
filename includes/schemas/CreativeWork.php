@@ -149,7 +149,7 @@ class CreativeWork extends Thing {
 	 * @return Organization The publisher/organization.
 	 */
 	public function getPublisher( $post_id ) {
-		return null;
+		return new WP\Blog( get_current_blog_id() );
 	}
 
 	/**

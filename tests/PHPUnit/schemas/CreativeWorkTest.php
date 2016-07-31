@@ -88,7 +88,14 @@ class CreativeWorkTest extends Schemify\TestCase {
 	}
 
 	public function testGetPublisher() {
-		$this->markTestIncomplete();
+		$instance = new CreativeWork( 123, true );
+
+		M::wpFunction( 'get_current_blog_id', array(
+			'times'  => 1,
+			'return' => 1,
+		) );
+
+		$this->assertInstanceOf( __NAMESPACE__ . '\Organization', $instance->getPublisher( 1 ) );
 	}
 
 	public function testGetThumbnailUrl() {
