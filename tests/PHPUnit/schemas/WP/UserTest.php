@@ -5,7 +5,7 @@
  * @package Schemify
  */
 
-namespace Schemify\Schemas;
+namespace Schemify\Schemas\WP;
 
 use WP_Mock as M;
 
@@ -14,14 +14,14 @@ use ReflectionMethod;
 use ReflectionProperty;
 use Schemify;
 
-class PersonTest extends Schemify\TestCase {
+class UserTest extends Schemify\TestCase {
 
 	protected $testFiles = array(
 		'schemas.php',
 	);
 
 	public function testGetUser() {
-		$instance = new Person( 1 );
+		$instance = new User( 1 );
 		$user     = Mockery::mock( 'WP_User' );
 
 		M::wpFunction( 'get_user_by', array(
@@ -34,7 +34,7 @@ class PersonTest extends Schemify\TestCase {
 	}
 
 	public function testGetUserCachesResult() {
-		$instance = new Person( 1 );
+		$instance = new User( 1 );
 		$property = new ReflectionProperty( $instance, 'user' );
 		$property->setAccessible( true );
 		$user     = uniqid();
@@ -53,7 +53,7 @@ class PersonTest extends Schemify\TestCase {
 	}
 
 	public function testGetUserPullsFromCache() {
-		$instance = new Person( 1 );
+		$instance = new User( 1 );
 		$property = new ReflectionProperty( $instance, 'user' );
 		$property->setAccessible( true );
 		$user     = uniqid();
@@ -71,7 +71,7 @@ class PersonTest extends Schemify\TestCase {
 		$user = new \stdClass;
 		$user->last_name = 'McTest';
 
-		$instance = Mockery::mock( __NAMESPACE__ . '\Person' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
 		$instance->shouldReceive( 'getUser' )->once()->andReturn( $user );
 
 		$this->assertEquals( $user->last_name, $instance->getFamilyName() );
@@ -81,14 +81,14 @@ class PersonTest extends Schemify\TestCase {
 		$user = new \stdClass;
 		$user->first_name = 'Test';
 
-		$instance = Mockery::mock( __NAMESPACE__ . '\Person' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
 		$instance->shouldReceive( 'getUser' )->once()->andReturn( $user );
 
 		$this->assertEquals( $user->first_name, $instance->getGivenName() );
 	}
 
 	public function testGetImage() {
-		$instance = Mockery::mock( __NAMESPACE__ . '\Person' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
 
 		M::wpFunction( 'get_avatar_url', array(
 			'times'  => 1,
@@ -103,7 +103,7 @@ class PersonTest extends Schemify\TestCase {
 		$user = new \stdClass;
 		$user->display_name = 'Test McTest';
 
-		$instance = Mockery::mock( __NAMESPACE__ . '\Person' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
 		$instance->shouldReceive( 'getUser' )->once()->andReturn( $user );
 
 		$this->assertEquals( $user->display_name, $instance->getName( 1 ) );
@@ -113,7 +113,7 @@ class PersonTest extends Schemify\TestCase {
 		$user = new \stdClass;
 		$user->user_url = 'http://example.com';
 
-		$instance = Mockery::mock( __NAMESPACE__ . '\Person' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
 		$instance->shouldReceive( 'getUser' )->once()->andReturn( $user );
 
 		$this->assertEquals( $user->user_url, $instance->getUrl( 1 ) );
