@@ -56,4 +56,16 @@ class Organization extends Thing {
 		'telephone',
 		'vatID',
 	);
+
+	/**
+	 * Get the organization's logo.
+	 *
+	 * For now, this will just default to the object's getImage() method.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return string The organization's logo.
+	 */
+	public function getLogo( $post_id ) {
+		return $this->getImage( $post_id );
+	}
 }
