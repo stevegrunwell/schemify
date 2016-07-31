@@ -62,3 +62,17 @@ function get_json( $post_id = 0 ) {
 
 <?php
 }
+
+/**
+ * Utility function to strip namespaces from a class name.
+ *
+ * @link http://stackoverflow.com/a/27457689/329911
+ *
+ * @param string $class The full class name.
+ * @return string The class name, devoid of namespaces.
+ */
+function strip_namespace( $class ) {
+	$index = strrchr( $class, '\\' );
+
+	return $index ? substr( $index, 1 ) : $class;
+}

@@ -10,6 +10,8 @@
 
 namespace Schemify\Schemas;
 
+use Schemify\Core as Core;
+
 class Thing implements \JsonSerializable {
 
 	/**
@@ -116,13 +118,11 @@ class Thing implements \JsonSerializable {
 	 * Since PHP doesn't offer an easy way to get the non-namespaced class name, we'll cache the
 	 * result in a local property.
 	 *
-	 * @link http://stackoverflow.com/a/27457689/329911
-	 *
 	 * @return string The current class name, devoid of any namespacing.
 	 */
 	public function getSchema() {
 		if ( ! $this->schema ) {
-			$this->schema = substr( strrchr( get_class( $this ), '\\' ), 1 );
+			$this->schema = Core\strip_namespace( get_class( $this ) );
 		}
 
 		return $this->schema;

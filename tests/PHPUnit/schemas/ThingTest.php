@@ -67,8 +67,9 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetSchema() {
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )->makePartial();
 
-		M::wpFunction( __NAMESPACE__ . '\get_class', array(
-			'return' => __NAMESPACE__ . '\Thing',
+		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+			'times'  => 1,
+			'return' => 'Thing',
 		) );
 
 		$this->assertEquals( 'Thing', $instance->getSchema() );
@@ -79,8 +80,8 @@ class ThingTest extends Schemify\TestCase {
 		$property = new ReflectionProperty( $instance, 'schema' );
 		$property->setAccessible( true );
 
-		M::wpFunction( __NAMESPACE__ . '\get_class', array(
-			'return' => __NAMESPACE__ . '\Thing',
+		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+			'return' => 'Thing',
 		) );
 
 		$instance->getSchema();

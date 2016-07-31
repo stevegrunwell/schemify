@@ -40,4 +40,14 @@ class CoreTest extends Schemify\TestCase {
 
 		get_json( 123 );
 	}
+
+	public function testStripNamespace() {
+		$this->assertEquals( 'Baz', strip_namespace( 'Foo\Bar\Baz' ) );
+		$this->assertEquals( 'Baz', strip_namespace( '\Foo\Bar\Baz' ) );
+	}
+
+	public function testStripNamespaceWithNoNamespace() {
+		$this->assertEquals( 'Baz', strip_namespace( 'Baz' ) );
+		$this->assertEquals( 'Baz', strip_namespace( '\Baz' ) );
+	}
 }
