@@ -98,6 +98,16 @@ class CreativeWorkTest extends Schemify\TestCase {
 		$this->assertInstanceOf( __NAMESPACE__ . '\Organization', $instance->getPublisher( 1 ) );
 	}
 
+	public function testGetPublisherIsNullWhenNotMainSchema() {
+		$instance = new CreativeWork( 123, false );
+
+		M::wpFunction( 'get_current_blog_id', array(
+			'times'  => 0,
+		) );
+
+		$this->assertNull( $instance->getPublisher( 1 ) );
+	}
+
 	public function testGetThumbnailUrl() {
 		$instance = new CreativeWork( 123 );
 
