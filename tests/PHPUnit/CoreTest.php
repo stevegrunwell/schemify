@@ -14,10 +14,54 @@ class CoreTest extends Schemify\TestCase {
 
 	protected $testFiles = array(
 		'core.php',
+		'schemas.php',
 	);
 
 	public function testBuildObject() {
-		$this->markTestIncomplete();
+		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'TestSchema',
+		) );
+
+		$this->assertInternalType( 'array', build_object( 123 ) );
+	}
+
+	public function testBuildObjectDefaultsToCurrentPostId() {
+		M::wpFunction( 'get_the_ID', array(
+			'times'  => 1,
+			'return' => 123,
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'TestSchema',
+		) );
+
+		build_object();
+	}
+
+	/**
+	 * @expectedException PHPUnit_Framework_Error_Warning
+	 */
+	public function testBuildObjectDefaultsToThing() {
+		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'SomeSchema',
+		) );
+
+		M::wpPassthruFunction( 'esc_attr' );
+		M::wpPassthruFunction( 'esc_html' );
+		M::wpPassthruFunction( '__' );
+
+		$this->assertFalse(
+			class_exists( 'Schemify\Schemas\SomeSchema' ),
+			'This test does not expect SomeSchema to exist, recommend manual inspection'
+		);
+
+		$this->assertInstanceOf( 'Schemify\Schemas\Thing', build_object( 123 ) );
 	}
 
 	public function testGetAttachmentTypeWithImages() {

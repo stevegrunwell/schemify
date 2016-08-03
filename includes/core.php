@@ -10,6 +10,8 @@ namespace Schemify\Core;
 /**
  * Build the JSON+LD object for the given post.
  *
+ * @throws \Exception If the specified Schema class doesn't exist.
+ *
  * @param int $post_id Optional. The post ID to build the Schema object for. The default is the
  *                     current post.
  * @return Schema\Thing An instance of a Schema\Thing or one of its sub-classes.
@@ -23,13 +25,18 @@ function build_object( $post_id = 0 ) {
 	$class  = '\\Schemify\\Schemas\\' . $schema;
 
 	try {
+		if ( ! class_exists( $class ) ) {
+			throw new \Exception( esc_html( sprintf(
+				__( 'Class %s does not exist', 'schemify' ), $class
+			) ) );
+		}
 		$instance = new $class( $post_id, true );
 
 	} catch ( \Exception $e ) {
-		trigger_error( sprintf(
-			esc_html__( 'Unable to find schema "%s", falling back to "Thing"', 'schemify' ),
+		trigger_error( esc_html( sprintf(
+			__( 'Unable to find schema "%s", falling back to "Thing"', 'schemify' ),
 			esc_attr( $schema )
-		), E_USER_NOTICE );
+		) ), E_USER_WARNING );
 
 		$instance = new \Schemify\Schemas\Thing( $post_id, true );
 	}
