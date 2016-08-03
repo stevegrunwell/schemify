@@ -28,7 +28,7 @@ class ImageObject extends MediaObject {
 	 * @param int $post_id The attachment ID.
 	 * @return int The image caption.
 	 */
-	function getCaption( $post_id ) {
+	public function getCaption( $post_id ) {
 		return get_the_excerpt( $post_id );
 	}
 
@@ -38,7 +38,7 @@ class ImageObject extends MediaObject {
 	 * @param int $post_id The attachment ID.
 	 * @return int The image description.
 	 */
-	function getDescription( $post_id ) {
+	public function getDescription( $post_id ) {
 		$attachment = get_post( $post_id );
 
 		return $attachment->post_content;
@@ -50,7 +50,7 @@ class ImageObject extends MediaObject {
 	 * @param int $post_id The attachment ID.
 	 * @return array EXIF data stored for the attachment.
 	 */
-	protected function getExifData( $post_id ) {
+	public function getExifData( $post_id ) {
 
 		// Only pull this data if this is a top-level image object.
 		if ( ! $this->isMain ) {
@@ -83,7 +83,7 @@ class ImageObject extends MediaObject {
 	 * @param int $post_id The attachment ID.
 	 * @return int The height of the image.
 	 */
-	function getHeight( $post_id ) {
+	public function getHeight( $post_id ) {
 		$image = wp_get_attachment_image_src( $post_id, 'full' );
 
 		return $image ? $image[2] : null;
@@ -105,7 +105,7 @@ class ImageObject extends MediaObject {
 	 * @param int $post_id The attachment ID.
 	 * @return int The width of the image.
 	 */
-	function getWidth( $post_id ) {
+	public function getWidth( $post_id ) {
 		$image = wp_get_attachment_image_src( $post_id, 'full' );
 
 		return $image ? $image[1] : null;
