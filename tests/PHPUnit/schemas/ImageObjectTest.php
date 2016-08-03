@@ -47,7 +47,53 @@ class ImageObjectTest extends Schemify\TestCase {
 	}
 
 	public function testGetExifData() {
-		$this->markTestIncomplete();
+		$instance = new ImageObject( 123, true );
+
+		M::wpFunction( 'wp_get_attachment_metadata', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => array(
+				'image_meta' => array(
+					'meta1' => 'value1',
+					'meta2' => 'value2',
+				),
+			),
+		) );
+
+		$this->assertEquals( array(
+			array(
+				'@type' => 'PropertyValue',
+				'name'  => 'meta1',
+				'value' => 'value1',
+			),
+			array(
+				'@type' => 'PropertyValue',
+				'name'  => 'meta2',
+				'value' => 'value2',
+			),
+		), $instance->getExifData( 123 ) );
+	}
+
+	public function testGetExifDataIsNullIfNotMainSchema() {
+		$instance = new ImageObject( 123 );
+
+		$this->assertNull( $instance->getExifData( 123 ) );
+	}
+
+	public function testGetExifDataStripsEmptyMetaValues() {
+		$instance = new ImageObject( 123, true );
+
+		M::wpFunction( 'wp_get_attachment_metadata', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => array(
+				'image_meta' => array(
+					'meta1' => '',
+				),
+			),
+		) );
+
+		$this->assertEmpty( $instance->getExifData( 123 ) );
 	}
 
 	public function testGetHeight() {
@@ -75,7 +121,12 @@ class ImageObjectTest extends Schemify\TestCase {
 	}
 
 	public function testGetImage() {
-		$this->markTestIncomplete();
+		$instance = new ImageObject( 123 );
+
+		$this->assertNull(
+			$instance->getImage( 123 ),
+			'An ImageObject inside an ImageObject? Are you mad?!'
+		);
 	}
 
 	public function testGetWidth() {
