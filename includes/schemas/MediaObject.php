@@ -83,20 +83,6 @@ class MediaObject extends CreativeWork {
 	}
 
 	/**
-	 * Retrieve the publisher (unless this is an attachment on another post).
-	 *
-	 * @param int $post_id The attachment ID.
-	 * @return Organization|null The publisher as an Organization object or null if $is_main is false.
-	 */
-	public function getPublisher( $post_id ) {
-		if ( ! $this->isMain ) {
-			return null;
-		}
-
-		return new WP\Blog( get_current_blog_id() );
-	}
-
-	/**
 	 * Retrieve the thumbnail URL for a post.
 	 *
 	 * @param int $post_id The post ID.
