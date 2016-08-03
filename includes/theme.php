@@ -22,6 +22,23 @@ function register_post_type_support() {
 add_action( 'after_setup_theme', __NAMESPACE__ . '\register_post_type_support' );
 
 /**
+ * Set default Schemas for the default post types.
+ *
+ * @param string $schema    The schema to use for this post.
+ * @param string $post_type The current post's post_type.
+ */
+function set_default_schemas( $schema, $post_type ) {
+	switch ( $post_type ) {
+		case 'post':
+			$schema = 'BlogPosting';
+			break;
+	}
+
+	return $schema;
+}
+add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 2 );
+
+/**
  * Appends the JSON+LD object to the footer of a singular post.
  */
 function append_to_singular_footer() {
