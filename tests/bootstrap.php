@@ -10,7 +10,7 @@ if ( ! defined( 'PROJECT' ) ) {
 }
 
 if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', __DIR__ . '/dummy-files/' );
+	define( 'ABSPATH', __DIR__ . '/test-tools/' );
 }
 
 if ( ! file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {

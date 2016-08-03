@@ -3,6 +3,9 @@
 namespace Schemify\Schemas;
 
 class TestSchema {
+
+	protected $schema;
+
 	public function __construct( $post_id, $is_main = false ) {
 		// Do nothing.
 	}
@@ -11,5 +14,9 @@ class TestSchema {
 		return array(
 			'name' => 'Test Object',
 		);
+	}
+
+	public function getSchema() {
+		return $this->schema;
 	}
 }
