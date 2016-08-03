@@ -8,6 +8,8 @@
 
 namespace Schemify\Schemas;
 
+use Schemify\Core as Core;
+
 class MediaObject extends CreativeWork {
 
 	/**
@@ -33,6 +35,42 @@ class MediaObject extends CreativeWork {
 		'uploadDate',
 		'width',
 	);
+
+	/**
+	 * Get the associated (attached) post object.
+	 *
+	 * @throws \Exception When unable to load a schema.
+	 *
+	 * @param int $post_id The post ID.
+	 * @return CreativeWork|null A CreativeWork object or null if the attachment is unattached.
+	 */
+	public function getAssociatedArticle( $post_id ) {
+		if ( ! $this->isMain ) {
+			return null;
+		}
+
+		$parent_post_id = wp_get_post_parent_id( $post_id );
+		$schema         = __NAMESPACE__ . '\\' . Core\get_schema_name( $parent_post_id );
+
+		try {
+			if ( ! class_exists( $schema ) ) {
+				throw new \Exception( esc_html__( 'Schema is not defined', 'schemify' ) );
+			}
+
+			$instance = new $schema( $parent_post_id );
+
+		} catch ( \Exception $e ) {
+			trigger_error( esc_html( sprintf(
+				__( 'Unable to load schema %1$s: %2$s', 'schemify' ),
+				$schema,
+				$e->getMessage()
+			) ), E_USER_WARNING );
+
+			$instance = null;
+		}
+
+		return $instance;
+	}
 
 	/**
 	 * Get the actual content URL.
