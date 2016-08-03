@@ -71,6 +71,20 @@ class CoreTest extends Schemify\TestCase {
 		}
 	}
 
+	public function testGetSchemaName() {
+		M::wpFunction( 'get_post_type', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'post',
+		) );
+
+		M::onFilter( 'schemify_schema' )
+			->with( 'Thing', 'post', 123 )
+			->reply( 'SomeSchema' );
+
+		$this->assertEquals( 'SomeSchema', get_schema_name( 123 ) );
+	}
+
 	public function testGetJson() {
 		M::wpFunction( __NAMESPACE__ . '\build_object', array(
 			'times'  => 1,

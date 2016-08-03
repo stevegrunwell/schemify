@@ -19,17 +19,7 @@ function build_object( $post_id = 0 ) {
 		$post_id = get_the_ID();
 	}
 
-	$post_type = get_post_type( $post_id );
-	$schema    = 'Thing';
-
-	/**
-	 * Modify the Schema used to represent the given post type.
-	 *
-	 * @param string $schema    The schema to use for this post.
-	 * @param string $post_type The current post's post_type.
-	 * @param int    $post_id   The post ID.
-	 */
-	$schema = apply_filters( 'schemify_schema', $schema, $post_type, $post_id );
+	$schema = get_schema_name( $post_id );
 	$class  = '\\Schemify\\Schemas\\' . $schema;
 
 	try {
@@ -63,6 +53,25 @@ function get_attachment_type( $attachment_id ) {
 	}
 
 	return $base && in_array( $base, $bases ) ? $base : 'other';
+}
+
+/**
+ * Determine the schema that should be used for the given post ID.
+ *
+ * @param int $post_id The post ID.
+ */
+function get_schema_name( $post_id ) {
+	$post_type = get_post_type( $post_id );
+	$schema    = 'Thing';
+
+	/**
+	 * Modify the Schema used to represent the given post type.
+	 *
+	 * @param string $schema    The schema to use for this post.
+	 * @param string $post_type The current post's post_type.
+	 * @param int    $post_id   The post ID.
+	 */
+	return apply_filters( 'schemify_schema', $schema, $post_type, $post_id );
 }
 
 /**
