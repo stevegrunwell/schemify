@@ -47,6 +47,24 @@ function build_object( $post_id = 0 ) {
 }
 
 /**
+ * Helper function get the base MIME-type for an attachment by ID.
+ *
+ * @param int $attachment_id The attachment ID.
+ * @return string One of the following: 'image', 'video', 'audio', or 'other'.
+ */
+function get_attachment_type( $attachment_id ) {
+	$mime  = get_post_mime_type( $attachment_id );
+	$bases = array( 'image', 'video', 'audio' );
+	$base  = false;
+
+	if ( $mime ) {
+		$base = strtolower( substr( $mime, 0, strpos( $mime, '/' ) ) );
+	}
+
+	return $base && in_array( $base, $bases ) ? $base : 'other';
+}
+
+/**
  * Output the JSON+LD for the given post.
  *
  * @param int $post_id Optional. The post ID to get the Schema object for. The default is the
