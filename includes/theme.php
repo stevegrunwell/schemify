@@ -26,17 +26,28 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\register_post_type_support' )
  *
  * @param string $schema    The schema to use for this post.
  * @param string $post_type The current post's post_type.
+ * @param int    $post_id   The post ID.
  */
-function set_default_schemas( $schema, $post_type ) {
+function set_default_schemas( $schema, $post_type, $post_id ) {
 	switch ( $post_type ) {
 		case 'post':
 			$schema = 'BlogPosting';
+			break;
+
+		case 'attachment':
+			$mime = Core\get_attachment_type( $post_id );
+
+			if ( 'image' === $mime ) {
+				$schema = 'ImageObject';
+			} else {
+				$schema = 'MediaObject';
+			}
 			break;
 	}
 
 	return $schema;
 }
-add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 2 );
+add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 3 );
 
 /**
  * Appends the JSON+LD object to the footer of a singular post.

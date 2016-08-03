@@ -27,8 +27,9 @@ function build_object( $post_id = 0 ) {
 	 *
 	 * @param string $schema    The schema to use for this post.
 	 * @param string $post_type The current post's post_type.
+	 * @param int    $post_id   The post ID.
 	 */
-	$schema = apply_filters( 'schemify_schema', $schema, $post_type );
+	$schema = apply_filters( 'schemify_schema', $schema, $post_type, $post_id );
 	$class  = '\\Schemify\\Schemas\\' . $schema;
 
 	try {
