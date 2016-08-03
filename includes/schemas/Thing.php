@@ -240,6 +240,10 @@ class Thing implements \JsonSerializable {
 	 * @return ImageObject An image object representing the post.
 	 */
 	public function getImage( $post_id ) {
+		if ( ! $this->isMain ) {
+			return null;
+		}
+
 		$post_thumbnail = get_post_thumbnail_id( $post_id );
 
 		return $post_thumbnail ? new ImageObject( $post_thumbnail ) : null;

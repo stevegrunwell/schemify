@@ -103,4 +103,26 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetPropertyList() {
 
 	}
+
+	public function testGetImage() {
+		$instance = new Thing( 123, true );
+
+		M::wpFunction( 'get_post_thumbnail_id', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 124,
+		) );
+
+		$this->assertInstanceOf( __NAMESPACE__ . '\ImageObject', $instance->getImage( 123 ) );
+	}
+
+	public function testGetImageIsNullWhenNotMainSchema() {
+		$instance = new Thing( 123, false );
+
+		M::wpFunction( 'get_post_thumbnail_id', array(
+			'times'  => 0,
+		) );
+
+		$this->assertNull( $instance->getImage( 123 ) );
+	}
 }
