@@ -15,4 +15,5 @@ namespace Schemify;
 
 require_once __DIR__ . '/includes/schemas.php';
 require_once __DIR__ . '/includes/core.php';
+require_once __DIR__ . '/includes/admin.php';
 require_once __DIR__ . '/includes/theme.php';
