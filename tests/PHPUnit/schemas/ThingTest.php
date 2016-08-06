@@ -20,6 +20,23 @@ class ThingTest extends Schemify\TestCase {
 		'schemas/Thing.php',
 	);
 
+	public function test__construct() {
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )->makePartial();
+		$post_id  = new ReflectionProperty( $instance, 'postId' );
+		$post_id->setAccessible( true );
+		$is_main  = new ReflectionProperty( $instance, 'isMain' );
+		$is_main->setAccessible( true );
+
+		// Before we've done anything.
+		$this->assertEmpty( $post_id->getValue( $instance ) );
+		$this->assertEmpty( $is_main->getValue( $instance ) );
+
+		// Construct + test.
+		$instance = new Thing( 123, true );
+
+		$this->assertEquals( 123, $post_id->getValue( $instance ) );
+		$this->assertTrue( $is_main->getValue( $instance ) );
+	}
 	public function testGetProperties() {
 		$data     = array( 'foo' => 'bar' );
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )
