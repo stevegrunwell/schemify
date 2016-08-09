@@ -13,6 +13,8 @@
 
 namespace Schemify;
 
+define( 'SCHEMIFY_VERSION', '0.1.0' );
+
 require_once __DIR__ . '/includes/schemas.php';
 require_once __DIR__ . '/includes/core.php';
 require_once __DIR__ . '/includes/admin.php';

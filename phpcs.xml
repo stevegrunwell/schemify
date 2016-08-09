@@ -9,6 +9,7 @@
 	<!-- FILES -->
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>Gruntfile.js</exclude-pattern>
 
 	<!-- Schemas won't match WordPress standards, and that's okay -->
 	<rule ref="Generic.Files.LowercasedFilename.NotFound">
