@@ -81,6 +81,21 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEquals( array( 'foo' => 'bar' ), $instance->getProperties() );
 	}
 
+	public function testGetProp() {
+		$this->markTestIncomplete();
+	}
+
+	public function testJsonSerialize() {
+		$uniqid = uniqid();
+
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )->makePartial();
+		$instance->shouldReceive( 'getProperties' )
+			->once()
+			->andReturn( $uniqid );
+
+		$this->assertEquals( $uniqid, $instance->jsonSerialize() );
+	}
+
 	public function testGetSchema() {
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )->makePartial();
 
@@ -117,8 +132,16 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEquals( $random, $instance->getSchema() );
 	}
 
-	public function testGetPropertyList() {
+	public function testBuild() {
+		$this->markTestIncomplete();
+	}
 
+	public function testGetPropertyList() {
+		$this->markTestIncomplete();
+	}
+
+	public function testMergeSchemaProperties() {
+		$this->markTestIncomplete();
 	}
 
 	public function testGetDescription() {
@@ -133,6 +156,18 @@ class ThingTest extends Schemify\TestCase {
 		M::wpPassthruFunction( 'esc_html' );
 
 		$this->assertEquals( 'Excerpt', $instance->getDescription( 123 ) );
+	}
+
+	public function testGetName() {
+		$instance = new Thing( 123, true );
+
+		M::wpFunction( 'get_the_title', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'Name',
+		) );
+
+		$this->assertEquals( 'Name', $instance->getName( 123 ) );
 	}
 
 	public function testGetImage() {
@@ -155,5 +190,17 @@ class ThingTest extends Schemify\TestCase {
 		) );
 
 		$this->assertNull( $instance->getImage( 123 ) );
+	}
+
+	public function testGetUrl() {
+		$instance = new Thing( 123, true );
+
+		M::wpFunction( 'get_permalink', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'http://example.com',
+		) );
+
+		$this->assertEquals( 'http://example.com', $instance->getUrl( 123 ) );
 	}
 }
