@@ -121,6 +121,20 @@ class ThingTest extends Schemify\TestCase {
 
 	}
 
+	public function testGetDescription() {
+		$instance = new Thing( 123, true );
+
+		M::wpFunction( 'get_the_excerpt', array(
+			'times'  => 1,
+			'args'   => array( 123 ),
+			'return' => 'Excerpt',
+		) );
+
+		M::wpPassthruFunction( 'esc_html' );
+
+		$this->assertEquals( 'Excerpt', $instance->getDescription( 123 ) );
+	}
+
 	public function testGetImage() {
 		$instance = new Thing( 123, true );
 

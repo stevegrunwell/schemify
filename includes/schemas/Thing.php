@@ -220,7 +220,7 @@ class Thing implements \JsonSerializable {
 	 * @return string The post's excerpt/description.
 	 */
 	public function getDescription( $post_id ) {
-		return get_the_excerpt( $post_id );
+		return esc_html( get_the_excerpt( $post_id ) );
 	}
 
 	/**
