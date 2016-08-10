@@ -29,7 +29,7 @@ class ImageObject extends MediaObject {
 	 * @return int The image caption.
 	 */
 	public function getCaption( $post_id ) {
-		return get_the_excerpt( $post_id );
+		return get_post_field( 'post_excerpt', $post_id, 'js' );
 	}
 
 	/**

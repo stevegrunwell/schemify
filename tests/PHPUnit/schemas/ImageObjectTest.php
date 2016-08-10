@@ -23,9 +23,9 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetCaption() {
 		$instance = new ImageObject( 123 );
 
-		M::wpFunction( 'get_the_excerpt', array(
+		M::wpFunction( 'get_post_field', array(
 			'times'  => 1,
-			'args'   => array( 123 ),
+			'args'   => array( 'post_excerpt', 123, 'js' ),
 			'return' => 'Excerpt',
 		) );
 
