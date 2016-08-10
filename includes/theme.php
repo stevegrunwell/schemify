@@ -34,6 +34,10 @@ function set_default_schemas( $schema, $post_type, $post_id ) {
 			$schema = 'BlogPosting';
 			break;
 
+		case 'page':
+			$schema = 'WebPage';
+			break;
+
 		case 'attachment':
 			$mime = Core\get_attachment_type( $post_id );
 
