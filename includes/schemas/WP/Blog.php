@@ -36,6 +36,18 @@ class Blog extends Schemas\Organization {
 	}
 
 	/**
+	 * Get the blog's logo.
+	 *
+	 * This acts as a passthru method to getImage().
+	 *
+	 * @param int $blog_id The blog ID.
+	 * @return string The blog's site icon.
+	 */
+	public function getLogo( $blog_id ) {
+		return $this->getImage( $blog_id );
+	}
+
+	/**
 	 * Get the blog's name.
 	 *
 	 * @param int $blog_id The blog ID. This parameter isn't actually used, but is required so the

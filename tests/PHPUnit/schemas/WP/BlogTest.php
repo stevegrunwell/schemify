@@ -44,6 +44,17 @@ class BlogTest extends Schemify\TestCase {
 		$this->assertEquals( 'http://example.com/image.jpg', $instance->getImage( 1 ) );
 	}
 
+	public function testGetLogo() {
+		$uniqid   = uniqid();
+		$instance = Mockery::mock( __NAMESPACE__ . '\Blog' )->makePartial();
+		$instance->shouldReceive( 'getImage' )
+			->once()
+			->with( 123 )
+			->andReturn( $uniqid );
+
+		$this->assertEquals( $uniqid, $instance->getLogo( 123 ) );
+	}
+
 	public function testGetName() {
 		$instance = new Blog( 1 );
 
