@@ -12,5 +12,5 @@ use Schemify\Schemas as Schemas;
 
 class WebSite extends Schemas\WebSite {
 
-	use WP_Schema, WP_Blog;
+	use Traits\Schema, Traits\Blog;
 }

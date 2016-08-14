@@ -21,9 +21,9 @@ class OrganizationTest extends Schemify\TestCase {
 	);
 
 	public function testGetDescription() {
-		require_once ABSPATH . 'TestWPBlog.php';
+		require_once ABSPATH . 'TestBlogTrait.php';
 
-		$instance = new TestWPBlog( 1 );
+		$instance = new TestBlogTrait( 1 );
 
 		M::wpFunction( 'get_bloginfo', array(
 			'times'  => 1,
@@ -35,9 +35,9 @@ class OrganizationTest extends Schemify\TestCase {
 	}
 
 	public function testGetImage() {
-		require_once ABSPATH . 'TestWPBlog.php';
+		require_once ABSPATH . 'TestBlogTrait.php';
 
-		$instance = new TestWPBlog( 1 );
+		$instance = new TestBlogTrait( 1 );
 
 		M::wpFunction( 'get_site_icon_url', array(
 			'times'  => 1,
@@ -49,10 +49,10 @@ class OrganizationTest extends Schemify\TestCase {
 	}
 
 	public function testGetLogo() {
-		require_once ABSPATH . 'TestWPBlog.php';
+		require_once ABSPATH . 'TestBlogTrait.php';
 
 		$uniqid   = uniqid();
-		$instance = Mockery::mock( __NAMESPACE__ . '\TestWPBlog' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\TestBlogTrait' )->makePartial();
 		$instance->shouldReceive( 'getImage' )
 			->once()
 			->with( 123 )
@@ -62,9 +62,9 @@ class OrganizationTest extends Schemify\TestCase {
 	}
 
 	public function testGetName() {
-		require_once ABSPATH . 'TestWPBlog.php';
+		require_once ABSPATH . 'TestBlogTrait.php';
 
-		$instance = new TestWPBlog( 1 );
+		$instance = new TestBlogTrait( 1 );
 
 		M::wpFunction( 'get_bloginfo', array(
 			'times'  => 1,
@@ -76,9 +76,9 @@ class OrganizationTest extends Schemify\TestCase {
 	}
 
 	public function testGetUrl() {
-		require_once ABSPATH . 'TestWPBlog.php';
+		require_once ABSPATH . 'TestBlogTrait.php';
 
-		$instance = new TestWPBlog( 1 );
+		$instance = new TestBlogTrait( 1 );
 
 		M::wpFunction( 'get_bloginfo', array(
 			'times'  => 1,

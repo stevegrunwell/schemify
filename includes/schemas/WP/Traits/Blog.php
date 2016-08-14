@@ -5,11 +5,11 @@
  * @package Schemify
  */
 
-namespace Schemify\Schemas\WP;
+namespace Schemify\Schemas\WP\Traits;
 
 use Schemify\Core as Core;
 
-trait WP_Blog {
+trait Blog {
 
 	/**
 	 * Get the blog's description.

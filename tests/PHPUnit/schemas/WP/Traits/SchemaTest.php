@@ -21,9 +21,9 @@ class WPSchemaTest extends Schemify\TestCase {
 	);
 
 	public function testGetSchema() {
-		require_once ABSPATH . 'TestWPSchema.php';
+		require_once ABSPATH . 'TestSchemaTrait.php';
 
-		$instance = new TestWPSchema( 123 );
+		$instance = new TestSchemaTrait( 123 );
 		$property = new ReflectionProperty( $instance, 'schema' );
 		$property->setAccessible( true );
 		$unique   = uniqid();
@@ -38,9 +38,9 @@ class WPSchemaTest extends Schemify\TestCase {
 	}
 
 	public function testGetSchemaCachesResult() {
-		require_once ABSPATH . 'TestWPSchema.php';
+		require_once ABSPATH . 'TestSchemaTrait.php';
 
-		$instance = new TestWPSchema( 123 );
+		$instance = new TestSchemaTrait( 123 );
 		$property = new ReflectionProperty( $instance, 'schema' );
 		$property->setAccessible( true );
 		$unique   = uniqid();
@@ -55,9 +55,9 @@ class WPSchemaTest extends Schemify\TestCase {
 	}
 
 	public function testGetSchemaReadsFromCache() {
-		require_once ABSPATH . 'TestWPSchema.php';
+		require_once ABSPATH . 'TestSchemaTrait.php';
 
-		$instance = new TestWPSchema( 123 );
+		$instance = new TestSchemaTrait( 123 );
 		$property = new ReflectionProperty( $instance, 'schema' );
 		$property->setAccessible( true );
 		$property->setValue( $instance, 'TestSchema' );

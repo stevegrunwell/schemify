@@ -12,5 +12,5 @@ use Schemify\Schemas as Schemas;
 
 class Organization extends Schemas\Organization {
 
-	use WP_Schema, WP_Blog;
+	use Traits\Schema, Traits\Blog;
 }
