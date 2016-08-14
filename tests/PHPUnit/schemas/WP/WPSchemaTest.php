@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for the WP_Schema trait..
+ * Tests for the WP_Schema trait.
  *
  * @package Schemify
  */

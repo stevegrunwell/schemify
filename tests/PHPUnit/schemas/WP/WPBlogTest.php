@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for the Person schema.
+ * Tests for the WP\Organization schema.
  *
  * @package Schemify
  */
@@ -14,14 +14,16 @@ use ReflectionMethod;
 use ReflectionProperty;
 use Schemify;
 
-class BlogTest extends Schemify\TestCase {
+class OrganizationTest extends Schemify\TestCase {
 
 	protected $testFiles = array(
 		'schemas.php',
 	);
 
 	public function testGetDescription() {
-		$instance = new Blog( 1 );
+		require_once ABSPATH . 'TestWPBlog.php';
+
+		$instance = new TestWPBlog( 1 );
 
 		M::wpFunction( 'get_bloginfo', array(
 			'times'  => 1,
@@ -33,7 +35,9 @@ class BlogTest extends Schemify\TestCase {
 	}
 
 	public function testGetImage() {
-		$instance = new Blog( 1 );
+		require_once ABSPATH . 'TestWPBlog.php';
+
+		$instance = new TestWPBlog( 1 );
 
 		M::wpFunction( 'get_site_icon_url', array(
 			'times'  => 1,
@@ -45,8 +49,10 @@ class BlogTest extends Schemify\TestCase {
 	}
 
 	public function testGetLogo() {
+		require_once ABSPATH . 'TestWPBlog.php';
+
 		$uniqid   = uniqid();
-		$instance = Mockery::mock( __NAMESPACE__ . '\Blog' )->makePartial();
+		$instance = Mockery::mock( __NAMESPACE__ . '\TestWPBlog' )->makePartial();
 		$instance->shouldReceive( 'getImage' )
 			->once()
 			->with( 123 )
@@ -56,7 +62,9 @@ class BlogTest extends Schemify\TestCase {
 	}
 
 	public function testGetName() {
-		$instance = new Blog( 1 );
+		require_once ABSPATH . 'TestWPBlog.php';
+
+		$instance = new TestWPBlog( 1 );
 
 		M::wpFunction( 'get_bloginfo', array(
 			'times'  => 1,
@@ -68,7 +76,9 @@ class BlogTest extends Schemify\TestCase {
 	}
 
 	public function testGetUrl() {
-		$instance = new Blog( 1 );
+		require_once ABSPATH . 'TestWPBlog.php';
+
+		$instance = new TestWPBlog( 1 );
 
 		M::wpFunction( 'get_bloginfo', array(
 			'times'  => 1,
