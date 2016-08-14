@@ -26,6 +26,9 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForPosts() {
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
 		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 123 ) );
 	}
 
@@ -36,10 +39,40 @@ class ThemeTest extends Schemify\TestCase {
 			'return' => 'image',
 		) );
 
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
 		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'attachment', 123 ) );
 	}
 
-	public function testAppendToSingularFooter() {
+	public function testSetDefaultSchemasForFrontPage() {
+		M::wpFunction( 'is_front_page', array(
+			'times'  => 1,
+			'return' => true,
+		) );
+
+		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 123 ) );
+	}
+
+	public function testSetDefaultSchemasForHomepage() {
+		M::wpFunction( 'is_front_page', array(
+			'return' => false,
+		) );
+
+		M::wpFunction( 'is_home', array(
+			'times'  => 1,
+			'return' => true,
+		) );
+
+		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 123 ) );
+	}
+
+	public function testAppendToFooter() {
+		M::wpFunction( 'get_the_ID', array(
+			'times'  => 1,
+			'return' => 123,
+		) );
+
 		M::wpFunction( 'is_singular', array(
 			'times'  => 1,
 			'return' => true,
@@ -56,9 +89,12 @@ class ThemeTest extends Schemify\TestCase {
 			'return' => true,
 		) );
 
-		M::wpFunction( 'get_the_ID', array(
-			'times'  => 1,
-			'return' => 123,
+		M::wpFunction( 'is_front_page', array(
+			'return'  => false,
+		) );
+
+		M::wpFunction( 'is_home', array(
+			'return'  => false,
 		) );
 
 		M::wpFunction( 'Schemify\Core\get_json', array(
@@ -66,19 +102,45 @@ class ThemeTest extends Schemify\TestCase {
 			'args'   => array( 123 ),
 		) );
 
-		append_to_singular_footer();
+		append_to_footer();
 	}
 
-	public function testAppendToSingularFooterOnNonSingularPages() {
+	public function testAppendToFooterOnFrontPage() {
 		M::wpFunction( 'is_singular', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_json', array(
-			'times'  => 0,
+		M::wpFunction( 'is_front_page', array(
+			'return'  => true,
 		) );
 
-		append_to_singular_footer();
+		M::wpFunction( 'Schemify\Core\get_json', array(
+			'times'  => 1,
+			'args'   => array( 'front' ),
+		) );
+
+		append_to_footer();
+	}
+
+	public function testAppendToFooterOnHomePage() {
+		M::wpFunction( 'is_singular', array(
+			'return' => false,
+		) );
+
+		M::wpFunction( 'is_front_page', array(
+			'return'  => false,
+		) );
+
+		M::wpFunction( 'is_home', array(
+			'return'  => true,
+		) );
+
+		M::wpFunction( 'Schemify\Core\get_json', array(
+			'times'  => 1,
+			'args'   => array( 'home' ),
+		) );
+
+		append_to_footer();
 	}
 
 	public function testAppendToSingularFooterWithUnsupportedPostType() {
@@ -98,6 +160,6 @@ class ThemeTest extends Schemify\TestCase {
 			'times'  => 0,
 		) );
 
-		append_to_singular_footer();
+		append_to_footer();
 	}
 }

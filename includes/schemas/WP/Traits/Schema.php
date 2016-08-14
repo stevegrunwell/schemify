@@ -5,11 +5,11 @@
  * @package Schemify
  */
 
-namespace Schemify\Schemas\WP;
+namespace Schemify\Schemas\WP\Traits;
 
 use Schemify\Core as Core;
 
-trait WP_Schema {
+trait Schema {
 
 	/**
 	 * Override the default getSchema() implementation from Thing, explicitly setting $this->schema

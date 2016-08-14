@@ -12,7 +12,7 @@ use Schemify\Schemas as Schemas;
 
 class User extends Schemas\Person {
 
-	use WP_Schema;
+	use Traits\Schema;
 
 	/**
 	 * A cache of the user data.

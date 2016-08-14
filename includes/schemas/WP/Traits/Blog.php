@@ -1,18 +1,15 @@
 <?php
 /**
- * A representation of a WordPress Blog.
+ * Apply methods to get details about a WordPress blog to other schemas.
  *
  * @package Schemify
- * @link    http://schema.org/Organization
  */
 
-namespace Schemify\Schemas\WP;
+namespace Schemify\Schemas\WP\Traits;
 
-use Schemify\Schemas as Schemas;
+use Schemify\Core as Core;
 
-class Blog extends Schemas\Organization {
-
-	use WP_Schema;
+trait Blog {
 
 	/**
 	 * Get the blog's description.

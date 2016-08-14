@@ -49,18 +49,34 @@ function set_default_schemas( $schema, $post_type, $post_id ) {
 			break;
 	}
 
+	// The homepage should be a WebSite.
+	if ( is_front_page() || is_home() ) {
+		$schema = 'WP\WebSite';
+	}
+
 	return $schema;
 }
 add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 3 );
 
 /**
- * Appends the JSON+LD object to the footer of a singular post.
+ * Appends the JSON+LD object to the site footer.
  */
-function append_to_singular_footer() {
-	if ( ! is_singular() || ! post_type_supports( get_post_type(), 'schemify' ) ) {
+function append_to_footer() {
+	$id = get_the_ID();
+
+	// Return early on singular posts for unsupported post types.
+	if ( is_singular() && ! post_type_supports( get_post_type(), 'schemify' ) ) {
 		return;
 	}
 
-	Core\get_json( get_the_ID() );
+	// Special post IDs.
+	if ( is_front_page() ) {
+		$id = 'front';
+
+	} elseif ( is_home() ) {
+		$id = 'home';
+	}
+
+	Core\get_json( $id );
 }
-add_action( 'wp_footer', __NAMESPACE__ . '\append_to_singular_footer' );
+add_action( 'wp_footer', __NAMESPACE__ . '\append_to_footer' );

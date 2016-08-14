@@ -135,7 +135,9 @@ class Thing implements \JsonSerializable {
 	 * @param bool $is_main Whether or not this is the top-level schema being built.
 	 */
 	protected function build( $post_id, $is_main ) {
-		$cache_key = sprintf( 'schema_%d', $post_id );
+
+		// Placeholder is using %s as this *can* be a non-integer value (e.g. "home").
+		$cache_key = sprintf( 'schema_%s', $post_id );
 
 		// Return early if we have a cached version.
 		if ( $is_main && ( $cached = wp_cache_get( $cache_key, 'schemify', false ) ) ) {
