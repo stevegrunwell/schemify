@@ -136,6 +136,15 @@ class ThingTest extends Schemify\TestCase {
 		$this->markTestIncomplete();
 	}
 
+	/**
+	 * Verifies that ID's aren't being forced into integers, as that could cause issues with caching.
+	 */
+	public function testBuildWithHomepage() {
+		$this->markTestIncomplete();
+
+		$instance->build( 'home', true );
+	}
+
 	public function testGetPropertyList() {
 		$this->markTestIncomplete();
 	}
