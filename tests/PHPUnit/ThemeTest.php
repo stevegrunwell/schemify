@@ -26,6 +26,9 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForPosts() {
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
 		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 123 ) );
 	}
 
@@ -36,7 +39,32 @@ class ThemeTest extends Schemify\TestCase {
 			'return' => 'image',
 		) );
 
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
 		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'attachment', 123 ) );
+	}
+
+	public function testSetDefaultSchemasForFrontPage() {
+		M::wpFunction( 'is_front_page', array(
+			'times'  => 1,
+			'return' => true,
+		) );
+
+		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 123 ) );
+	}
+
+	public function testSetDefaultSchemasForHomepage() {
+		M::wpFunction( 'is_front_page', array(
+			'return' => false,
+		) );
+
+		M::wpFunction( 'is_home', array(
+			'times'  => 1,
+			'return' => true,
+		) );
+
+		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 123 ) );
 	}
 
 	public function testAppendToSingularFooter() {

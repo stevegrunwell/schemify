@@ -49,6 +49,11 @@ function set_default_schemas( $schema, $post_type, $post_id ) {
 			break;
 	}
 
+	// The homepage should be a WebSite.
+	if ( is_front_page() || is_home() ) {
+		$schema = 'WP\WebSite';
+	}
+
 	return $schema;
 }
 add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 3 );
