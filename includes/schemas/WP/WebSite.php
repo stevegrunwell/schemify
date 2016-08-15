@@ -15,32 +15,13 @@ class WebSite extends Schemas\WebSite {
 	use Traits\Schema, Traits\Blog;
 
 	/**
-	 * Remove the "author" node for WebSite.
+	 * Properties that would have normally been inherited but should not exist in a sub-tree.
 	 *
-	 * @param int $blog_id The blog ID. This value isn't used, but is preserved for compatibility
-	 *                     with CreativeWork::getAuthor().
+	 * @var array $removeProperties
 	 */
-	public function getAuthor( $blog_id ) {
-		return null;
-	}
-
-	/**
-	 * Remove the "publisher" node for WebSite.
-	 *
-	 * @param int $blog_id The blog ID. This value isn't used, but is preserved for compatibility
-	 *                     with CreativeWork::getPublisher().
-	 */
-	public function getPublisher( $blog_id ) {
-		return null;
-	}
-
-	/**
-	 * Remove the "thumbnailUrl" node for WebSite.
-	 *
-	 * @param int $blog_id The blog ID. This value isn't used, but is preserved for compatibility
-	 *                     with CreativeWork::getPublisher().
-	 */
-	public function getThumbnailUrl( $blog_id ) {
-		return null;
-	}
+	protected static $removeProperties = array(
+		'author',
+		'publisher',
+		'thumbnailUrl',
+	);
 }

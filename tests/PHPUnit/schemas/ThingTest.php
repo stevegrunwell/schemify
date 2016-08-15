@@ -10,6 +10,7 @@ namespace Schemify\Schemas;
 use WP_Mock as M;
 
 use Mockery;
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 use Schemify;
@@ -82,7 +83,16 @@ class ThingTest extends Schemify\TestCase {
 	}
 
 	public function testGetProp() {
-		$this->markTestIncomplete();
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing', array( 123, true ) )->makePartial();
+		$instance->shouldReceive( 'getName' )
+			->once()
+			->with( 123 )
+			->andReturn( 'Object Name' );
+
+		// Make sure our test assumptions are accurate.
+		$this->assertTrue( method_exists( $instance, 'getName' ), 'Invalid test, as getName is not a valid property callback' );
+
+		$this->assertEquals( 'Object Name', $instance->getProp( 'name' ) );
 	}
 
 	public function testJsonSerialize() {
@@ -145,12 +155,53 @@ class ThingTest extends Schemify\TestCase {
 		$instance->build( 'home', true );
 	}
 
+	// Since most of this logic requires a descendant class, @see ChildSchemaTest.
 	public function testGetPropertyList() {
-		$this->markTestIncomplete();
+		$instance = new Thing( 123, true );
+		$method   = new ReflectionMethod( $instance, 'getPropertyList' );
+		$method->setAccessible( true );
+		$property = new ReflectionClass( $instance );
+
+		$this->assertEquals( $property->getDefaultProperties()['properties'], $method->invoke( $instance ) );
+	}
+
+	public function testGetPropertyListCachesValue() {
+		$uniqid   = (array) uniqid();
+		$instance = new Thing( 123, true );
+		$method   = new ReflectionMethod( $instance, 'getPropertyList' );
+		$method->setAccessible( true );
+		$property = new ReflectionProperty( $instance, 'propertyList' );
+		$property->setAccessible( true );
+
+		// Before running the method.
+		$this->assertEmpty( $property->getValue( $instance ) );
+
+		// After running.
+		$method->invoke( $instance );
+		$this->assertNotEmpty( $property->getValue( $instance ) );
+	}
+
+	public function testGetPropertyListReadsFromCache() {
+		$uniqid   = (array) uniqid();
+		$instance = new Thing( 123, true );
+		$method   = new ReflectionMethod( $instance, 'getPropertyList' );
+		$method->setAccessible( true );
+		$property = new ReflectionProperty( $instance, 'propertyList' );
+		$property->setAccessible( true );
+		$property->setValue( $instance, $uniqid );
+
+		$this->assertEquals( $uniqid, $method->invoke( $instance ) );
 	}
 
 	public function testMergeSchemaProperties() {
-		$this->markTestIncomplete();
+		$instance = new Thing( 123, true );
+		$method   = new ReflectionMethod( $instance, 'mergeSchemaProperties' );
+		$method->setAccessible( true );
+
+		$this->assertEquals(
+			array( 'foo', 'bar', 'baz' ),
+			$method->invoke( $instance, array( 'foo', 'bar' ), array( 'baz' ) )
+		);
 	}
 
 	public function testGetDescription() {

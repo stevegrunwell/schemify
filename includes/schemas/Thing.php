@@ -68,6 +68,16 @@ class Thing implements \JsonSerializable {
 	);
 
 	/**
+	 * Properties that would have normally been inherited but should not exist in a sub-tree.
+	 *
+	 * For example, the "image" property is useful until you get into the ImageObject schema (or
+	 * anything that extends that), since you're describing an image with another image.
+	 *
+	 * @var array $removeProperties
+	 */
+	protected static $removeProperties = array();
+
+	/**
 	 * Class constructor, which automatically maps passed values to $this->data.
 	 *
 	 * @param int  $post_id The ID of the post being represented by this object.
@@ -182,8 +192,8 @@ class Thing implements \JsonSerializable {
 		$parents[ $class ] = $class;
 
 		// With the class names in hand, get all of the $properties, keyed by the class.
-		$properties = array_map( function ( $val ) {
-			return $val::$properties;
+		$properties = array_map( function ( $schema ) {
+			return array_diff( $schema::$properties, (array) $schema::$removeProperties );
 		}, $parents );
 
 		// Now that we have an array of property additions/deletions keyed by their schema, merge 'em.

@@ -23,6 +23,15 @@ class ImageObject extends MediaObject {
 	);
 
 	/**
+	 * Properties that would have normally been inherited but should not exist in a sub-tree.
+	 *
+	 * @var array $removeProperties
+	 */
+	protected static $removeProperties = array(
+		'image',
+	);
+
+	/**
 	 * Get the image caption.
 	 *
 	 * @param int $post_id The attachment ID.
@@ -87,16 +96,6 @@ class ImageObject extends MediaObject {
 		$image = wp_get_attachment_image_src( $post_id, 'full' );
 
 		return $image ? $image[2] : null;
-	}
-
-	/**
-	 * Retrieve the image for a post.
-	 *
-	 * @param int $post_id The post ID.
-	 * @return ImageObject An image object representing the post.
-	 */
-	public function getImage( $post_id ) {
-		return null;
 	}
 
 	/**
