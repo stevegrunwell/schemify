@@ -120,6 +120,10 @@ class ImageObjectTest extends Schemify\TestCase {
 		$this->assertNull( $instance->getHeight( 123 ) );
 	}
 
+	/**
+	 * There used to be an explicit getImage() method on the ImageObject schema that simply returned
+	 * null. This test persists to verify that the $removeProperties array is working.
+	 */
 	public function testGetImage() {
 		$instance = new ImageObject( 123 );
 
