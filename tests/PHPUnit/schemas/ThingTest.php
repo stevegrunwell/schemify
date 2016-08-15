@@ -155,6 +155,7 @@ class ThingTest extends Schemify\TestCase {
 		$instance->build( 'home', true );
 	}
 
+	// Since most of this logic requires a descendant class, @see ChildSchemaTest.
 	public function testGetPropertyList() {
 		$instance = new Thing( 123, true );
 		$method   = new ReflectionMethod( $instance, 'getPropertyList' );
