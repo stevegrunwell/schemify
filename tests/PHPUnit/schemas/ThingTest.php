@@ -210,9 +210,17 @@ class ThingTest extends Schemify\TestCase {
 	 * Verifies that ID's aren't being forced into integers, as that could cause issues with caching.
 	 */
 	public function testBuildWithHomepage() {
-		$this->markTestIncomplete();
+		$instance = new Thing( 'home', true );
+		$method   = new ReflectionMethod( $instance, 'build' );
+		$method->setAccessible( true );
 
-		$instance->build( 'home', true );
+		M::wpFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schema_home', 'schemify', false ),
+			'return' => array( 'schema', 'data' ),
+		) );
+
+		$method->invoke( $instance, 'home', true );
 	}
 
 	// Since most of this logic requires a descendant class, @see ChildSchemaTest.
