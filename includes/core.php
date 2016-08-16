@@ -33,12 +33,12 @@ function build_object( $post_id = 0 ) {
 		$instance = new $class( $post_id, true );
 
 	} catch ( \Exception $e ) {
+		$instance = new \Schemify\Schemas\Thing( $post_id, true );
+
 		trigger_error( esc_html( sprintf(
 			__( 'Unable to find schema "%s", falling back to "Thing"', 'schemify' ),
 			esc_attr( $schema )
 		) ), E_USER_WARNING );
-
-		$instance = new \Schemify\Schemas\Thing( $post_id, true );
 	}
 
 	return $instance->getProperties();
