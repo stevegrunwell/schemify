@@ -32,6 +32,13 @@ class ThemeTest extends Schemify\TestCase {
 		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 123 ) );
 	}
 
+	public function testSetDefaultSchemasForPages() {
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
+		$this->assertEquals( 'WebPage', set_default_schemas( 'Thing', 'page', 123 ) );
+	}
+
 	public function testSetDefaultSchemasForImages() {
 		M::wpFunction( 'Schemify\Core\get_attachment_type', array(
 			'times'  => 1,
@@ -43,6 +50,17 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
 		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'attachment', 123 ) );
+	}
+
+	public function testSetDefaultSchemasForOtherMediaTypes() {
+		M::wpFunction( 'Schemify\Core\get_attachment_type', array(
+			'return' => 'other',
+		) );
+
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
+		$this->assertEquals( 'MediaObject', set_default_schemas( 'Thing', 'attachment', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForFrontPage() {
