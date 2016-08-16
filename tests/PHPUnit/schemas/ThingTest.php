@@ -143,7 +143,67 @@ class ThingTest extends Schemify\TestCase {
 	}
 
 	public function testBuild() {
-		$this->markTestIncomplete();
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
+		$instance->shouldReceive( 'getPropertyList' )
+			->once()
+			->andReturn( array( 'someProp' ) );
+		$instance->shouldReceive( 'getSchema' )
+			->once()
+			->andReturn( 'Thing' );
+		$instance->shouldReceive( 'getProp' )
+			->once()
+			->with( 'someProp' )
+			->andReturn( 'value' );
+		$method   = new ReflectionMethod( $instance, 'build' );
+		$method->setAccessible( true );
+		$value    = array(
+			'@context' => 'http://schema.org',
+			'@type'    => 'Thing',
+			'someProp' => 'value',
+		);
+
+		M::wpFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schema_123', 'schemify', false ),
+			'return' => false,
+		) );
+
+		M::wpFunction( 'wp_cache_set', array(
+			'times'  => 1,
+			'args'   => array( 'schema_123', $value, 'schemify', 0 ),
+		) );
+
+		$this->assertEquals( $value, $method->invoke( $instance, 123, true ) );
+	}
+
+	public function testBuildReturnsFromCache() {
+		$instance = new Thing( 123, true );
+		$method   = new ReflectionMethod( $instance, 'build' );
+		$method->setAccessible( true );
+
+		M::wpFunction( 'wp_cache_get', array(
+			'return' => array( 'schema', 'data' ),
+		) );
+
+		$this->assertEquals( array( 'schema', 'data' ), $method->invoke( $instance, 123, true ) );
+	}
+
+	public function testBuildOnlyReturnsFromCacheForTheMainSchema() {
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
+		$instance->shouldReceive( 'getPropertyList' )->andReturn( array() );
+		$instance->shouldReceive( 'getSchema' )->andReturn( 'Thing' );
+		$method   = new ReflectionMethod( $instance, 'build' );
+		$method->setAccessible( true );
+
+		M::wpFunction( 'wp_cache_get', array(
+			'return' => array( 'schema', 'data' ),
+		) );
+
+		$this->assertNotEquals( array( 'schema', 'data' ), $method->invoke( $instance, 123, false ) );
 	}
 
 	/**
