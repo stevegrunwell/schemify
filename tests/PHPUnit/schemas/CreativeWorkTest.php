@@ -74,7 +74,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 			->with( 123 )
 			->andReturn( 'Time' );
 
-		$this->assertEquals( 'Time', $instance->getDateCreated( 123 ) );
+		$this->assertEquals( 'Time', $instance->getDatePublished( 123 ) );
 	}
 
 	public function testGetHeadline() {
