@@ -85,3 +85,54 @@ add_action( 'init', 'mytheme_add_schemify_support' );
 ```
 
 > **Note:** You may need to adjust the action ordering to ensure that your `add_post_type_support()` callback runs *after* your custom post type is registered. You may alternately choose to add "schemify" to the `supports` parameter within [`register_post_type()`](https://codex.wordpress.org/Function_Reference/register_post_type#supports) as the custom post type is registered.
+
+
+## Working with Schemify
+
+Out of the box, Schemify will append a JSON-LD object to the footer of your site's homepage and any single posts that have registered post type support for Schemify.
+
+While that might be plenty for most sites, more complex sites will likely want to tweak the way Schemify works to optimize the way content is represented.
+
+
+### Overriding Schemify properties
+
+When constructing Schemify objects, it's important to remember that a single, top-level Schema can have any number of nested objects. For example, a single post may be represented with a `BlogPosting` object, which has properties like "author", "publisher", and "image", which are represented by `Person`, `Organization`, and `ImageObject` objects, respectively.
+
+As each object is built, its values are passed through the `schemify_get_properties_$schema` filter, where `$schema` is the current object's declared Schema.
+
+The filter is passed up to four arguments:
+
+<dl>
+	<dt>(array) $data</dt>
+	<dd>The collection of properties assembled for this object.</dd>
+	<dt>(string) $schema</dt>
+	<dd>The current schema being filtered.</dd>
+	<dt>(int) $object_id</dt>
+	<dd>The object ID being constructed.</dd>
+	<dt>(bool) $is_main</dt>
+	<dd>Is this the top-level JSON-LD schema being constructed?</dd>
+</dl>
+
+#### Example
+
+Let's say you've added a custom `twitter_url` user meta property to user profiles on your site, and wish to inject this information into the "sameAs" property on a `Person` object:
+
+```php
+/**
+ * Add a user's "twitter_url" user meta.
+ *
+ * @param array  $data      The collection of properties assembled for this object.
+ * @param string $schema    The current schema being filtered.
+ * @param int    $object_id The object ID being constructed.
+ */
+function add_twitter_url( $data, $schema, $object_id ) {
+	if ( $twitter = get_user_meta( $object_id, 'twitter_url', true ) ) {
+		$data['sameAs'] = $twitter;
+	}
+
+	return $data;
+}
+add_filter( 'schemify_get_properties_Person', __NAMESPACE__ . '\add_twitter_url', 10, 3 );
+```
+
+Using the nested nature of Schema objects, you can easily use Schemify to manipulate your data objects.
