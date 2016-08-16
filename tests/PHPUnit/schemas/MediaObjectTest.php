@@ -38,6 +38,12 @@ class MediaObjectTest extends Schemify\TestCase {
 		$this->assertInstanceOf( __NAMESPACE__ . '\CreativeWork', $instance->getAssociatedArticle( 123 ) );
 	}
 
+	public function testGetAssociatedArticleReturnsNullIfNotMain() {
+		$instance = new MediaObject( 123, false );
+
+		$this->assertNull( $instance->getAssociatedArticle( 123 ) );
+	}
+
 	/**
 	 * @expectedException PHPUnit_Framework_Error_Warning
 	 */

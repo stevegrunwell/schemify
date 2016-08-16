@@ -51,6 +51,7 @@ class MediaObject extends CreativeWork {
 
 		$parent_post_id = wp_get_post_parent_id( $post_id );
 		$schema         = __NAMESPACE__ . '\\' . Core\get_schema_name( $parent_post_id );
+		$instance       = null;
 
 		try {
 			if ( ! class_exists( $schema ) ) {
@@ -65,8 +66,6 @@ class MediaObject extends CreativeWork {
 				$schema,
 				$e->getMessage()
 			) ), E_USER_WARNING );
-
-			$instance = null;
 		}
 
 		return $instance;
