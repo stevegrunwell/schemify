@@ -95,7 +95,19 @@ class Thing implements \JsonSerializable {
 	 */
 	public function getProperties() {
 		if ( ! $this->data ) {
-			$this->data = $this->build( $this->postId, $this->isMain );
+			$data   = $this->build( $this->postId, $this->isMain );
+			$schema = $this->getSchema();
+			$filter = sprintf( 'schemify_get_properties_%s', $schema );
+
+			/**
+			 * Filter the output for the given schema.
+			 *
+			 * @param array  $data      The collection of properties assembled for this object.
+			 * @param string $schema    The current schema being filtered.
+			 * @param int    $object_id The object ID being constructed.
+			 * @param bool   $is_main   Is this the top-level JSON-LD schema being constructed?
+			 */
+			$this->data = apply_filters( $filter, $data, $schema, $this->postId, $this->isMain );
 		}
 
 		return array_filter( (array) $this->data );

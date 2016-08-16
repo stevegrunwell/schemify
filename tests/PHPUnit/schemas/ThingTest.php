@@ -38,16 +38,35 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEquals( 123, $post_id->getValue( $instance ) );
 		$this->assertTrue( $is_main->getValue( $instance ) );
 	}
+
 	public function testGetProperties() {
 		$data     = array( 'foo' => 'bar' );
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
+		$instance->shouldReceive( 'getSchema' )
+			->once()
+			->andReturn( 'Thing' );
 		$instance->shouldReceive( 'build' )
 			->once()
 			->andReturn( $data );
 
 		$this->assertEquals( $data, $instance->getProperties() );
+	}
+
+	public function testGetPropertiesFiltersResults() {
+		$data     = array( 'foo' => 'bar' );
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing', array( 123, true ) )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
+		$instance->shouldReceive( 'getSchema' )->andReturn( 'Thing' );
+		$instance->shouldReceive( 'build' )->andReturn( array( 'foo' ) );
+
+		M::onFilter( 'schemify_get_properties_Thing' )
+			->with( array( 'foo' ), 'Thing', 123, true )
+			->reply( array( 'bar' ) );
+
+		$this->assertEquals( array( 'bar' ), $instance->getProperties() );
 	}
 
 	public function testGetPropertiesCachesResults() {
