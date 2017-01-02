@@ -83,6 +83,10 @@ class ThemeTest extends Schemify\TestCase {
 		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 'page', 123 ) );
 	}
 
+	public function testSetDefaultSchemasForUsers() {
+		$this->assertEquals( 'WP\User', set_default_schemas( 'Thing', 'user', '', 123 ) );
+	}
+
 	public function testAppendToFooter() {
 		M::wpFunction( 'get_the_ID', array(
 			'times'  => 1,

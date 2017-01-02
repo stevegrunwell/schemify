@@ -31,6 +31,12 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\register_post_type_support' )
  * @param int    $object_id   The object ID.
  */
 function set_default_schemas( $schema, $object_type, $post_type, $object_id ) {
+
+	// Users are easy.
+	if ( 'user' === $object_type ) {
+		return 'WP\User';
+	}
+
 	switch ( $post_type ) {
 		case 'post':
 			$schema = 'BlogPosting';
