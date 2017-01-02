@@ -67,6 +67,16 @@ class UserTest extends Schemify\TestCase {
 		$this->assertEquals( $user, $instance->getUser() );
 	}
 
+	public function testGetDescription() {
+		$user = new \stdClass;
+		$user->description = 'Bacon ipsum';
+
+		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
+		$instance->shouldReceive( 'getUser' )->once()->andReturn( $user );
+
+		$this->assertEquals( $user->description, $instance->getDescription( 1 ) );
+	}
+
 	public function testGetFamilyName() {
 		$user = new \stdClass;
 		$user->last_name = 'McTest';

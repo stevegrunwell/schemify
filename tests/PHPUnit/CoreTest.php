@@ -20,7 +20,7 @@ class CoreTest extends Schemify\TestCase {
 	public function testBuildObject() {
 		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
 			'times'  => 1,
-			'args'   => array( 123 ),
+			'args'   => array( 123, 'post' ),
 			'return' => 'TestSchema',
 		) );
 
@@ -34,8 +34,6 @@ class CoreTest extends Schemify\TestCase {
 		) );
 
 		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
-			'times'  => 1,
-			'args'   => array( 123 ),
 			'return' => 'TestSchema',
 		) );
 
@@ -47,8 +45,6 @@ class CoreTest extends Schemify\TestCase {
 	 */
 	public function testBuildObjectDefaultsToThing() {
 		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
-			'times'  => 1,
-			'args'   => array( 123 ),
 			'return' => 'SomeSchema',
 		) );
 
@@ -123,16 +119,16 @@ class CoreTest extends Schemify\TestCase {
 		) );
 
 		M::onFilter( 'schemify_schema' )
-			->with( 'Thing', 'post', 123 )
+			->with( 'Thing', 'post', 'post', 123 )
 			->reply( 'SomeSchema' );
 
-		$this->assertEquals( 'SomeSchema', get_schema_name( 123 ) );
+		$this->assertEquals( 'SomeSchema', get_schema_name( 123, 'post' ) );
 	}
 
 	public function testGetJson() {
 		M::wpFunction( __NAMESPACE__ . '\build_object', array(
 			'times'  => 1,
-			'args'   => array( 123 ),
+			'args'   => array( 123, 'post' ),
 		) );
 
 		M::wpFunction( 'wp_json_encode', array(
@@ -147,7 +143,7 @@ class CoreTest extends Schemify\TestCase {
 
 		$this->expectOutputString( $expected );
 
-		get_json( 123 );
+		get_json( 123, 'post' );
 	}
 
 	public function testStripNamespace() {
