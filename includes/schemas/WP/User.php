@@ -35,6 +35,17 @@ class User extends Schemas\Person {
 	}
 
 	/**
+	 * Get the user's bio as his/her description.
+	 *
+	 * @param int $user_id The user ID. This parameter isn't actually used, but is required so the
+	 *                     method signature matches that of Thing::getDescription().
+	 * @return string The user's bio.
+	 */
+	public function getDescription( $user_id ) {
+		return $this->getUser()->description;
+	}
+
+	/**
 	 * Get the user's family (last) name.
 	 *
 	 * @return string The user's family name.
