@@ -24,11 +24,13 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\register_post_type_support' )
 /**
  * Set default Schemas for the default post types.
  *
- * @param string $schema    The schema to use for this post.
- * @param string $post_type The current post's post_type.
- * @param int    $post_id   The post ID.
+ * @param string $schema      The schema to use for this post.
+ * @param string $object_type The type of object being constructed.
+ * @param string $post_type   The current post's post_type, or any empty string if $object_type is
+ *                            not equal to 'post'.
+ * @param int    $object_id   The object ID.
  */
-function set_default_schemas( $schema, $post_type, $post_id ) {
+function set_default_schemas( $schema, $object_type, $post_type, $object_id ) {
 	switch ( $post_type ) {
 		case 'post':
 			$schema = 'BlogPosting';
@@ -39,7 +41,7 @@ function set_default_schemas( $schema, $post_type, $post_id ) {
 			break;
 
 		case 'attachment':
-			$mime = Core\get_attachment_type( $post_id );
+			$mime = Core\get_attachment_type( $object_id );
 
 			if ( 'image' === $mime ) {
 				$schema = 'ImageObject';
@@ -56,27 +58,30 @@ function set_default_schemas( $schema, $post_type, $post_id ) {
 
 	return $schema;
 }
-add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 3 );
+add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 4 );
 
 /**
  * Appends the JSON+LD object to the site footer.
  */
 function append_to_footer() {
-	$id = get_the_ID();
+	$object_id   = get_the_ID();
+	$object_type = 'post';
 
 	// Return early on singular posts for unsupported post types.
 	if ( is_singular() && ! post_type_supports( get_post_type(), 'schemify' ) ) {
 		return;
-	}
 
-	// Special post IDs.
-	if ( is_front_page() ) {
-		$id = 'front';
+	} elseif ( is_front_page() ) {
+		$object_id = 'front';
 
 	} elseif ( is_home() ) {
-		$id = 'home';
+		$object_id = 'home';
+
+	} elseif ( is_author() ) {
+		$object_id   = get_the_author_meta( 'ID' );
+		$object_type = 'user';
 	}
 
-	Core\get_json( $id );
+	Core\get_json( $object_id, $object_type );
 }
 add_action( 'wp_footer', __NAMESPACE__ . '\append_to_footer' );

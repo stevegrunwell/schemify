@@ -29,14 +29,14 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
-		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 123 ) );
+		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForPages() {
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
-		$this->assertEquals( 'WebPage', set_default_schemas( 'Thing', 'page', 123 ) );
+		$this->assertEquals( 'WebPage', set_default_schemas( 'Thing', 'post', 'page', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForImages() {
@@ -49,7 +49,7 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
-		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'attachment', 123 ) );
+		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForOtherMediaTypes() {
@@ -60,16 +60,15 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
-		$this->assertEquals( 'MediaObject', set_default_schemas( 'Thing', 'attachment', 123 ) );
+		$this->assertEquals( 'MediaObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForFrontPage() {
 		M::wpFunction( 'is_front_page', array(
-			'times'  => 1,
 			'return' => true,
 		) );
 
-		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 123 ) );
+		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 'page', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForHomepage() {
@@ -78,11 +77,10 @@ class ThemeTest extends Schemify\TestCase {
 		) );
 
 		M::wpFunction( 'is_home', array(
-			'times'  => 1,
 			'return' => true,
 		) );
 
-		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 123 ) );
+		$this->assertEquals( 'WP\WebSite', set_default_schemas( 'Thing', 'post', 'page', 123 ) );
 	}
 
 	public function testAppendToFooter() {
@@ -108,16 +106,20 @@ class ThemeTest extends Schemify\TestCase {
 		) );
 
 		M::wpFunction( 'is_front_page', array(
-			'return'  => false,
+			'return' => false,
 		) );
 
 		M::wpFunction( 'is_home', array(
-			'return'  => false,
+			'return' => false,
+		) );
+
+		M::wpFunction( 'is_author', array(
+			'return' => false,
 		) );
 
 		M::wpFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
-			'args'   => array( 123 ),
+			'args'   => array( 123, 'post' ),
 		) );
 
 		append_to_footer();
@@ -134,7 +136,7 @@ class ThemeTest extends Schemify\TestCase {
 
 		M::wpFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
-			'args'   => array( 'front' ),
+			'args'   => array( 'front', 'post' ),
 		) );
 
 		append_to_footer();
@@ -155,7 +157,37 @@ class ThemeTest extends Schemify\TestCase {
 
 		M::wpFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
-			'args'   => array( 'home' ),
+			'args'   => array( 'home', 'post' ),
+		) );
+
+		append_to_footer();
+	}
+
+	public function testAppendToFooterForAuthorArchives() {
+		M::wpFunction( 'is_singular', array(
+			'return' => false,
+		) );
+
+		M::wpFunction( 'is_front_page', array(
+			'return'  => false,
+		) );
+
+		M::wpFunction( 'is_home', array(
+			'return'  => false,
+		) );
+
+		M::wpFunction( 'is_author', array(
+			'return' => true,
+		) );
+
+		M::wpFunction( 'get_the_author_meta', array(
+			'args'   => array( 'ID' ),
+			'return' => 42,
+		) );
+
+		M::wpFunction( 'Schemify\Core\get_json', array(
+			'times'  => 1,
+			'args'   => array( 42, 'user' ),
 		) );
 
 		append_to_footer();

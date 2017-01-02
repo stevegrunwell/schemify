@@ -50,7 +50,7 @@ class MediaObject extends CreativeWork {
 		}
 
 		$parent_post_id = wp_get_post_parent_id( $post_id );
-		$schema         = __NAMESPACE__ . '\\' . Core\get_schema_name( $parent_post_id );
+		$schema         = __NAMESPACE__ . '\\' . Core\get_schema_name( $parent_post_id, 'post' );
 		$instance       = null;
 
 		try {

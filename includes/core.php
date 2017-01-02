@@ -12,16 +12,18 @@ namespace Schemify\Core;
  *
  * @throws \Exception If the specified Schema class doesn't exist.
  *
- * @param int $post_id Optional. The post ID to build the Schema object for. The default is the
- *                     current post.
+ * @param int    $post_id     Optional. The post ID to build the Schema object for. The default is
+ *                            the current post.
+ * @param string $object_type Optional. The type of object to construct a schema for (post, user,
+ *                            etc.). Default is 'post'.
  * @return Schema\Thing An instance of a Schema\Thing or one of its sub-classes.
  */
-function build_object( $post_id = 0 ) {
+function build_object( $post_id = 0, $object_type = 'post' ) {
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
 
-	$schema = get_schema_name( $post_id );
+	$schema = get_schema_name( $post_id, $object_type );
 	$class  = '\\Schemify\\Schemas\\' . $schema;
 
 	try {
@@ -65,30 +67,36 @@ function get_attachment_type( $attachment_id ) {
 /**
  * Determine the schema that should be used for the given post ID.
  *
- * @param int $post_id The post ID.
+ * @param int    $object_id   The post ID.
+ * @param string $object_type The type of object being built.
+ * @return string The type of schema to use for this object.
  */
-function get_schema_name( $post_id ) {
-	$post_type = get_post_type( $post_id );
+function get_schema_name( $object_id, $object_type ) {
+	$post_type = 'post' === $object_type ? get_post_type( $object_id ) : '';
 	$schema    = 'Thing';
 
 	/**
 	 * Modify the Schema used to represent the given post type.
 	 *
-	 * @param string $schema    The schema to use for this post.
-	 * @param string $post_type The current post's post_type.
-	 * @param int    $post_id   The post ID.
+	 * @param string $schema      The schema to use for this post.
+	 * @param string $object_type The type of object being constructed.
+	 * @param string $post_type   The object's post type. If $object_type is not equal to 'post'
+	 *                            this will be an empty string.
+	 * @param int    $object_id   The post ID.
 	 */
-	return apply_filters( 'schemify_schema', $schema, $post_type, $post_id );
+	return apply_filters( 'schemify_schema', $schema, $object_type, $post_type, $object_id );
 }
 
 /**
  * Output the JSON+LD for the given post.
  *
- * @param int $post_id Optional. The post ID to get the Schema object for. The default is the
- *                     current post.
+ * @param int    $post_id     Optional. The post ID to get the Schema object for. The default is
+ *                            the current post.
+ * @param string $object_type Optional. The type of object to construct a schema for (post, user,
+ *                            etc.). Default is 'post'.
  */
-function get_json( $post_id = 0 ) {
-	$object = build_object( $post_id );
+function get_json( $post_id = 0, $object_type = 'post' ) {
+	$object = build_object( $post_id, $object_type );
 ?>
 
 <script type="application/ld+json">

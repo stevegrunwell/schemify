@@ -31,7 +31,7 @@ class MediaObjectTest extends Schemify\TestCase {
 
 		M::wpFunction( 'Schemify\Core\get_schema_name', array(
 			'times'  => 1,
-			'args'   => array( 111 ),
+			'args'   => array( 111, 'post' ),
 			'return' => 'CreativeWork',
 		) );
 
