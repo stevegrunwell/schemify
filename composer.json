@@ -6,9 +6,14 @@
     "authors": [
         {
             "name": "Steve Grunwell",
-            "email": "steve@stevegrunwell.com"
+            "email": "steve@stevegrunwell.com",
+            "homepage": "https://stevegrunwell.com"
         }
     ],
+    "support": {
+        "source": "https://github.com/stevegrunwell/schemify",
+        "issues": "https://github.com/stevegrunwell/schemify/issues"
+    },
     "require-dev": {
         "stevegrunwell/wp-enforcer": "^0.4.1",
         "10up/wp_mock": "^0.1.1",
