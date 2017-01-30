@@ -54,7 +54,7 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEquals( $data, $instance->getProperties() );
 	}
 
-	public function testGetPropertiesFiltersResults() {
+	public function testGetPropertiesFiltersResultsWithSchemaName() {
 		$data     = array( 'foo' => 'bar' );
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing', array( 123, true ) )
 			->shouldAllowMockingProtectedMethods()
@@ -63,6 +63,21 @@ class ThingTest extends Schemify\TestCase {
 		$instance->shouldReceive( 'build' )->andReturn( array( 'foo' ) );
 
 		M::onFilter( 'schemify_get_properties_Thing' )
+			->with( array( 'foo' ), 'Thing', 123, true )
+			->reply( array( 'bar' ) );
+
+		$this->assertEquals( array( 'bar' ), $instance->getProperties() );
+	}
+
+	public function testGetPropertiesFiltersResults() {
+		$data     = array( 'foo' => 'bar' );
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing', array( 123, true ) )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
+		$instance->shouldReceive( 'getSchema' )->andReturn( 'Thing' );
+		$instance->shouldReceive( 'build' )->andReturn( array( 'foo' ) );
+
+		M::onFilter( 'schemify_get_properties' )
 			->with( array( 'foo' ), 'Thing', 123, true )
 			->reply( array( 'bar' ) );
 

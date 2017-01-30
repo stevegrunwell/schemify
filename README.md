@@ -98,9 +98,9 @@ While that might be plenty for most sites, more complex sites will likely want t
 
 When constructing Schemify objects, it's important to remember that a single, top-level Schema can have any number of nested objects. For example, a single post may be represented with a `BlogPosting` object, which has properties like "author", "publisher", and "image", which are represented by `Person`, `Organization`, and `ImageObject` objects, respectively.
 
-As each object is built, its values are passed through the `schemify_get_properties_$schema` filter, where `$schema` is the current object's declared Schema.
+As each object is built, its values are passed through the `schemify_get_properties_$schema` filter, where `$schema` is the current object's declared Schema. The result is then passed through the `schemify_get_properties` filter, which receives the same arguments but is applied to *every* schema.
 
-The filter is passed up to four arguments:
+The filters are each passed up to four arguments:
 
 <dl>
 	<dt>(array) $data</dt>
