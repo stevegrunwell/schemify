@@ -88,6 +88,39 @@ function get_schema_name( $object_id, $object_type ) {
 }
 
 /**
+ * Create a new MediaObject instance based on an attachment URL.
+ *
+ * This function works by attempting to find the corresponding attachment ID, then building the
+ * object normally. In order to do so, we're performing a direct SQL query, `since url_to_postid()`
+ * won't work with attachment pretty permalinks.
+ *
+ * @link https://pippinsplugins.com/retrieve-attachment-id-from-image-url/
+ *
+ * @global $wpdb
+ *
+ * @param string $url    The URL for the attachment that we're building a MediaObject for.
+ * @param string $schema Optional. The sub-class of MediaObject to build. Default is 'MediaObject'.
+ * @return MediaObject|null Either a MediaObject (or sub-class) instance or NULL if the attachment
+ *                          ID cannot be determined.
+ */
+function get_media_object_by_url( $url, $schema = 'MediaObject' ) {
+	global $wpdb;
+
+	$attachment_id = $wpdb->get_var( $wpdb->prepare(
+		"SELECT ID FROM $wpdb->posts WHERE guid = '%s';",
+		$url
+	) );
+
+	if ( ! $attachment_id ) {
+		return;
+	}
+
+	$class = '\\Schemify\\Schemas\\' . $schema;
+
+	return new $class( $attachment_id );
+}
+
+/**
  * Output the JSON+LD for the given post.
  *
  * @param int    $post_id     Optional. The post ID to get the Schema object for. The default is
