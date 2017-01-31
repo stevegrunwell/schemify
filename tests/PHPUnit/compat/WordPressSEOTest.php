@@ -125,4 +125,70 @@ class WordPressSEOTest extends Schemify\TestCase {
 			add_user_profile_urls( array( 'sameAs' => array( 'foo', 'bar' ) ), 'Person', 1 )
 		);
 	}
+
+	public function testSetDefaultImage() {
+		$image_object = new \stdClass;
+
+		M::wpFunction( 'get_option', array(
+			'args'   => array( 'wpseo_social', array() ),
+			'return' => array(
+				'og_default_image' => 'http://example.com/image.jpg',
+			),
+		) );
+
+		M::wpFunction( 'is_front_page', array(
+			'return' => true,
+		) );
+
+		M::wpFunction( 'Schemify\Core\get_media_object_by_url', array(
+			'times'  => 1,
+			'args'   => array( 'http://example.com/image.jpg', 'ImageObject' ),
+			'return' => $image_object,
+		) );
+
+		$this->assertEquals(
+			array( 'image' => $image_object ),
+			set_default_image( array( 'image' => '' ), 'Thing', 1, true )
+		);
+	}
+
+	public function testSetDefaultImageOnFrontPage() {
+		$image_object = new \stdClass;
+
+		M::wpFunction( 'get_option', array(
+			'args'   => array( 'wpseo_social', array() ),
+			'return' => array(
+				'og_default_image'   => 'http://example.com/image.jpg',
+				'og_frontpage_image' => 'http://example.com/front.jpg',
+			),
+		) );
+
+		M::wpFunction( 'is_front_page', array(
+			'return' => true,
+		) );
+
+		M::wpFunction( 'Schemify\Core\get_media_object_by_url', array(
+			'args'   => array( 'http://example.com/front.jpg', 'ImageObject' ),
+			'return' => $image_object,
+		) );
+
+		$this->assertEquals(
+			array( 'image' => $image_object ),
+			set_default_image( array( 'image' => '' ), 'Thing', 1, true )
+		);
+	}
+
+	public function testSetDefaultImageReturnsEarlyIfImageIsSet() {
+		$data = array(
+			'image' => uniqid(),
+		);
+
+		$this->assertEquals( $data, set_default_image( $data, 'Thing', 1, true ) );
+	}
+
+	public function testSetDefaultImageReturnsEarlyIfNotMainObject() {
+		$data = array();
+
+		$this->assertEquals( $data, set_default_image( $data, 'Thing', 1, false ) );
+	}
 }
