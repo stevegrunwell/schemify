@@ -8,6 +8,7 @@
 namespace Schemify\Core;
 
 use WP_Mock as M;
+use Mockery;
 use Schemify;
 
 class CoreTest extends Schemify\TestCase {
@@ -123,6 +124,54 @@ class CoreTest extends Schemify\TestCase {
 			->reply( 'SomeSchema' );
 
 		$this->assertEquals( 'SomeSchema', get_schema_name( 123, 'post' ) );
+	}
+
+	public function testGetMediaObjectByUrl() {
+		global $wpdb;
+
+		$wpdb = Mockery::mock( '\WPDB' )->makePartial();
+		$wpdb->shouldReceive( 'get_var' )->once()->andReturn( 42 );
+		$wpdb->shouldReceive( 'prepare' )->once();
+		$wpdb->posts = 'wp_posts';
+
+		$this->assertInstanceOf(
+			'Schemify\Schemas\MediaObject',
+			get_media_object_by_url( 'http://example.com/image.jpg' )
+		);
+
+		// Reset the global variable.
+		$wpdb = null;
+	}
+
+	public function testGetMediaObjectByUrlReturnsNullIfNoAttachmentIdIsFound() {
+		global $wpdb;
+
+		$wpdb = Mockery::mock( '\WPDB' )->makePartial();
+		$wpdb->shouldReceive( 'get_var' )->once()->andReturn( null );
+		$wpdb->shouldReceive( 'prepare' )->once();
+		$wpdb->posts = 'wp_posts';
+
+		$this->assertNull( get_media_object_by_url( 'http://example.com/image.jpg' ) );
+
+		// Reset the global variable.
+		$wpdb = null;
+	}
+
+	public function testGetMediaObjectByUrlAllowsForSchemaOverride() {
+		global $wpdb;
+
+		$wpdb = Mockery::mock( '\WPDB' )->makePartial();
+		$wpdb->shouldReceive( 'get_var' )->once()->andReturn( 42 );
+		$wpdb->shouldReceive( 'prepare' )->once();
+		$wpdb->posts = 'wp_posts';
+
+		$this->assertInstanceOf(
+			'Schemify\Schemas\ImageObject',
+			get_media_object_by_url( 'http://example.com/image.jpg', 'ImageObject' )
+		);
+
+		// Reset the global variable.
+		$wpdb = null;
 	}
 
 	public function testGetJson() {

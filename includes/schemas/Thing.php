@@ -107,7 +107,17 @@ class Thing implements \JsonSerializable {
 			 * @param int    $object_id The object ID being constructed.
 			 * @param bool   $is_main   Is this the top-level JSON-LD schema being constructed?
 			 */
-			$this->data = apply_filters( $filter, $data, $schema, $this->postId, $this->isMain );
+			$data = apply_filters( $filter, $data, $schema, $this->postId, $this->isMain );
+
+			/**
+			 * Filter the output for all schemas.
+			 *
+			 * @param array  $data      The collection of properties assembled for this object.
+			 * @param string $schema    The current schema being filtered.
+			 * @param int    $object_id The object ID being constructed.
+			 * @param bool   $is_main   Is this the top-level JSON-LD schema being constructed?
+			 */
+			$this->data = apply_filters( 'schemify_get_properties', $data, $schema, $this->postId, $this->isMain );
 		}
 
 		return array_filter( (array) $this->data );
