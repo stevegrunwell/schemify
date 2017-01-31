@@ -7,12 +7,13 @@ module.exports = function(grunt) {
 					'assets/**',
 					'!assets/*/src/**',
 					'!assets/*/src',
-					'inc/**',
+					'includes/**',
 					'languages/**',
 					'CHANGELOG.md',
-					'schemify.php',
+					'composer.json',
 					'LICENSE.md',
-					'readme.txt'
+					'readme.txt',
+					'schemify.php'
 				],
 				dest: 'dist/'
 			},
