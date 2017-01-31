@@ -27,7 +27,7 @@ Consider the following author information, which might appear at the bottom of a
 <div class="author">
 	<img src="http://en.gravatar.com/avatar/88ea4e10ed968136228545d7112d82cb?s=200" alt="Steve Grunwell" />
 	<h2><a href="https://stevegrunwell.com" rel="author">Steve Grunwell</a></h2>
-	<p>Steve is a Senior Web Engineer + Project Lead at 10up. When he's not working, you can find him speaking at conferences, roasting coffee, or spending time with his wife and daughter</p>
+	<p>Steve is the Director of Technology at Growella. When he's not working, you can find him speaking at conferences, roasting coffee, or spending time with his wife and daughter</p>
 </div>
 ```
 
@@ -37,7 +37,7 @@ If I wanted this information to use Schema.org markup, it would look something l
 <div class="author" itemscope itemtype="http://schema.org/Person">
 	<img src="http://en.gravatar.com/avatar/88ea4e10ed968136228545d7112d82cb?s=200" alt="Steve Grunwell" itemprop="image" />
 	<h2 itemprop="name"><a href="https://stevegrunwell.com" rel="author" itemprop="url">Steve Grunwell</a></h2>
-	<p itemprop="description">Steve is a Senior Web Engineer + Project Lead at 10up. When he's not working, you can find him speaking at conferences, roasting coffee, or spending time with his wife and daughter</p>
+	<p itemprop="description">Steve is the Director of Technology at Growella. When he's not working, you can find him speaking at conferences, roasting coffee, or spending time with his wife and daughter</p>
 </div>
 ```
 
@@ -53,7 +53,7 @@ Fortunately, the other approach for adding structured data is much more straight
 	"name": "Steve Grunwell",
 	"url": "https://stevegrunwell.com",
 	"image": "http://en.gravatar.com/avatar/88ea4e10ed968136228545d7112d82cb?s=200",
-	"description": "Steve is a Senior Web Engineer + Project Lead at 10up. When he's not working, you can find him speaking at conferences, roasting coffee, or spending time with his wife and daughter"
+	"description": "Steve is the Director of Technology at Growella. When he's not working, you can find him speaking at conferences, roasting coffee, or spending time with his wife and daughter"
 }
 </script>
 ```
