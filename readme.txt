@@ -18,12 +18,12 @@ Fortunately, the major players in the Search game, including Google, Microsoft, 
 
 With the major search engines and communities behind it, we're all marking up everything with appropriate structured data now, right?
 
-Unfortunately, the process of implementing Schema.org in a site – especially one driven by dynamic content – is less than straightforward. [WordPress](https://wordpress.org), for instance, [powers roughly a quarter of the web](https://ma.tt/2015/11/seventy-five-to-go/), but implementing structured data across hundreds of thousands of themes would be a nightmare.
+Unfortunately, the process of implementing Schema.org in a site — especially one driven by dynamic content — is less than straightforward. [WordPress](https://wordpress.org), for instance, [powers roughly a quarter of the web](https://ma.tt/2015/11/seventy-five-to-go/), but implementing structured data across hundreds of thousands of themes would be a nightmare.
 
 Or, at least it would be, if it weren't for Schemify.
 
 
-## What does Schemify do?
+= What does Schemify do? =
 
 There are two approaches to adding structured data to a website: via the markup or [JSON for Linking Data (JSON-LD)](http://json-ld.org/).
 
@@ -58,7 +58,7 @@ Fortunately, the other approach for adding structured data is much more straight
 		}
 		</script>
 
-We simply generate this JSON-LD object and append it to our document's `<body>`. When Google or anyone else who supports JSON+LD structured data parses our page, they can immediately understand that Steve Grunwell is a person and determine his website, avatar, and biography.
+We simply generate this JSON-LD object and append it to our document's `<body>`. When Google or anyone else who supports JSON-LD structured data parses our page, they can immediately understand that Steve Grunwell is a person and determine his website, avatar, and biography.
 
 The best part? There's no need to change the markup within our theme!
 
