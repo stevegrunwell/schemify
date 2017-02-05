@@ -1,6 +1,6 @@
 {
     "name": "stevegrunwell/schemify",
-    "description": "Automatically generate Schema.org JSON+LD markup for WordPress.",
+    "description": "Automatically generate Schema.org JSON-LD markup for WordPress.",
     "type": "wordpress-plugin",
     "license": "MIT",
     "authors": [

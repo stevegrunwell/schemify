@@ -7,7 +7,7 @@ Stable tag: 0.1.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Automatically generate Schema.org JSON+LD markup for WordPress content.
+Automatically generate Schema.org JSON-LD markup for WordPress content.
 
 
 == Description ==
