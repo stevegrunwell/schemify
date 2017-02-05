@@ -33,7 +33,7 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEmpty( $is_main->getValue( $instance ) );
 
 		// Construct + test.
-		$instance = new Thing( 123, true );
+		$instance->__construct( 123, true );
 
 		$this->assertEquals( 123, $post_id->getValue( $instance ) );
 		$this->assertTrue( $is_main->getValue( $instance ) );
