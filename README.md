@@ -56,7 +56,7 @@ Fortunately, the other approach for adding structured data is much more straight
 </script>
 ```
 
-We simply generate this JSON-LD object and append it to our document's `<body>`. When Google or anyone else who supports JSON+LD structured data parses our page, they can immediately understand that Steve Grunwell is a person and determine his website, avatar, and biography.
+We simply generate this JSON-LD object and append it to our document's `<body>`. When Google or anyone else who supports JSON-LD structured data parses our page, they can immediately understand that Steve Grunwell is a person and determine his website, avatar, and biography.
 
 The best part? There's no need to change the markup within our theme!
 
