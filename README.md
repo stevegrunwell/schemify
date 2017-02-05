@@ -4,8 +4,6 @@
 [![Code Climate](https://codeclimate.com/github/stevegrunwell/schemify/badges/gpa.svg)](https://codeclimate.com/github/stevegrunwell/schemify)
 [![Test Coverage](https://codeclimate.com/github/stevegrunwell/schemify/badges/coverage.svg)](https://codeclimate.com/github/stevegrunwell/schemify/coverage)
 
-> **Warning:** Schemify is very much in an experimental phase at this time, and is not recommended for use in a production environment!
-
 Structured data allows developers and publishers to mark up content in a way that it's easy for machines to understand. Proper use of structured data [enables third-parties like Google to parse reviews, event data, and contact information in meaningful ways](https://developers.google.com/search/docs/guides/intro-structured-data), ensuring you're getting the most "bang" out of your publishing buck.
 
 Fortunately, the major players in the Search game, including Google, Microsoft, Yahoo!, and Yandex) came together in the early 2010s to form [Schema.org](http://schema.org/docs/about.html), a collaborative, community-driven standard for structured data.
@@ -58,7 +56,7 @@ Fortunately, the other approach for adding structured data is much more straight
 </script>
 ```
 
-We simply generate this JSON-LD object and append it to our document's `<body>`. When Google or anyone else who supports JSON+LD structured data parses our page, they can immediately understand that Steve Grunwell is a person and determine his website, avatar, and biography.
+We simply generate this JSON-LD object and append it to our document's `<body>`. When Google or anyone else who supports JSON-LD structured data parses our page, they can immediately understand that Steve Grunwell is a person and determine his website, avatar, and biography.
 
 The best part? There's no need to change the markup within our theme!
 
