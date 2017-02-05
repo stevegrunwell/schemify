@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Schemify
- * Plugin URI:  https://stevegrunwell.com
+ * Plugin URI:  https://stevegrunwell.com/schemify
  * Description: Automatically generate Schema.org JSON+LD markup for WordPress.
  * Version:     0.1.0
  * Author:      Steve Grunwell

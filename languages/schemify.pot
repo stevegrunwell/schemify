@@ -37,8 +37,8 @@ msgstr ""
 msgid "Schemify"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://stevegrunwell.com"
+#. Plugin URI of the plugin/theme
+msgid "https://stevegrunwell.com/schemify"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -47,6 +47,10 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "Steve Grunwell"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://stevegrunwell.com"
 msgstr ""
 
 #: dist/includes/admin.php:18 includes/admin.php:18

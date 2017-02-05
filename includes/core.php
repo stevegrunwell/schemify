@@ -61,7 +61,7 @@ function get_attachment_type( $attachment_id ) {
 		$base = strtolower( substr( $mime, 0, strpos( $mime, '/' ) ) );
 	}
 
-	return $base && in_array( $base, $bases ) ? $base : 'other';
+	return $base && in_array( $base, $bases, true ) ? $base : 'other';
 }
 
 /**

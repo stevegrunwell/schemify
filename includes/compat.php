@@ -28,7 +28,7 @@ function load_compat_files() {
 		 * @param bool   $load   Whether or not the compatibility file for $slug be loaded.
 		 * @param string $plugin The plugin's slug.
 		 */
-		$load = apply_filters( 'schemify_should_load_compat-' . $slug, $load, $slug );
+		$load = apply_filters( 'schemify_should_load_compat_' . $slug, $load, $slug );
 
 		// Either no compatibility file exists or someone has canceled it's loading.
 		if ( ! $load ) {
@@ -42,7 +42,7 @@ function load_compat_files() {
 		 *
 		 * @param string $plugin The plugin's slug.
 		 */
-		do_action( 'schemify_load_compat-', $slug );
+		do_action( 'schemify_load_compat_', $slug );
 	}
 }
 add_action( 'init', __NAMESPACE__ . '\load_compat_files' );
