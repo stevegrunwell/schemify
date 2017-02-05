@@ -8,7 +8,7 @@
 namespace Schemify\Core;
 
 /**
- * Build the JSON+LD object for the given post.
+ * Build the JSON-LD object for the given post.
  *
  * @throws \Exception If the specified Schema class doesn't exist.
  *
@@ -121,7 +121,7 @@ function get_media_object_by_url( $url, $schema = 'MediaObject' ) {
 }
 
 /**
- * Output the JSON+LD for the given post.
+ * Output the JSON-LD for the given post.
  *
  * @param int    $post_id     Optional. The post ID to get the Schema object for. The default is
  *                            the current post.

@@ -77,7 +77,7 @@ function set_default_schemas( $schema, $object_type, $post_type, $object_id ) {
 add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 4 );
 
 /**
- * Appends the JSON+LD object to the site footer.
+ * Appends the JSON-LD object to the site footer.
  */
 function append_to_footer() {
 	$object_id   = get_the_ID();
@@ -96,12 +96,15 @@ function append_to_footer() {
 	} elseif ( is_author() ) {
 		$object_id   = get_the_author_meta( 'ID' );
 		$object_type = 'user';
+
+	} elseif ( is_search() ) {
+		$object_id   = 'search';
+		$object_type = 'search';
 	}
 
 	Core\get_json( $object_id, $object_type );
 }
 add_action( 'wp_footer', __NAMESPACE__ . '\append_to_footer' );
-
 
 /**
  * Collect post type => schema mappings for custom post types.

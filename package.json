@@ -1,6 +1,6 @@
 {
   "name": "schemify",
-  "description": "Automatically generate Schema.org JSON+LD markup for WordPress.",
+  "description": "Automatically generate Schema.org JSON-LD markup for WordPress.",
   "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",
