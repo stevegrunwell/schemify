@@ -4,8 +4,6 @@
 [![Code Climate](https://codeclimate.com/github/stevegrunwell/schemify/badges/gpa.svg)](https://codeclimate.com/github/stevegrunwell/schemify)
 [![Test Coverage](https://codeclimate.com/github/stevegrunwell/schemify/badges/coverage.svg)](https://codeclimate.com/github/stevegrunwell/schemify/coverage)
 
-> **Warning:** Schemify is very much in an experimental phase at this time, and is not recommended for use in a production environment!
-
 Structured data allows developers and publishers to mark up content in a way that it's easy for machines to understand. Proper use of structured data [enables third-parties like Google to parse reviews, event data, and contact information in meaningful ways](https://developers.google.com/search/docs/guides/intro-structured-data), ensuring you're getting the most "bang" out of your publishing buck.
 
 Fortunately, the major players in the Search game, including Google, Microsoft, Yahoo!, and Yandex) came together in the early 2010s to form [Schema.org](http://schema.org/docs/about.html), a collaborative, community-driven standard for structured data.
