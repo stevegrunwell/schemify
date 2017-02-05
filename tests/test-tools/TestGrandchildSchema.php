@@ -1,6 +1,6 @@
 <?php
 /**
- * A dummy schema that extends Thing.
+ * A dummy schema that (further) extends Thing.
  *
  * Note: The ThingTest::testGetPropertyListInheritsParentValues() method relies on these values,
  * to avoid manipulating a bunch of static, protected properties. Do not change $properties or
@@ -9,10 +9,14 @@
 
 namespace Schemify\Schemas;
 
-class TestChildSchema extends Thing {
+class TestGrandchildSchema extends TestChildSchema {
 
 	protected static $properties = array(
-		'childFoo',
+		'grandchildFoo',
+		'grandchildBar',
+	);
+
+	protected static $removeProperties = array(
 		'childBar',
 		'childBaz',
 	);
