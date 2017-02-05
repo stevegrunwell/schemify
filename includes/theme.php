@@ -57,6 +57,13 @@ function set_default_schemas( $schema, $object_type, $post_type, $object_id ) {
 			break;
 	}
 
+	// Collect values from $wp_post_types.
+	$post_type_schemas = get_cpt_schemas();
+
+	if ( isset( $post_type_schemas[ $post_type ] ) ) {
+		$schema = $post_type_schemas[ $post_type ];
+	}
+
 	// The homepage should be a WebSite.
 	if ( is_front_page() || is_home() ) {
 		$schema = 'WP\WebSite';

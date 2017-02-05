@@ -26,6 +26,7 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForPosts() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
@@ -33,6 +34,7 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForPages() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
@@ -46,6 +48,7 @@ class ThemeTest extends Schemify\TestCase {
 			'return' => 'image',
 		) );
 
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
@@ -57,13 +60,41 @@ class ThemeTest extends Schemify\TestCase {
 			'return' => 'other',
 		) );
 
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
 
 		$this->assertEquals( 'MediaObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
 
+	public function testSetDefaultSchemasForCustomPostTypes() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array(
+			'return' => array( 'cpt' => 'MySchema' ),
+		) );
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
+		$this->assertEquals( 'MySchema', set_default_schemas( 'Thing', 'post', 'cpt', 123 ) );
+	}
+
+	/**
+	 * If someone modifies $wp_post_types for core post types, favor those schemify_schema values
+	 * over the defaults we set.
+	 *
+	 * Basically, make sure we check the output of get_cpt_schemas() *after* our generic switch().
+	 */
+	public function testSetDefaultSchemasFavorsWPPostTypesOverSchemifyDefaults() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array(
+			'return' => array( 'post' => 'MySchema' ),
+		) );
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+
+		$this->assertEquals( 'MySchema', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
+	}
+
 	public function testSetDefaultSchemasForFrontPage() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array(
 			'return' => true,
 		) );
@@ -72,6 +103,7 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForHomepage() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array(
 			'return' => false,
 		) );
