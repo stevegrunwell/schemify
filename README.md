@@ -134,3 +134,59 @@ add_filter( 'schemify_get_properties_Person', __NAMESPACE__ . '\add_twitter_url'
 ```
 
 Using the nested nature of Schema objects, you can easily use Schemify to manipulate your data objects.
+
+
+### Assigning schemas to custom post types
+
+Unless told otherwise, Schemify will represent all custom post type objects using the `Thing` Schema, which is often undesirable. Fortunately, there are two ways to override this: via a filter or at post-type registration (via [`register_post_type()`](https://developer.wordpress.org/reference/functions/register_post_type/)).
+
+
+#### Overriding Schemas via filter
+
+Before any object is built, Schemify needs to determine which Schema should be used. This value is then passed through the `schemify_schema` filter, where it can be modified.
+
+<dl>
+	<dt>(string) $schema</dt>
+	<dd>The schema to use for this object.</dd>
+	<dt>(string) $object_type</dt>
+	<dd>The type of object being constructed.</dd>
+	<dt>(string) $post_type</dt>
+	<dd>The object's post type. If $object_type is not equal to 'post' will be an empty string.</dd>
+	<dt>(int) $object_id</dt>
+	<dd>The post or object ID.</dd>
+</dl>
+
+For example, if you wanted to overwrite the default `WebPage` schema used for the "page" post type to `BlogPosting`, you could do so with the following:
+
+```php
+/**
+ * Use "BlogPosting" instead of "WebPage" for single pages.
+ *
+ * @param string $schema      The schema to use for this post.
+ * @param string $object_type The type of object being constructed.
+ * @param string $post_type   The object's post type. If $object_type is not equal
+ *                            to 'post' this will be an empty string.
+ */
+function mytheme_treat_pages_as_blog_posts( $schema, $object_type, $post_type ) {
+	if ( 'page' === $post_type ) {
+		$schema = 'BlogPosting';
+	}
+
+	return $schema;
+}
+add_filter( 'schemify_schema', 'mytheme_treat_pages_as_blog_posts', 10, 3 );
+```
+
+
+#### Setting Schemas at post-type registration
+
+You may also set the default Schema for a custom post type at the time of registration, using the `schemify_schema` property:
+
+```php
+register_post_type( 'my-custom-post-type', array(
+	// ...
+  'schemify_schema' => 'WebPage',
+) );
+```
+
+This approach lets you skip having to write filters to override the schema type for custom post types.
