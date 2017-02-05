@@ -67,6 +67,9 @@ function set_default_schemas( $schema, $object_type, $post_type, $object_id ) {
 	// The homepage should be a WebSite.
 	if ( is_front_page() || is_home() ) {
 		$schema = 'WP\WebSite';
+
+	} elseif ( is_search() ) {
+		$schema = 'SearchResultsPage';
 	}
 
 	return $schema;
