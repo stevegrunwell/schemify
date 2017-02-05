@@ -99,7 +99,7 @@ class CreativeWork extends Thing {
 
 		$post = get_post( $post_id );
 
-		return new WP\User( $post->post_author );
+		return $post ? new WP\User( $post->post_author ) : null;
 	}
 
 	/**
