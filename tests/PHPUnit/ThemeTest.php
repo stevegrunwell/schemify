@@ -216,4 +216,29 @@ class ThemeTest extends Schemify\TestCase {
 
 		append_to_footer();
 	}
+
+	public function testGetCPTSchemas() {
+		$post                 = new \stdClass;
+		$post->name           = 'post';
+		$cpt                  = new \stdClass;
+		$cpt->name            = 'cpt';
+		$cpt->schemify_schema = 'CustomSchema';
+
+		M::wpFunction( 'get_post_types', array(
+			'return' => array( $post, $cpt ),
+		) );
+
+		$this->assertEquals( array( 'cpt' => 'CustomSchema' ), get_cpt_schemas() );
+	}
+
+	public function testGetCPTSchemasReturnsEmptyArrayIfUnused() {
+		$post       = new \stdClass;
+		$post->name = 'post';
+
+		M::wpFunction( 'get_post_types', array(
+			'return' => array( $post ),
+		) );
+
+		$this->assertEquals( array(), get_cpt_schemas() );
+	}
 }

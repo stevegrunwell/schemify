@@ -91,3 +91,25 @@ function append_to_footer() {
 	Core\get_json( $object_id, $object_type );
 }
 add_action( 'wp_footer', __NAMESPACE__ . '\append_to_footer' );
+
+
+/**
+ * Collect post type => schema mappings for custom post types.
+ *
+ * For convenience, developers can automatically assign a schema to custom post types via the
+ * 'schemify_schema' property on the post object.
+ *
+ * @return array A mapping of post type => schema for any post types with 'schemify_schema' props.
+ */
+function get_cpt_schemas() {
+	$post_types = get_post_types( null, 'object' );
+	$schemas    = array();
+
+	foreach ( $post_types as $post_type ) {
+		if ( isset( $post_type->schemify_schema ) && $post_type->schemify_schema ) {
+			$schemas[ $post_type->name ] = $post_type->schemify_schema;
+		}
+	}
+
+	return $schemas;
+}
