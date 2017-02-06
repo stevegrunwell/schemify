@@ -186,6 +186,14 @@ class WordPressSEOTest extends Schemify\TestCase {
 		$this->assertEquals( $data, set_default_image( $data, 'Thing', 1, true ) );
 	}
 
+	public function testSetDefaultImageOnlyPopulatesAnExistingImageProperty() {
+		$data = array(
+			'foo' => uniqid(), // There is no 'image' key.
+		);
+
+		$this->assertEquals( $data, set_default_image( $data, 'Thing', 1, true ) );
+	}
+
 	public function testSetDefaultImageReturnsEarlyIfNotMainObject() {
 		$data = array();
 
