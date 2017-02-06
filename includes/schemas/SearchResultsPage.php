@@ -22,6 +22,7 @@ class SearchResultsPage extends WebPage {
 		'datePublished',
 		'headline',
 		'image',
+		'thumbnailUrl',
 	);
 
 	/**
