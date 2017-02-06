@@ -6,7 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-* Default schemas may now be set for custom post types at registration, using the `schemify_schema` property ([#3]).
+* Default Schemas may now be set for custom post types at registration, using the `schemify_schema` property ([#3](https://github.com/stevegrunwell/schemify/issues/3)).
+* Added the `SearchResultsPage` Schema, and applied it when `is_search()` is true ([#5](https://github.com/stevegrunwell/schemify/issues/5)).
 * Fixed issue where the Yoast SEO compatibility layer was injecting default images into Schemas that wouldn't otherwise have an `image` property.
 
 
@@ -17,4 +18,3 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [Unreleased]: https://github.com/stevegrunwell/schemify/compare/master...develop
 [0.1.0]: https://github.com/stevegrunwell/schemify/releases/tag/v0.1.0
-[#3]: https://github.com/stevegrunwell/schemify/issues/3

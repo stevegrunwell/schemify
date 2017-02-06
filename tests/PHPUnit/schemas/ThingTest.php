@@ -267,6 +267,35 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEquals( $property->getDefaultProperties()['properties'], $method->invoke( $instance ) );
 	}
 
+	/**
+	 * This method tests a lot, but it uses the TestChildSchema and TestGrandchildSchema classes
+	 * (located inside test-tools) to ensure that properties from Thing are merged with those from
+	 * our test classes.
+	 */
+	public function testGetPropertyListInheritsParentValues() {
+		require_once ABSPATH . 'TestChildSchema.php';
+		require_once ABSPATH . 'TestGrandchildSchema.php';
+
+		$instance = new TestGrandchildSchema( 123 );
+		$method   = new ReflectionMethod( $instance, 'getPropertyList' );
+		$method->setAccessible( true );
+		$thing    = new ReflectionClass( __NAMESPACE__ . '\Thing' );
+		$thing_props = $thing->getProperty( 'properties' );
+		$thing_props->setAccessible( true );
+		$props    = $thing_props->getValue();
+
+		/*
+		 * Append the hard-coded values from TestChildSchema and TestGrandchildSchema to $props.
+		 *
+		 * Since TestGrandchildSchema also has 'childBar' and 'childBaz' in the $removeProperties
+		 * property, omit these from the list of expected properties.
+		 */
+		$props = array_merge( $props, array( 'childFoo' ), array( 'grandchildFoo', 'grandchildBar' ) );
+		sort( $props );
+
+		$this->assertEquals( $props, $method->invoke( $instance ) );
+	}
+
 	public function testGetPropertyListCachesValue() {
 		$uniqid   = (array) uniqid();
 		$instance = new Thing( 123, true );
@@ -293,17 +322,6 @@ class ThingTest extends Schemify\TestCase {
 		$property->setValue( $instance, $uniqid );
 
 		$this->assertEquals( $uniqid, $method->invoke( $instance ) );
-	}
-
-	public function testMergeSchemaProperties() {
-		$instance = new Thing( 123, true );
-		$method   = new ReflectionMethod( $instance, 'mergeSchemaProperties' );
-		$method->setAccessible( true );
-
-		$this->assertEquals(
-			array( 'foo', 'bar', 'baz' ),
-			$method->invoke( $instance, array( 'foo', 'bar' ), array( 'baz' ) )
-		);
 	}
 
 	public function testGetDescription() {

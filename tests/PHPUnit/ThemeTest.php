@@ -29,6 +29,7 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
@@ -37,6 +38,7 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'WebPage', set_default_schemas( 'Thing', 'post', 'page', 123 ) );
 	}
@@ -51,6 +53,7 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
@@ -63,6 +66,7 @@ class ThemeTest extends Schemify\TestCase {
 		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'MediaObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
@@ -73,6 +77,7 @@ class ThemeTest extends Schemify\TestCase {
 		) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'MySchema', set_default_schemas( 'Thing', 'post', 'cpt', 123 ) );
 	}
@@ -89,6 +94,7 @@ class ThemeTest extends Schemify\TestCase {
 		) );
 		M::wpFunction( 'is_front_page', array( 'return' => false ) );
 		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'MySchema', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
@@ -117,6 +123,15 @@ class ThemeTest extends Schemify\TestCase {
 
 	public function testSetDefaultSchemasForUsers() {
 		$this->assertEquals( 'WP\User', set_default_schemas( 'Thing', 'user', '', 123 ) );
+	}
+
+	public function testSetDefaultSchemasForSearchResults() {
+		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::wpFunction( 'is_front_page', array( 'return' => false ) );
+		M::wpFunction( 'is_home', array( 'return' => false ) );
+		M::wpFunction( 'is_search', array( 'return' => true ) );
+
+		$this->assertEquals( 'SearchResultsPage', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
 
 	public function testAppendToFooter() {

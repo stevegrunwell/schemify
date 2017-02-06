@@ -43,6 +43,16 @@ class CreativeWorkTest extends Schemify\TestCase {
 		$this->assertNull( $instance->getAuthor( 5 ) );
 	}
 
+	public function testGetAuthorReturnsNullIfPostNotFound() {
+		$instance = new CreativeWork( 123, false );
+
+		M::wpFunction( 'get_post', array(
+			'return' => null,
+		) );
+
+		$this->assertNull( $instance->getAuthor( 5 ) );
+	}
+
 	public function testGetDateCreated() {
 		$instance = new CreativeWork( 123 );
 

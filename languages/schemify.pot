@@ -42,7 +42,7 @@ msgid "https://stevegrunwell.com/schemify"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Automatically generate Schema.org JSON+LD markup for WordPress."
+msgid "Automatically generate Schema.org JSON-LD markup for WordPress."
 msgstr ""
 
 #. Author of the plugin/theme
