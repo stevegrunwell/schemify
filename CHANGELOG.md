@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 * Default schemas may now be set for custom post types at registration, using the `schemify_schema` property ([#3]).
+* Fixed issue where the Yoast SEO compatibility layer was injecting default images into Schemas that wouldn't otherwise have an `image` property.
 
 
 ## [0.1.0]

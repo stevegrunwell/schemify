@@ -50,7 +50,7 @@ add_filter( 'schemify_get_properties_Person', __NAMESPACE__ . '\add_user_profile
  * @return array The possibly-filtered $data array.
  */
 function set_default_image( $data, $schema, $object_id, $is_main ) {
-	if ( ! empty( $data['image'] ) || ! $is_main ) {
+	if ( ! isset( $data['image'] ) || ! empty( $data['image'] ) || ! $is_main ) {
 		return $data;
 	}
 
