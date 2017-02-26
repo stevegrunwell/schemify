@@ -143,7 +143,7 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetSchema() {
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )->makePartial();
 
-		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
 			'times'  => 1,
 			'return' => 'Thing',
 		) );
@@ -156,7 +156,7 @@ class ThingTest extends Schemify\TestCase {
 		$property = new ReflectionProperty( $instance, 'schema' );
 		$property->setAccessible( true );
 
-		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
 			'return' => 'Thing',
 		) );
 
@@ -198,13 +198,13 @@ class ThingTest extends Schemify\TestCase {
 			'someProp' => 'value',
 		);
 
-		M::wpFunction( 'wp_cache_get', array(
+		M::userFunction( 'wp_cache_get', array(
 			'times'  => 1,
 			'args'   => array( 'schema_123', 'schemify', false ),
 			'return' => false,
 		) );
 
-		M::wpFunction( 'wp_cache_set', array(
+		M::userFunction( 'wp_cache_set', array(
 			'times'  => 1,
 			'args'   => array( 'schema_123', $value, 'schemify', 0 ),
 		) );
@@ -217,7 +217,7 @@ class ThingTest extends Schemify\TestCase {
 		$method   = new ReflectionMethod( $instance, 'build' );
 		$method->setAccessible( true );
 
-		M::wpFunction( 'wp_cache_get', array(
+		M::userFunction( 'wp_cache_get', array(
 			'return' => array( 'schema', 'data' ),
 		) );
 
@@ -233,7 +233,7 @@ class ThingTest extends Schemify\TestCase {
 		$method   = new ReflectionMethod( $instance, 'build' );
 		$method->setAccessible( true );
 
-		M::wpFunction( 'wp_cache_get', array(
+		M::userFunction( 'wp_cache_get', array(
 			'return' => array( 'schema', 'data' ),
 		) );
 
@@ -248,7 +248,7 @@ class ThingTest extends Schemify\TestCase {
 		$method   = new ReflectionMethod( $instance, 'build' );
 		$method->setAccessible( true );
 
-		M::wpFunction( 'wp_cache_get', array(
+		M::userFunction( 'wp_cache_get', array(
 			'times'  => 1,
 			'args'   => array( 'schema_home', 'schemify', false ),
 			'return' => array( 'schema', 'data' ),
@@ -327,13 +327,13 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetDescription() {
 		$instance = new Thing( 123, true );
 
-		M::wpFunction( 'get_the_excerpt', array(
+		M::userFunction( 'get_the_excerpt', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 'Excerpt',
 		) );
 
-		M::wpPassthruFunction( 'esc_html' );
+		M::passthruFunction( 'esc_html' );
 
 		$this->assertEquals( 'Excerpt', $instance->getDescription( 123 ) );
 	}
@@ -341,7 +341,7 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetName() {
 		$instance = new Thing( 123, true );
 
-		M::wpFunction( 'get_the_title', array(
+		M::userFunction( 'get_the_title', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 'Name',
@@ -353,7 +353,7 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetImage() {
 		$instance = new Thing( 123, true );
 
-		M::wpFunction( 'get_post_thumbnail_id', array(
+		M::userFunction( 'get_post_thumbnail_id', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 124,
@@ -365,7 +365,7 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetImageIsNullWhenNotMainSchema() {
 		$instance = new Thing( 123, false );
 
-		M::wpFunction( 'get_post_thumbnail_id', array(
+		M::userFunction( 'get_post_thumbnail_id', array(
 			'times'  => 0,
 		) );
 
@@ -375,7 +375,7 @@ class ThingTest extends Schemify\TestCase {
 	public function testGetUrl() {
 		$instance = new Thing( 123, true );
 
-		M::wpFunction( 'get_permalink', array(
+		M::userFunction( 'get_permalink', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 'http://example.com',

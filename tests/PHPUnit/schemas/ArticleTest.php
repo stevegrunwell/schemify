@@ -24,7 +24,7 @@ class ArticleTest extends Schemify\TestCase {
 		$instance = new Article( 123 );
 		$content  = 'This post has five words.';
 
-		M::wpFunction( 'get_post_field', array(
+		M::userFunction( 'get_post_field', array(
 			'times'  => 1,
 			'args'   => array( 'post_content', 123 ),
 			'return' => $content,
@@ -40,7 +40,7 @@ class ArticleTest extends Schemify\TestCase {
 <p>Just kidding, now it's <strong>ten</strong>.</p>
 EOT;
 
-		M::wpFunction( 'get_post_field', array(
+		M::userFunction( 'get_post_field', array(
 			'return' => $content,
 		) );
 

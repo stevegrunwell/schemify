@@ -28,7 +28,7 @@ class WPSchemaTest extends Schemify\TestCase {
 		$property->setAccessible( true );
 		$unique   = uniqid();
 
-		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
 			'times'  => 1,
 			'return' => $unique,
 		) );
@@ -45,7 +45,7 @@ class WPSchemaTest extends Schemify\TestCase {
 		$property->setAccessible( true );
 		$unique   = uniqid();
 
-		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
 			'return' => $unique,
 		) );
 
@@ -62,7 +62,7 @@ class WPSchemaTest extends Schemify\TestCase {
 		$property->setAccessible( true );
 		$property->setValue( $instance, 'TestSchema' );
 
-		M::wpFunction( 'Schemify\Core\strip_namespace', array(
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
 			'times' => 0,
 		) );
 

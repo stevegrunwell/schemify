@@ -23,7 +23,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetCaption() {
 		$instance = new ImageObject( 123 );
 
-		M::wpFunction( 'get_post_field', array(
+		M::userFunction( 'get_post_field', array(
 			'times'  => 1,
 			'args'   => array( 'post_excerpt', 123, 'js' ),
 			'return' => 'Excerpt',
@@ -37,7 +37,7 @@ class ImageObjectTest extends Schemify\TestCase {
 		$post     = new \stdClass;
 		$post->post_content = 'Content';
 
-		M::wpFunction( 'get_post', array(
+		M::userFunction( 'get_post', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => $post,
@@ -49,7 +49,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetExifData() {
 		$instance = new ImageObject( 123, true );
 
-		M::wpFunction( 'wp_get_attachment_metadata', array(
+		M::userFunction( 'wp_get_attachment_metadata', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => array(
@@ -83,7 +83,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetExifDataStripsEmptyMetaValues() {
 		$instance = new ImageObject( 123, true );
 
-		M::wpFunction( 'wp_get_attachment_metadata', array(
+		M::userFunction( 'wp_get_attachment_metadata', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => array(
@@ -99,7 +99,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetHeight() {
 		$instance = new ImageObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 123, 'full' ),
 			'return' => array( 'URL', 800, 600 ),
@@ -111,7 +111,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetHeightReturnsNullIfImageIsNotFound() {
 		$instance = new ImageObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 123, 'full' ),
 			'return' => false,
@@ -136,7 +136,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetWidth() {
 		$instance = new ImageObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 123, 'full' ),
 			'return' => array( 'URL', 800, 600 ),
@@ -148,7 +148,7 @@ class ImageObjectTest extends Schemify\TestCase {
 	public function testGetWidthReturnsNullIfImageIsNotFound() {
 		$instance = new ImageObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 123, 'full' ),
 			'return' => false,

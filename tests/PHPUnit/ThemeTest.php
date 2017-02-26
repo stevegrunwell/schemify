@@ -17,7 +17,7 @@ class ThemeTest extends Schemify\TestCase {
 	);
 
 	public function testRegisterPostTypeSupport() {
-		M::wpFunction( 'add_post_type_support', array(
+		M::userFunction( 'add_post_type_support', array(
 			'times' => '1+',
 			'args'  => array( '*', 'schemify' ),
 		) );
@@ -26,58 +26,58 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForPosts() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => false ) );
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'BlogPosting', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForPages() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => false ) );
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'WebPage', set_default_schemas( 'Thing', 'post', 'page', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForImages() {
-		M::wpFunction( 'Schemify\Core\get_attachment_type', array(
+		M::userFunction( 'Schemify\Core\get_attachment_type', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 'image',
 		) );
 
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => false ) );
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'ImageObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForOtherMediaTypes() {
-		M::wpFunction( 'Schemify\Core\get_attachment_type', array(
+		M::userFunction( 'Schemify\Core\get_attachment_type', array(
 			'return' => 'other',
 		) );
 
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => false ) );
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'MediaObject', set_default_schemas( 'Thing', 'post', 'attachment', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForCustomPostTypes() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array(
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array(
 			'return' => array( 'cpt' => 'MySchema' ),
 		) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => false ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'MySchema', set_default_schemas( 'Thing', 'post', 'cpt', 123 ) );
 	}
@@ -89,19 +89,19 @@ class ThemeTest extends Schemify\TestCase {
 	 * Basically, make sure we check the output of get_cpt_schemas() *after* our generic switch().
 	 */
 	public function testSetDefaultSchemasFavorsWPPostTypesOverSchemifyDefaults() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array(
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array(
 			'return' => array( 'post' => 'MySchema' ),
 		) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => false ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => false ) );
 
 		$this->assertEquals( 'MySchema', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
 
 	public function testSetDefaultSchemasForFrontPage() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array(
 			'return' => true,
 		) );
 
@@ -109,12 +109,12 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForHomepage() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'is_home', array(
+		M::userFunction( 'is_home', array(
 			'return' => true,
 		) );
 
@@ -126,49 +126,49 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testSetDefaultSchemasForSearchResults() {
-		M::wpFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
-		M::wpFunction( 'is_front_page', array( 'return' => false ) );
-		M::wpFunction( 'is_home', array( 'return' => false ) );
-		M::wpFunction( 'is_search', array( 'return' => true ) );
+		M::userFunction( __NAMESPACE__ . '\get_cpt_schemas', array( 'return' => array() ) );
+		M::userFunction( 'is_front_page', array( 'return' => false ) );
+		M::userFunction( 'is_home', array( 'return' => false ) );
+		M::userFunction( 'is_search', array( 'return' => true ) );
 
 		$this->assertEquals( 'SearchResultsPage', set_default_schemas( 'Thing', 'post', 'post', 123 ) );
 	}
 
 	public function testAppendToFooter() {
-		M::wpFunction( 'get_the_ID', array(
+		M::userFunction( 'get_the_ID', array(
 			'times'  => 1,
 			'return' => 123,
 		) );
 
-		M::wpFunction( 'is_singular', array(
+		M::userFunction( 'is_singular', array(
 			'times'  => 1,
 			'return' => true,
 		) );
 
-		M::wpFunction( 'get_post_type', array(
+		M::userFunction( 'get_post_type', array(
 			'times'  => 1,
 			'return' => 'post',
 		) );
 
-		M::wpFunction( 'post_type_supports', array(
+		M::userFunction( 'post_type_supports', array(
 			'times'  => 1,
 			'args'   => array( 'post', 'schemify' ),
 			'return' => true,
 		) );
 
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( 'is_front_page', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'is_home', array(
+		M::userFunction( 'is_home', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'is_author', array(
+		M::userFunction( 'is_author', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_json', array(
+		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
 			'args'   => array( 123, 'post' ),
 		) );
@@ -177,15 +177,15 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testAppendToFooterOnFrontPage() {
-		M::wpFunction( 'is_singular', array(
+		M::userFunction( 'is_singular', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( 'is_front_page', array(
 			'return'  => true,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_json', array(
+		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
 			'args'   => array( 'front', 'post' ),
 		) );
@@ -194,19 +194,19 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testAppendToFooterOnHomePage() {
-		M::wpFunction( 'is_singular', array(
+		M::userFunction( 'is_singular', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( 'is_front_page', array(
 			'return'  => false,
 		) );
 
-		M::wpFunction( 'is_home', array(
+		M::userFunction( 'is_home', array(
 			'return'  => true,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_json', array(
+		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
 			'args'   => array( 'home', 'post' ),
 		) );
@@ -215,28 +215,28 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testAppendToFooterForAuthorArchives() {
-		M::wpFunction( 'is_singular', array(
+		M::userFunction( 'is_singular', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( 'is_front_page', array(
 			'return'  => false,
 		) );
 
-		M::wpFunction( 'is_home', array(
+		M::userFunction( 'is_home', array(
 			'return'  => false,
 		) );
 
-		M::wpFunction( 'is_author', array(
+		M::userFunction( 'is_author', array(
 			'return' => true,
 		) );
 
-		M::wpFunction( 'get_the_author_meta', array(
+		M::userFunction( 'get_the_author_meta', array(
 			'args'   => array( 'ID' ),
 			'return' => 42,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_json', array(
+		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
 			'args'   => array( 42, 'user' ),
 		) );
@@ -245,19 +245,19 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testAppendToSingularFooterWithUnsupportedPostType() {
-		M::wpFunction( 'is_singular', array(
+		M::userFunction( 'is_singular', array(
 			'return' => true,
 		) );
 
-		M::wpFunction( 'get_post_type', array(
+		M::userFunction( 'get_post_type', array(
 			'return' => 'post',
 		) );
 
-		M::wpFunction( 'post_type_supports', array(
+		M::userFunction( 'post_type_supports', array(
 			'return' => false,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_json', array(
+		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 0,
 		) );
 
@@ -271,7 +271,7 @@ class ThemeTest extends Schemify\TestCase {
 		$cpt->name            = 'cpt';
 		$cpt->schemify_schema = 'CustomSchema';
 
-		M::wpFunction( 'get_post_types', array(
+		M::userFunction( 'get_post_types', array(
 			'return' => array( $post, $cpt ),
 		) );
 
@@ -282,7 +282,7 @@ class ThemeTest extends Schemify\TestCase {
 		$post       = new \stdClass;
 		$post->name = 'post';
 
-		M::wpFunction( 'get_post_types', array(
+		M::userFunction( 'get_post_types', array(
 			'return' => array( $post ),
 		) );
 

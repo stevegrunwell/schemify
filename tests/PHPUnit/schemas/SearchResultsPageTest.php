@@ -24,15 +24,15 @@ class SearchResultsPageTest extends Schemify\TestCase {
 		$wp_query              = new \stdClass;
 		$wp_query->found_posts = 67;
 
-		M::wpFunction( 'get_search_query', array(
+		M::userFunction( 'get_search_query', array(
 			'return' => 'SEARCHQUERY',
 		) );
 
-		M::wpFunction( 'get_option', array(
+		M::userFunction( 'get_option', array(
 			'return' => 'BLOGNAME',
 		) );
 
-		M::wpPassthruFunction( '_n' );
+		M::passthruFunction( '_n' );
 
 		$title = $instance->getDescription( 123 );
 
@@ -46,11 +46,11 @@ class SearchResultsPageTest extends Schemify\TestCase {
 	public function testGetName() {
 		$instance = new SearchResultsPage( 123 );
 
-		M::wpFunction( 'get_search_query', array(
+		M::userFunction( 'get_search_query', array(
 			'return' => 'SEARCHQUERY',
 		) );
 
-		M::wpPassthruFunction( '__' );
+		M::passthruFunction( '__' );
 
 		$this->assertContains( 'SEARCHQUERY', $instance->getName( 123 ) );
 	}

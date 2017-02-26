@@ -19,7 +19,7 @@ class CoreTest extends Schemify\TestCase {
 	);
 
 	public function testBuildObject() {
-		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
+		M::userFunction( __NAMESPACE__ . '\get_schema_name', array(
 			'times'  => 1,
 			'args'   => array( 123, 'post' ),
 			'return' => 'TestSchema',
@@ -29,12 +29,12 @@ class CoreTest extends Schemify\TestCase {
 	}
 
 	public function testBuildObjectDefaultsToCurrentPostId() {
-		M::wpFunction( 'get_the_ID', array(
+		M::userFunction( 'get_the_ID', array(
 			'times'  => 1,
 			'return' => 123,
 		) );
 
-		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
+		M::userFunction( __NAMESPACE__ . '\get_schema_name', array(
 			'return' => 'TestSchema',
 		) );
 
@@ -45,13 +45,13 @@ class CoreTest extends Schemify\TestCase {
 	 * @expectedException PHPUnit_Framework_Error_Warning
 	 */
 	public function testBuildObjectDefaultsToThing() {
-		M::wpFunction( __NAMESPACE__ . '\get_schema_name', array(
+		M::userFunction( __NAMESPACE__ . '\get_schema_name', array(
 			'return' => 'SomeSchema',
 		) );
 
-		M::wpPassthruFunction( 'esc_attr' );
-		M::wpPassthruFunction( 'esc_html' );
-		M::wpPassthruFunction( '__' );
+		M::passthruFunction( 'esc_attr' );
+		M::passthruFunction( 'esc_html' );
+		M::passthruFunction( '__' );
 
 		$this->assertFalse(
 			class_exists( 'Schemify\Schemas\SomeSchema' ),
@@ -63,7 +63,7 @@ class CoreTest extends Schemify\TestCase {
 
 	public function testGetAttachmentTypeWithImages() {
 		$mimes = array( 'image/jpeg', 'image/png', 'image/gif' );
-		M::wpFunction( 'get_post_mime_type', array(
+		M::userFunction( 'get_post_mime_type', array(
 			'times'           => count( $mimes ),
 			'args'            => array( 123 ),
 			'return_in_order' => $mimes,
@@ -80,7 +80,7 @@ class CoreTest extends Schemify\TestCase {
 
 	public function testGetAttachmentTypeWithAudio() {
 		$mimes = array( 'audio/mp3', 'audio/wav' );
-		M::wpFunction( 'get_post_mime_type', array(
+		M::userFunction( 'get_post_mime_type', array(
 			'times'           => count( $mimes ),
 			'args'            => array( 123 ),
 			'return_in_order' => $mimes,
@@ -97,7 +97,7 @@ class CoreTest extends Schemify\TestCase {
 
 	public function testGetAttachmentTypeWithVideo() {
 		$mimes = array( 'video/mp4', 'video/mov' );
-		M::wpFunction( 'get_post_mime_type', array(
+		M::userFunction( 'get_post_mime_type', array(
 			'times'           => count( $mimes ),
 			'args'            => array( 123 ),
 			'return_in_order' => $mimes,
@@ -113,7 +113,7 @@ class CoreTest extends Schemify\TestCase {
 	}
 
 	public function testGetSchemaName() {
-		M::wpFunction( 'get_post_type', array(
+		M::userFunction( 'get_post_type', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 'post',
@@ -175,17 +175,17 @@ class CoreTest extends Schemify\TestCase {
 	}
 
 	public function testGetJson() {
-		M::wpFunction( __NAMESPACE__ . '\build_object', array(
+		M::userFunction( __NAMESPACE__ . '\build_object', array(
 			'times'  => 1,
 			'args'   => array( 123, 'post' ),
 		) );
 
-		M::wpFunction( 'wp_json_encode', array(
+		M::userFunction( 'wp_json_encode', array(
 			'times'  => 1,
 			'return' => '{"json":true}',
 		) );
 
-		M::wpPassthruFunction( 'wp_kses_post' );
+		M::passthruFunction( 'wp_kses_post' );
 
 		$expected  = '<script type="application/ld+json">' . PHP_EOL;
 		$expected .= '{"json":true}' . PHP_EOL . '</script>';
