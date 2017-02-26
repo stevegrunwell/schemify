@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Added the `SearchResultsPage` Schema, and applied it when `is_search()` is true ([#5](https://github.com/stevegrunwell/schemify/issues/5)).
 * Fixed issue where the Yoast SEO compatibility layer was injecting default images into Schemas that wouldn't otherwise have an `image` property.
 * Register the `Event` Schema ([#6](https://github.com/stevegrunwell/schemify/issues/6)).
+* Update Composer dependencies used for development.
 
 
 ## [0.1.0]
