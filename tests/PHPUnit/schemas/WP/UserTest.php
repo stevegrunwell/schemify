@@ -24,7 +24,7 @@ class UserTest extends Schemify\TestCase {
 		$instance = new User( 1 );
 		$user     = Mockery::mock( 'WP_User' );
 
-		M::wpFunction( 'get_user_by', array(
+		M::userFunction( 'get_user_by', array(
 			'times'  => 1,
 			'args'   => array( 'id', 1 ),
 			'return' => $user,
@@ -39,7 +39,7 @@ class UserTest extends Schemify\TestCase {
 		$property->setAccessible( true );
 		$user     = uniqid();
 
-		M::wpFunction( 'get_user_by', array(
+		M::userFunction( 'get_user_by', array(
 			'times'  => 1,
 			'args'   => array( 'id', 1 ),
 			'return' => $user,
@@ -58,7 +58,7 @@ class UserTest extends Schemify\TestCase {
 		$property->setAccessible( true );
 		$user     = uniqid();
 
-		M::wpFunction( 'get_user_by', array(
+		M::userFunction( 'get_user_by', array(
 			'times'  => 0,
 		) );
 
@@ -100,7 +100,7 @@ class UserTest extends Schemify\TestCase {
 	public function testGetImage() {
 		$instance = Mockery::mock( __NAMESPACE__ . '\User' )->makePartial();
 
-		M::wpFunction( 'get_avatar_url', array(
+		M::userFunction( 'get_avatar_url', array(
 			'times'  => 1,
 			'args'   => array( 1, '*' ),
 			'return' => 'http://example.com/image.jpg',

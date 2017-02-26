@@ -19,22 +19,22 @@ class WordPressSEOTest extends Schemify\TestCase {
 	);
 
 	public function testAddUserProfileUrls() {
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'googleplus', true ),
 			'return' => 'http://plus.google.com',
 		) );
 
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'facebook', true ),
 			'return' => 'http://facebook.com',
 		) );
 
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'twitter', true ),
 			'return' => 'twitter_user',
 		) );
 
-		M::wpPassthruFunction( 'esc_url' );
+		M::passthruFunction( 'esc_url' );
 
 		$this->assertEquals(
 			array(
@@ -49,23 +49,23 @@ class WordPressSEOTest extends Schemify\TestCase {
 	}
 
 	public function testAddUserProfileUrlsStripsEmptyResults() {
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'googleplus', true ),
 			'return' => '',
 		) );
 
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'times'  => 1,
 			'args'   => array( 1, 'facebook', true ),
 			'return' => 'http://facebook.com',
 		) );
 
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'twitter', true ),
 			'return' => '',
 		) );
 
-		M::wpPassthruFunction( 'esc_url', array() );
+		M::passthruFunction( 'esc_url', array() );
 
 		$this->assertEquals(
 			array(
@@ -81,16 +81,16 @@ class WordPressSEOTest extends Schemify\TestCase {
 	 * Yoast SEO stores the Twitter handle, not the full Twitter URL.
 	 */
 	public function testAddUserProfileUrlsHandlesTwitterUrls() {
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'twitter', true ),
 			'return' => 'twitter_user',
 		) );
 
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'return' => '',
 		) );
 
-		M::wpPassthruFunction( 'esc_url', array() );
+		M::passthruFunction( 'esc_url', array() );
 
 		$this->assertEquals(
 			array(
@@ -103,16 +103,16 @@ class WordPressSEOTest extends Schemify\TestCase {
 	}
 
 	public function testAddUserProfileUrlsMergesWithOtherResults() {
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'args'   => array( 1, 'facebook', true ),
 			'return' => 'https://facebook.com',
 		) );
 
-		M::wpFunction( 'get_user_meta', array(
+		M::userFunction( 'get_user_meta', array(
 			'return' => '',
 		) );
 
-		M::wpPassthruFunction( 'esc_url', array() );
+		M::passthruFunction( 'esc_url', array() );
 
 		$this->assertEquals(
 			array(
@@ -129,18 +129,18 @@ class WordPressSEOTest extends Schemify\TestCase {
 	public function testSetDefaultImage() {
 		$image_object = new \stdClass;
 
-		M::wpFunction( 'get_option', array(
+		M::userFunction( 'get_option', array(
 			'args'   => array( 'wpseo_social', array() ),
 			'return' => array(
 				'og_default_image' => 'http://example.com/image.jpg',
 			),
 		) );
 
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( 'is_front_page', array(
 			'return' => true,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_media_object_by_url', array(
+		M::userFunction( 'Schemify\Core\get_media_object_by_url', array(
 			'times'  => 1,
 			'args'   => array( 'http://example.com/image.jpg', 'ImageObject' ),
 			'return' => $image_object,
@@ -155,7 +155,7 @@ class WordPressSEOTest extends Schemify\TestCase {
 	public function testSetDefaultImageOnFrontPage() {
 		$image_object = new \stdClass;
 
-		M::wpFunction( 'get_option', array(
+		M::userFunction( 'get_option', array(
 			'args'   => array( 'wpseo_social', array() ),
 			'return' => array(
 				'og_default_image'   => 'http://example.com/image.jpg',
@@ -163,11 +163,11 @@ class WordPressSEOTest extends Schemify\TestCase {
 			),
 		) );
 
-		M::wpFunction( 'is_front_page', array(
+		M::userFunction( 'is_front_page', array(
 			'return' => true,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_media_object_by_url', array(
+		M::userFunction( 'Schemify\Core\get_media_object_by_url', array(
 			'args'   => array( 'http://example.com/front.jpg', 'ImageObject' ),
 			'return' => $image_object,
 		) );

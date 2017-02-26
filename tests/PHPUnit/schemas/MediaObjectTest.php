@@ -23,13 +23,13 @@ class MediaObjectTest extends Schemify\TestCase {
 	public function testGetAssociatedArticle() {
 		$instance = new MediaObject( 123, true );
 
-		M::wpFunction( 'wp_get_post_parent_id', array(
+		M::userFunction( 'wp_get_post_parent_id', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 111,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_schema_name', array(
+		M::userFunction( 'Schemify\Core\get_schema_name', array(
 			'times'  => 1,
 			'args'   => array( 111, 'post' ),
 			'return' => 'CreativeWork',
@@ -50,17 +50,17 @@ class MediaObjectTest extends Schemify\TestCase {
 	public function testGetAssociatedArticleHandlesMissingSchemas() {
 		$instance = new MediaObject( 123, true );
 
-		M::wpFunction( 'wp_get_post_parent_id', array(
+		M::userFunction( 'wp_get_post_parent_id', array(
 			'return' => 111,
 		) );
 
-		M::wpFunction( 'Schemify\Core\get_schema_name', array(
+		M::userFunction( 'Schemify\Core\get_schema_name', array(
 			'return' => 'ThisIsNotAClass',
 		) );
 
-		M::wpPassthruFunction( '__' );
-		M::wpPassthruFunction( 'esc_html' );
-		M::wpPassthruFunction( 'esc_html__' );
+		M::passthruFunction( '__' );
+		M::passthruFunction( 'esc_html' );
+		M::passthruFunction( 'esc_html__' );
 
 		$this->assertNull( $instance->getAssociatedArticle( 123 ) );
 	}
@@ -68,7 +68,7 @@ class MediaObjectTest extends Schemify\TestCase {
 	public function testGetContentUrl() {
 		$instance = new MediaObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_url', array(
+		M::userFunction( 'wp_get_attachment_url', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 'URL',
@@ -80,7 +80,7 @@ class MediaObjectTest extends Schemify\TestCase {
 	public function testGetThumbnailUrl() {
 		$instance = new MediaObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 123, 'thumbnail', true ),
 			'return' => array( 'URL', 150, 150 ),
@@ -92,7 +92,7 @@ class MediaObjectTest extends Schemify\TestCase {
 	public function testGetThumbnailUrlReturnsNullIfThumbnailIsNotFound() {
 		$instance = new MediaObject( 123 );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 123, 'thumbnail', true ),
 			'return' => false,

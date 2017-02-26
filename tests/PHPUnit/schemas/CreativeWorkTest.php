@@ -25,7 +25,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 		$post     = new \stdClass;
 		$post->post_author = 5;
 
-		M::wpFunction( 'get_post', array(
+		M::userFunction( 'get_post', array(
 			'times'  => 1,
 			'return' => $post,
 		) );
@@ -36,7 +36,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetAuthorReturnsNullIfNotMain() {
 		$instance = new CreativeWork( 123, false );
 
-		M::wpFunction( 'get_post', array(
+		M::userFunction( 'get_post', array(
 			'times'  => 0,
 		) );
 
@@ -46,7 +46,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetAuthorReturnsNullIfPostNotFound() {
 		$instance = new CreativeWork( 123, false );
 
-		M::wpFunction( 'get_post', array(
+		M::userFunction( 'get_post', array(
 			'return' => null,
 		) );
 
@@ -56,7 +56,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetDateCreated() {
 		$instance = new CreativeWork( 123 );
 
-		M::wpFunction( 'get_post_time', array(
+		M::userFunction( 'get_post_time', array(
 			'times'  => 1,
 			'args'   => array( 'c', true, 123 ),
 			'return' => 'Time',
@@ -68,7 +68,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetDateModified() {
 		$instance = new CreativeWork( 123 );
 
-		M::wpFunction( 'get_post_modified_time', array(
+		M::userFunction( 'get_post_modified_time', array(
 			'times'  => 1,
 			'args'   => array( 'c', true, 123 ),
 			'return' => 'Time',
@@ -100,7 +100,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetPublisher() {
 		$instance = new CreativeWork( 123, true );
 
-		M::wpFunction( 'get_current_blog_id', array(
+		M::userFunction( 'get_current_blog_id', array(
 			'times'  => 1,
 			'return' => 1,
 		) );
@@ -111,7 +111,7 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetPublisherIsNullWhenNotMainSchema() {
 		$instance = new CreativeWork( 123, false );
 
-		M::wpFunction( 'get_current_blog_id', array(
+		M::userFunction( 'get_current_blog_id', array(
 			'times'  => 0,
 		) );
 
@@ -121,13 +121,13 @@ class CreativeWorkTest extends Schemify\TestCase {
 	public function testGetThumbnailUrl() {
 		$instance = new CreativeWork( 123 );
 
-		M::wpFunction( 'get_post_thumbnail_id', array(
+		M::userFunction( 'get_post_thumbnail_id', array(
 			'times'  => 1,
 			'args'   => array( 123 ),
 			'return' => 777,
 		) );
 
-		M::wpFunction( 'wp_get_attachment_image_src', array(
+		M::userFunction( 'wp_get_attachment_image_src', array(
 			'times'  => 1,
 			'args'   => array( 777, 'thumbnail', true ),
 			'return' => array( 'URL', 150, 150 ),

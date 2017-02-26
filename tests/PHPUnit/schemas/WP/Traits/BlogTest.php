@@ -25,7 +25,7 @@ class OrganizationTest extends Schemify\TestCase {
 
 		$instance = new TestBlogTrait( 1 );
 
-		M::wpFunction( 'get_bloginfo', array(
+		M::userFunction( 'get_bloginfo', array(
 			'times'  => 1,
 			'args'   => array( 'description' ),
 			'return' => 'My description',
@@ -39,7 +39,7 @@ class OrganizationTest extends Schemify\TestCase {
 
 		$instance = new TestBlogTrait( 1 );
 
-		M::wpFunction( 'get_site_icon_url', array(
+		M::userFunction( 'get_site_icon_url', array(
 			'times'  => 1,
 			'args'   => array( null, null, 1 ),
 			'return' => 'http://example.com/image.jpg',
@@ -66,7 +66,7 @@ class OrganizationTest extends Schemify\TestCase {
 
 		$instance = new TestBlogTrait( 1 );
 
-		M::wpFunction( 'get_bloginfo', array(
+		M::userFunction( 'get_bloginfo', array(
 			'times'  => 1,
 			'args'   => array( 'name' ),
 			'return' => 'My name',
@@ -80,7 +80,7 @@ class OrganizationTest extends Schemify\TestCase {
 
 		$instance = new TestBlogTrait( 1 );
 
-		M::wpFunction( 'get_bloginfo', array(
+		M::userFunction( 'get_bloginfo', array(
 			'times'  => 1,
 			'args'   => array( 'url' ),
 			'return' => 'http://example.com',

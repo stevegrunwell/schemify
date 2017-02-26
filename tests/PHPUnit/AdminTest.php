@@ -18,12 +18,12 @@ class AdminTest extends Schemify\TestCase {
 	);
 
 	public function testAddMetaBoxes() {
-		M::wpFunction( 'add_meta_box', array(
+		M::userFunction( 'add_meta_box', array(
 			'times' => '1',
 			'args'  => array( 'schemify', '*', __NAMESPACE__ . '\meta_box_cb', '*' ),
 		) );
 
-		M::wpPassthruFunction( '_x' );
+		M::passthruFunction( '_x' );
 
 		add_meta_boxes();
 	}
@@ -37,22 +37,22 @@ class AdminTest extends Schemify\TestCase {
 		$post_type->labels = new \stdClass;
 		$post_type->labels->singular_name = 'Post';
 
-		M::wpFunction( 'get_post_type_object', array(
+		M::userFunction( 'get_post_type_object', array(
 			'times'  => 1,
 			'return' => $post_type,
 		) );
 
-		M::wpFunction( 'wp_json_encode', array(
+		M::userFunction( 'wp_json_encode', array(
 			'times'  => 1,
 			'return' => '{"json":"data"}',
 		) );
 
-		M::wpFunction( 'Schemify\Core\build_object', array(
+		M::userFunction( 'Schemify\Core\build_object', array(
 			'times'  => 1,
 		) );
 
-		M::wpPassthruFunction( '__' );
-		M::wpPassthruFunction( 'esc_html' );
+		M::passthruFunction( '__' );
+		M::passthruFunction( 'esc_html' );
 
 		ob_start();
 		meta_box_cb( $post );
