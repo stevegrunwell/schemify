@@ -2,6 +2,9 @@
 /**
  * Compatibility with The Events Calendar.
  *
+ * Since The Events Calendar is already generating JSON-LD data, Schemify should only be used to
+ * supplement the information, not replace it.
+ *
  * @link https://wordpress.org/plugins/the-events-calendar/
  *
  * @package Schemify
@@ -35,3 +38,9 @@ function merge_schema_data( $event, $args, $post ) {
 	return (object) array_merge( (array) $schema, (array) $event );
 }
 add_filter( 'tribe_json_ld_event_object', __NAMESPACE__ . '\merge_schema_data', 10, 3 );
+
+/**
+ * When the tribe_json_ld_{$type}_data filter is called, that's the last step before The Events
+ * Calendar is going to render their JSON-LD block.
+ */
+add_filter( 'tribe_json_ld_event_data', 'Schemify\Theme\bypass_schemify' );

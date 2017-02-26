@@ -264,6 +264,15 @@ class ThemeTest extends Schemify\TestCase {
 		append_to_footer();
 	}
 
+	public function testBypassSchemify() {
+		M::userFunction( 'remove_action', array(
+			'times'  => 1,
+			'args'   => array( 'wp_footer', __NAMESPACE__ . '\append_to_footer' ),
+		) );
+
+		bypass_schemify();
+	}
+
 	public function testGetCPTSchemas() {
 		$post                 = new \stdClass;
 		$post->name           = 'post';

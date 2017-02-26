@@ -107,6 +107,22 @@ function append_to_footer() {
 add_action( 'wp_footer', __NAMESPACE__ . '\append_to_footer' );
 
 /**
+ * Callback to prevent Schemify from rendering on a given page.
+ *
+ * Written as a centralized callback to prevent it from being written dozens of times in plugin
+ * compatibility files for plugins that already produce JSON-LD.
+ *
+ * @param mixed $value Optional. The value being passed through, if this function is used as a
+ *                     a filter callback. Default is empty.
+ * @return mixed The un-changed value of $value.
+ */
+function bypass_schemify( $value = null ) {
+	remove_action( 'wp_footer', __NAMESPACE__ . '\append_to_footer' );
+
+	return $value;
+}
+
+/**
  * Collect post type => schema mappings for custom post types.
  *
  * For convenience, developers can automatically assign a schema to custom post types via the
