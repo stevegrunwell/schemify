@@ -65,6 +65,16 @@ class MediaObjectTest extends Schemify\TestCase {
 		$this->assertNull( $instance->getAssociatedArticle( 123 ) );
 	}
 
+	public function testGetAssociatedArticleIfMediaIsUnattached() {
+		$instance = new MediaObject( 123, true );
+
+		M::userFunction( 'wp_get_post_parent_id', array(
+			'return' => 0,
+		) );
+
+		$this->assertNull( $instance->getAssociatedArticle( 123 ) );
+	}
+
 	public function testGetContentUrl() {
 		$instance = new MediaObject( 123 );
 

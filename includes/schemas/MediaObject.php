@@ -50,8 +50,15 @@ class MediaObject extends CreativeWork {
 		}
 
 		$parent_post_id = wp_get_post_parent_id( $post_id );
-		$schema         = __NAMESPACE__ . '\\' . Core\get_schema_name( $parent_post_id, 'post' );
-		$instance       = null;
+
+		// Return early if the media is unattached.
+		if ( ! $parent_post_id ) {
+			return ;
+		}
+
+		// Proceed building the parent post's schema.
+		$schema   = __NAMESPACE__ . '\\' . Core\get_schema_name( $parent_post_id, 'post' );
+		$instance = null;
 
 		try {
 			if ( ! class_exists( $schema ) ) {
