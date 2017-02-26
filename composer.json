@@ -15,13 +15,15 @@
         "issues": "https://github.com/stevegrunwell/schemify/issues"
     },
     "require-dev": {
-        "stevegrunwell/wp-enforcer": "^0.4.1",
-        "10up/wp_mock": "^0.1.1",
-        "phpunit/phpunit": "^5.2",
-        "codeclimate/php-test-reporter": "^0.3.0"
+        "stevegrunwell/wp-enforcer": "dev-master",
+        "10up/wp_mock": "1.0.x-dev",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
+            "wp-enforcer"
+        ],
+        "post-update-cmd": [
             "wp-enforcer"
         ]
     }
