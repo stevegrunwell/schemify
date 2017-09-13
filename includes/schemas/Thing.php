@@ -96,18 +96,21 @@ class Thing implements \JsonSerializable {
 	public function getProperties() {
 		if ( ! $this->data ) {
 			$data   = $this->build( $this->postId, $this->isMain );
-			$schema = $this->getSchema();
-			$filter = sprintf( 'schemify_get_properties_%s', $schema );
+			$schema_array = $this->getSchemaArray();
 
-			/**
-			 * Filter the output for the given schema.
-			 *
-			 * @param array  $data      The collection of properties assembled for this object.
-			 * @param string $schema    The current schema being filtered.
-			 * @param int    $object_id The object ID being constructed.
-			 * @param bool   $is_main   Is this the top-level JSON-LD schema being constructed?
-			 */
-			$data = apply_filters( $filter, $data, $schema, $this->postId, $this->isMain );
+			foreach ( array_reverse( $schema_array ) as $schema ) {
+				$filter = sprintf( 'schemify_get_properties_%s', $schema );
+
+				/**
+				 * Filter the output for the given schema.
+				 *
+				 * @param array  $data      The collection of properties assembled for this object.
+				 * @param string $schema    The current schema being filtered.
+				 * @param int    $object_id The object ID being constructed.
+				 * @param bool   $is_main   Is this the top-level JSON-LD schema being constructed?
+				 */
+				$data = apply_filters( $filter, $data, $schema, $this->postId, $this->isMain );
+			}
 
 			/**
 			 * Filter the output for all schemas.
@@ -117,7 +120,7 @@ class Thing implements \JsonSerializable {
 			 * @param int    $object_id The object ID being constructed.
 			 * @param bool   $is_main   Is this the top-level JSON-LD schema being constructed?
 			 */
-			$this->data = apply_filters( 'schemify_get_properties', $data, $schema, $this->postId, $this->isMain );
+			$this->data = apply_filters( 'schemify_get_properties', $data, $this->getSchema(), $this->postId, $this->isMain );
 		}
 
 		return array_filter( (array) $this->data );
@@ -158,6 +161,28 @@ class Thing implements \JsonSerializable {
 		}
 
 		return $this->schema;
+	}
+
+	/**
+	 * Get an array of schema names for this class and its ancestors.
+	 *
+	 * @param array  $schema_array The array or schema class name strings. Defaults to an empty array.
+	 * @param string $class_name The class name sting to add to the schema array. Defaults to the current class name.
+	 * @return array An array of class name strings, with namespacing stripped.
+	 */
+	public function getSchemaArray( $schema_array = array(), $class_name = '' ) {
+		if ( empty( $class_name ) ) {
+			$class_name = get_class( $this );
+		}
+
+		$schema_array[] = Core\strip_namespace( $class_name );
+		$parent_class_name = get_parent_class( $class_name );
+
+		if ( false === $parent_class_name ) {
+			return array_unique( $schema_array );
+		}
+
+		return $this->getSchemaArray( $schema_array, $parent_class_name );
 	}
 
 	/**
