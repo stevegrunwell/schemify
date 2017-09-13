@@ -176,6 +176,16 @@ class ThingTest extends Schemify\TestCase {
 		$this->assertEquals( $random, $instance->getSchema() );
 	}
 
+	public function testGetSchemaArray() {
+		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )->makePartial();
+
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
+			'return' => 'Thing',
+		) );
+
+		$this->assertEquals( array( 'Thing' ), $instance->getSchemaArray() );
+	}
+
 	public function testBuild() {
 		$instance = Mockery::mock( __NAMESPACE__ . '\Thing' )
 			->shouldAllowMockingProtectedMethods()

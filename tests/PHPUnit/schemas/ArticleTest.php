@@ -46,4 +46,35 @@ EOT;
 
 		$this->assertEquals( 10, $instance->getWordCount( 123 ) );
 	}
+
+	public function testGetSchemaArray() {
+		$instance = Mockery::mock( __NAMESPACE__ . '\Article' )->makePartial();
+
+		M::userFunction( 'Schemify\Core\strip_namespace', array(
+			'return_in_order' => array(
+				'Article',
+				'CreativeWork',
+				'Thing',
+			),
+		) );
+
+		$this->assertEquals( array( 'Article', 'CreativeWork', 'Thing' ), $instance->getSchemaArray() );
+	}
+
+	public function testGetPropertiesFiltersResultsWithSchemaNameArray() {
+		$data     = array( 'foo' => 'bar' );
+		$instance = Mockery::mock( __NAMESPACE__ . '\Article', array( 123, true ) )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
+		$instance->shouldReceive( 'getSchema' )->andReturn( 'Article' );
+		$instance->shouldReceive( 'getSchemaArray' )->andReturn( array( 'Article', 'CreativeWork', 'Thing' ) );
+		$instance->shouldReceive( 'build' )->andReturn( array( 'foo' ) );
+
+		// Filter the data of the parent object CreativeWork, not Article.
+		M::onFilter( 'schemify_get_properties_CreativeWork' )
+			->with( array( 'foo' ), 'CreativeWork', 123, true )
+			->reply( array( 'bar' ) );
+
+		$this->assertEquals( array( 'bar' ), $instance->getProperties() );
+	}
 }
