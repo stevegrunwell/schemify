@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Register the `Event` Schema ([#6](https://github.com/stevegrunwell/schemify/issues/6)).
 * Fixed recursive schema bug for media objects ([#8](https://github.com/stevegrunwell/schemify/issues/8)).
 * Update Composer dependencies used for development.
+* Call the filter `schemify_get_properties_{$schema}` for each of a schema's ancestors when `Schemify\Schemas\Thing\getProperties` is called.
 
 
 ## [0.1.0]
