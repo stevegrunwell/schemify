@@ -167,12 +167,13 @@ class Thing implements \JsonSerializable {
 	 * @param bool $is_main Whether or not this is the top-level schema being built.
 	 */
 	protected function build( $post_id, $is_main ) {
-
-		// Placeholder is using %s as this *can* be a non-integer value (e.g. "home").
-		$cache_key = sprintf( 'schema_%s', $post_id );
+		$cache_key = Cache\get_key( $post_id, $object );
+		$last_update = wp_cache_get( Cache\get_key( $post_id, $object ) . '_last_update', 'schemify', false );
+		$last_global_update = wp_cache_get( 'schemify_last_update','schemify', false );
 
 		// Return early if we have a cached version.
-		if ( $is_main && ( $cached = wp_cache_get( $cache_key, 'schemify', false ) ) ) {
+		if ( $is_main && ( $cached = wp_cache_get( $cache_key, 'schemify', false ) ) &&
+			( $last_update && $last_global_update && $last_update > $last_global_update ) ) {
 			return $cached;
 		}
 
@@ -191,7 +192,8 @@ class Thing implements \JsonSerializable {
 
 		// Cache the result (top-level only) so we don't have to calculate it every time.
 		if ( $is_main ) {
-			wp_cache_set( $cache_key, $data, 'schemify', 0 );
+			wp_cache_set( $cache_key, $data, 'schemify', 12 * HOUR_IN_SECONDS );
+			wp_cache_set( Cache\get_key( $post_id, $object ) . '_last_update', time(), 'schemify', 0 );
 		}
 
 		// Finally, return the value.
