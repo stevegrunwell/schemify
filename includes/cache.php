@@ -7,6 +7,8 @@
 
 namespace Schemify\Cache;
 
+use Schemify\Schemas\Thing;
+
 /**
  * Prepare a cache key for the given object.
  *
@@ -15,9 +17,6 @@ namespace Schemify\Cache;
  * @return string A cache key to be used with the WP object cache.
  */
 function get_key( $object_id, $object ) {
-	// @todo ensure we're mapping page_on_front to an ID
-    // @todo The object is to help us determine whether $object_id is a post, user, blog, etc.
-    
     return sprintf( 'schema_%s', $object_id );
 }
 

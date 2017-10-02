@@ -80,7 +80,7 @@ add_filter( 'schemify_schema', __NAMESPACE__ . '\set_default_schemas', 1, 4 );
  * Appends the JSON-LD object to the site footer.
  */
 function append_to_footer() {
-	$object_id   = get_the_ID();
+	$object_id   = get_queried_object_id();
 	$object_type = 'post';
 
 	// Return early on singular posts for unsupported post types.
