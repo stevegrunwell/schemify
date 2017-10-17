@@ -7,6 +7,13 @@
 
 namespace Schemify\Schemas;
 
+define( 'MINUTE_IN_SECONDS', 60 );
+define( 'HOUR_IN_SECONDS',   60 * MINUTE_IN_SECONDS );
+define( 'DAY_IN_SECONDS',    24 * HOUR_IN_SECONDS   );
+define( 'WEEK_IN_SECONDS',    7 * DAY_IN_SECONDS    );
+define( 'MONTH_IN_SECONDS',  30 * DAY_IN_SECONDS    );
+define( 'YEAR_IN_SECONDS',  365 * DAY_IN_SECONDS    );
+
 use WP_Mock as M;
 
 use Mockery;
@@ -19,6 +26,7 @@ class ThingTest extends Schemify\TestCase {
 
 	protected $testFiles = array(
 		'schemas/Thing.php',
+		'cache.php',
 	);
 
 	public function test__construct() {
@@ -200,13 +208,30 @@ class ThingTest extends Schemify\TestCase {
 
 		M::userFunction( 'wp_cache_get', array(
 			'times'  => 1,
+			'args'   => array( 'schema_123_last_update', 'schemify', false ),
+			'return' => false,
+		) );
+
+		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schemify_last_update', 'schemify', false ),
+			'return' => false,
+		) );
+
+		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
 			'args'   => array( 'schema_123', 'schemify', false ),
 			'return' => false,
 		) );
 
 		M::userFunction( 'wp_cache_set', array(
 			'times'  => 1,
-			'args'   => array( 'schema_123', $value, 'schemify', 0 ),
+			'args'   => array( 'schema_123', $value, 'schemify', 12 * HOUR_IN_SECONDS ),
+		) );
+
+		M::userFunction( 'wp_cache_set', array(
+			'times'  => 1,
+			'args'   => array( 'schema_123_last_update', M\Functions::type( 'int' ), 'schemify', 0 ),
 		) );
 
 		$this->assertEquals( $value, $method->invoke( $instance, 123, true ) );
@@ -218,6 +243,20 @@ class ThingTest extends Schemify\TestCase {
 		$method->setAccessible( true );
 
 		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schema_123_last_update', 'schemify', false ),
+			'return' => 200,
+		) );
+
+		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schemify_last_update', 'schemify', false ),
+			'return' => 100,
+		) );
+
+		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schema_123', 'schemify', false ),
 			'return' => array( 'schema', 'data' ),
 		) );
 
@@ -247,6 +286,18 @@ class ThingTest extends Schemify\TestCase {
 		$instance = new Thing( 'home', true );
 		$method   = new ReflectionMethod( $instance, 'build' );
 		$method->setAccessible( true );
+
+		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schema_home_last_update', 'schemify', false ),
+			'return' => 200,
+		) );
+
+		M::userFunction( 'wp_cache_get', array(
+			'times'  => 1,
+			'args'   => array( 'schemify_last_update', 'schemify', false ),
+			'return' => 100,
+		) );
 
 		M::userFunction( 'wp_cache_get', array(
 			'times'  => 1,

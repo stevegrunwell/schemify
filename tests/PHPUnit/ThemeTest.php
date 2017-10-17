@@ -135,11 +135,6 @@ class ThemeTest extends Schemify\TestCase {
 	}
 
 	public function testAppendToFooter() {
-		M::userFunction( 'get_the_ID', array(
-			'times'  => 1,
-			'return' => 123,
-		) );
-
 		M::userFunction( 'is_singular', array(
 			'times'  => 1,
 			'return' => true,
@@ -173,6 +168,11 @@ class ThemeTest extends Schemify\TestCase {
 			'args'   => array( 123, 'post' ),
 		) );
 
+		M::userFunction( 'get_queried_object_id', array(
+			'times'  => 1,
+			'return' => 123,
+		) );
+
 		append_to_footer();
 	}
 
@@ -188,6 +188,11 @@ class ThemeTest extends Schemify\TestCase {
 		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
 			'args'   => array( 'front', 'post' ),
+		) );
+
+		M::userFunction( 'get_queried_object_id', array(
+			'times'  => 1,
+			'return' => 200,
 		) );
 
 		append_to_footer();
@@ -209,6 +214,11 @@ class ThemeTest extends Schemify\TestCase {
 		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 1,
 			'args'   => array( 'home', 'post' ),
+		) );
+
+		M::userFunction( 'get_queried_object_id', array(
+			'times'  => 1,
+			'return' => 200,
 		) );
 
 		append_to_footer();
@@ -241,6 +251,11 @@ class ThemeTest extends Schemify\TestCase {
 			'args'   => array( 42, 'user' ),
 		) );
 
+		M::userFunction( 'get_queried_object_id', array(
+			'times'  => 1,
+			'return' => 200,
+		) );
+
 		append_to_footer();
 	}
 
@@ -259,6 +274,11 @@ class ThemeTest extends Schemify\TestCase {
 
 		M::userFunction( 'Schemify\Core\get_json', array(
 			'times'  => 0,
+		) );
+
+		M::userFunction( 'get_queried_object_id', array(
+			'times'  => 1,
+			'return' => 200,
 		) );
 
 		append_to_footer();
