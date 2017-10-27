@@ -15,7 +15,6 @@ use Schemify\Schemas\Thing;
  * @param int|string $object_id The object ID, though this can also include strings like "home".
  *
  * @return string A cache key to be used with the WP object cache.
- * @internal param Thing $object The Schemify object.
  */
 function get_key( $object_id ) {
 	return sprintf( 'schema_%s', $object_id );
