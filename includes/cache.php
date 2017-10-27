@@ -13,11 +13,12 @@ use Schemify\Schemas\Thing;
  * Prepare a cache key for the given object.
  *
  * @param int|string $object_id The object ID, though this can also include strings like "home".
- * @param Thing      $object    The Schemify object.
+ *
  * @return string A cache key to be used with the WP object cache.
+ * @internal param Thing $object The Schemify object.
  */
-function get_key( $object_id, $object ) {
-    return sprintf( 'schema_%s', $object_id );
+function get_key( $object_id ) {
+	return sprintf( 'schema_%s', $object_id );
 }
 
 /**
@@ -26,8 +27,9 @@ function get_key( $object_id, $object ) {
  * @param int $post_id The post being updated.
  */
 function update_post_cache( $post_id ) {
-    wp_cache_delete( sprintf( 'schema_%s', $post_id ), 'schemify' );
+	wp_cache_delete( get_key( $post_id ), 'schemify' );
 }
+
 add_action( 'save_post', __NAMESPACE__ . '\update_post_cache' );
 
 /**
@@ -37,30 +39,30 @@ add_action( 'save_post', __NAMESPACE__ . '\update_post_cache' );
  * @param int $user_id The WordPress user ID.
  */
 function update_user_cache( $user_id ) {
-    $author_posts = get_posts( array(
-        'no_found_rows'             => true,
-        'update_post_meta_cache'    => false,
-        'update_post_term_cache'    => false,
-        'author'                    => $user_id,
-        'fields'                    => 'ids',
-        'posts_per_page'            => 5000
-    ) );
+	$author_posts = get_posts( array(
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
+		'author'                 => $user_id,
+		'fields'                 => 'ids',
+		'posts_per_page'         => 5000,
+	) );
 
-    foreach ( $author_posts as  $post_id ) {
-        wp_cache_delete( sprintf( 'schema_%s', $post_id ), 'schemify' );
-    }
+	array_map( __NAMESPACE__ . '\update_post_cache', $author_posts );
 }
+
 add_action( 'profile_update', __NAMESPACE__ . '\update_user_cache' );
 
 
 /**
  * Forces all schemify cache to be flushed, but does not actually flush them
  *
- * @param mixed $old_value
+ * @param mixed $old_value The old option value.
+ *
  * @return void
  */
 function force_cache_flush( $old_value ) {
-    wp_cache_set( 'schemify_last_update', time(), 'schemify', 0 );
+	wp_cache_set( 'schemify_last_update', time(), 'schemify', 0 );
 }
 
 add_action( 'update_option_blogdescription', __NAMESPACE__ . '\force_cache_flush' );

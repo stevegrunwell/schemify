@@ -170,7 +170,7 @@ class Thing implements \JsonSerializable {
 	 * @return array|bool|mixed
 	 */
 	protected function build( $post_id, $is_main ) {
-		$cache_key          = Cache\get_key( $post_id, $this );
+		$cache_key          = Cache\get_key( $post_id );
 		$last_update        = wp_cache_get( $cache_key . '_last_update', 'schemify', false );
 		$last_global_update = wp_cache_get( 'schemify_last_update', 'schemify', false );
 
