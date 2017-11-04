@@ -25,6 +25,9 @@
         ],
         "post-update-cmd": [
             "wp-enforcer"
+        ],
+        "test-coverage": [
+            "phpunit --coverage-html tests/coverage"
         ]
     }
 }
