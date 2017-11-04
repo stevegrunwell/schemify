@@ -8,8 +8,11 @@
 	>
 	<testsuites>
 		<testsuite>
-			<directory prefix="test-" suffix=".php">./tests/</directory>
-			<exclude>./tests/test-sample.php</exclude>
+			<directory suffix="Test.php">./tests/</directory>
+			<exclude>./tests/SampleTest.php</exclude>
+
+			<!-- Legacy, WP_Mock tests. -->
+			<exclude>./tests/PHPUnit</exclude>
 		</testsuite>
 	</testsuites>
 	<filter>

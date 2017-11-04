@@ -14,6 +14,7 @@
 	<!-- Schemas won't match WordPress standards, and that's okay -->
 	<rule ref="Generic.Files.LowercasedFilename.NotFound">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.ClassComment.Missing">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
