@@ -18,6 +18,10 @@
 	</rule>
 	<rule ref="Squiz.Commenting.ClassComment.Missing">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.Missing">
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<rule ref="WordPress.Files.FileName.UnderscoresNotAllowed">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
