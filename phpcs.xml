@@ -26,6 +26,9 @@
 	<rule ref="Generic.Commenting.DocComment.MissingShort">
 		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
+	<rule ref="Generic.PHP.NoSilencedErrors.Discouraged">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
 	<rule ref="WordPress.Files.FileName.UnderscoresNotAllowed">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
 	</rule>

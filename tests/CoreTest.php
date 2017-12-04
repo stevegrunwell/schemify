@@ -31,6 +31,17 @@ class CoreTest extends WP_UnitTestCase {
 		$this->assertEquals( $post->post_title, $response['name'] );
 	}
 
+	public function testBuildObjectHandlesMissingSchemaClasses() {
+		$post = $this->factory()->post->create_and_get();
+		add_filter( 'schemify_schema', function () {
+			return 'NonExistentSchema';
+		} );
+
+		$response = @Core\build_object( $post->ID, 'non-existent item' );
+
+		$this->assertEquals( 'Thing', $response['@type'] );
+	}
+
 	/**
 	 * @dataProvider attachmentTypeProvider()
 	 */
