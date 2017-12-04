@@ -107,8 +107,8 @@ class ThemeTest extends WP_UnitTestCase {
 
 	public function specialPageProvider() {
 		return [
-			'Home' => [ home_url(), 'is_home', 'WP\WebSite' ],
-			'Front' => [ site_url(), 'is_front_page', 'WP\WebSite' ],
+			'Home'   => [ home_url(), 'is_home', 'WP\WebSite' ],
+			'Front'  => [ site_url(), 'is_front_page', 'WP\WebSite' ],
 			'Search' => [ get_search_link( 'foo' ), 'is_search', 'SearchResultsPage' ],
 		];
 	}
@@ -140,11 +140,71 @@ class ThemeTest extends WP_UnitTestCase {
 		);
 	}
 
+	public function testAppendToFooterOnFrontPage() {
+		$page = $this->factory()->post->create([
+			'post_type' => 'page',
+		]);
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', $page );
+
+		$this->go_to( get_permalink( $page ) );
+
+		ob_start();
+		Theme\append_to_footer();
+		$output = ob_get_clean();
+
+		$this->assertContains( '<script type="application/ld+json">', $output );
+	}
+
+	public function testAppendToFooterOnHomePage() {
+		$page = $this->factory()->post->create([
+			'post_type' => 'page',
+		]);
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_for_posts', $page );
+
+		$this->go_to( get_permalink( $page ) );
+
+		ob_start();
+		Theme\append_to_footer();
+		$output = ob_get_clean();
+
+		$this->assertContains( '<script type="application/ld+json">', $output );
+	}
+
+	public function testAppendToFooterOnUserArchive() {
+		$user = $this->factory()->user->create();
+
+		// The author archive only exists if there's at least one post.
+		$this->factory()->post->create([
+			'post_author' => $user,
+		]);
+
+		$this->go_to( get_author_posts_url( $user ) );
+
+		ob_start();
+		Theme\append_to_footer();
+		$output = ob_get_clean();
+
+		$this->assertContains( '<script type="application/ld+json">', $output );
+	}
+
+	public function testAppendToFooterOnSearchResults() {
+		$post = $this->factory()->post->create_and_get();
+		$this->go_to( get_search_link( $post->post_title ) );
+
+		ob_start();
+		Theme\append_to_footer();
+		$output = ob_get_clean();
+
+		$this->assertContains( '<script type="application/ld+json">', $output );
+	}
+
 	public function testGetCptSchemas() {
 		register_post_type( 'test-cpt', [
 			'schemify_schema' => 'SomeSchema',
 		] );
 
-		$this->assertEquals([ 'test-cpt' => 'SomeSchema' ], Theme\get_cpt_schemas() );
+		$this->assertEquals( [ 'test-cpt' => 'SomeSchema' ], Theme\get_cpt_schemas() );
 	}
 }
