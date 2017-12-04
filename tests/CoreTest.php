@@ -58,12 +58,12 @@ class CoreTest extends WP_UnitTestCase {
 	public function attachmentTypeProvider() {
 		return [
 			'JPEG' => [ 'image/jpeg', 'image' ],
-			'PNG' => [ 'image/png', 'image' ],
-			'GIF' => [ 'image/gif', 'image' ],
-			'MP3' => [ 'audio/mp3', 'audio' ],
-			'WAV' => [ 'audio/wav', 'audio' ],
-			'MP4' => [ 'video/mp4', 'video' ],
-			'MOV' => [ 'video/mov', 'video' ],
+			'PNG'  => [ 'image/png', 'image' ],
+			'GIF'  => [ 'image/gif', 'image' ],
+			'MP3'  => [ 'audio/mp3', 'audio' ],
+			'WAV'  => [ 'audio/wav', 'audio' ],
+			'MP4'  => [ 'video/mp4', 'video' ],
+			'MOV'  => [ 'video/mov', 'video' ],
 		];
 	}
 
