@@ -1,13 +1,14 @@
 <?php
 /**
- * Class SampleTest
+ * Example testcase.
  *
  * @package Schemify
  */
 
-/**
- * Sample test case.
- */
+namespace Test;
+
+use WP_UnitTestCase;
+
 class SampleTest extends WP_UnitTestCase {
 
 	/**

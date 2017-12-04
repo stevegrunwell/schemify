@@ -5,7 +5,10 @@
  * @package Schemify
  */
 
+namespace Test;
+
 use Schemify\Theme as Theme;
+use WP_UnitTestCase;
 
 class ThemeTest extends WP_UnitTestCase {
 

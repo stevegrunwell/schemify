@@ -5,10 +5,12 @@
  * @package Schemify
  */
 
-use PHPUnit\Framework\Error\Warning;
+namespace Test;
+
 use Schemify\Core as Core;
 use Schemify\Schemas\ImageObject;
 use Schemify\Schemas\MediaObject;
+use WP_UnitTestCase;
 
 class CoreTest extends WP_UnitTestCase {
 
