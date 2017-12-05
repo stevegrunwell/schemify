@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for the core functionality.
+ * Tests for the basic Thing schema.
  *
  * @package Schemify
  */
