@@ -10,9 +10,6 @@
 		<testsuite>
 			<directory suffix="Test.php">./tests/</directory>
 			<exclude>./tests/SampleTest.php</exclude>
-
-			<!-- Legacy, WP_Mock tests. -->
-			<exclude>./tests/PHPUnit</exclude>
 		</testsuite>
 	</testsuites>
 	<filter>
