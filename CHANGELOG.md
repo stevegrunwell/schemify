@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Register the `Event` Schema ([#6](https://github.com/stevegrunwell/schemify/issues/6)).
 * Fixed recursive schema bug for media objects ([#8](https://github.com/stevegrunwell/schemify/issues/8)).
 * Update Composer dependencies used for development.
+* Rewrote the test suite to use the WordPress core test suite ([#13](https://github.com/stevegrunwell/schemify/issues/13))
 
 
 ## [0.1.0]
