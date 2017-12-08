@@ -7,6 +7,7 @@
 
 namespace Test;
 
+use ReflectionMethod;
 use WP_UnitTestCase;
 
 class SchemaInheritanceTest extends WP_UnitTestCase {
@@ -42,7 +43,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 
 		// Only download if the cache has expired or the file doesn't exist.
 		if ( ! file_exists( $file ) || self::CACHE_LIFETIME < time() - filemtime( $file ) ) {
-			mkdir( dirname( $file ) );
+			@mkdir( dirname( $file ) );
 			$fh = fopen( $file, 'wb' );
 			fwrite( $fh, file_get_contents( $url ) );
 			fclose( $fh );
@@ -88,6 +89,53 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 		ksort( $schemas );
 
 		return $schemas;
+	}
+
+	/**
+	 * Iterate through each Schema and verify that all properties are accounted for.
+	 *
+	 * @param string $schema The schema name.
+	 *
+	 * @dataProvider definedSchemaNameProvider()
+	 * @group        schemaDefinitions
+	 */
+	public function testSchemaProperties( $schema ) {
+		$definition = self::getData( $schema . '.json', 'https://schema.org/' . $schema . '.jsonld' );
+
+		// Return early if there's no @graph definition.
+		if ( ! isset( $definition->{'@graph'} ) ) {
+			$this->markTestSkipped( sprintf( 'There are no properties defined for the %s schema.', $schema ) );
+		}
+		$props = array_reduce( $definition->{'@graph'}, function ( $props, $entry ) {
+			if ( isset( $entry->{'@type'}, $entry->{'rdfs:label'} ) && 'rdf:Property' === $entry->{'@type'} ) {
+				$props[] = is_object( $entry->{'rdfs:label'} ) ? $entry->{'rdfs:label'}->{'@value'} : $entry->{'rdfs:label'};
+			}
+
+			return $props;
+		}, [] );
+		$class    = 'Schemify\\Schemas\\' . $schema;
+		$instance = new $class( 1, true );
+		$propList = new ReflectionMethod( $instance, 'getPropertyList' );
+		$propList->setAccessible( true );
+		$difference = array_diff( $propList->invoke( $instance ), $props );
+
+		$this->assertEmpty(
+			$difference,
+			"Property list does not match specification:\n - " . implode( "\n - ", $difference )
+		);
+	}
+
+	/**
+	 * Retrieve an array of *only* defined Schemas (by name).
+	 *
+	 * @return array
+	 */
+	public function definedSchemaNameProvider() {
+		$schemas = $this->schemaInheritanceProvider();
+
+		return array_filter( $schemas, function ( $schema ) {
+			return 'Thing' !== $schema && class_exists( 'Schemify\\Schemas\\' . $schema );
+		}, ARRAY_FILTER_USE_KEY );
 	}
 
 	/**
