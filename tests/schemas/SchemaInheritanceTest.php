@@ -32,30 +32,6 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	const CACHE_LIFETIME = 7776000;
 
 	/**
-	 * Retrieve a data file from local storage or, if the file is either old or missing, retrieve
-	 * it from the given URL.
-	 *
-	 * @param string $filename The filename, relative to the tests/data/ directory.
-	 * @param string $url      The URL to retrieve the original file from.
-	 *
-	 * @return stdClass The decoded JSON from the file.
-	 */
-	protected static function getData( $filename, $url ) {
-		$dir  = dirname( __DIR__ ) . '/data/';
-		$file = $dir . $filename;
-
-		// Only download if the cache has expired or the file doesn't exist.
-		if ( ! file_exists( $file ) || self::CACHE_LIFETIME < time() - filemtime( $file ) ) {
-			@mkdir( dirname( $file ) );
-			$fh = fopen( $file, 'wb' );
-			fwrite( $fh, file_get_contents( $url ) );
-			fclose( $fh );
-		}
-
-		return json_decode( file_get_contents( $file ), false );
-	}
-
-	/**
 	 * Verify that a Schema has the appropriate *direct* parent.
 	 *
 	 * @dataProvider schemaInheritanceProvider
@@ -82,7 +58,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 * @return array
 	 */
 	public function schemaInheritanceProvider() {
-		$definitions = self::getData( 'schema-definitions.json', 'https://schema.org/docs/tree.jsonld' );
+		$definitions = $this->getData( 'schema-definitions.json', 'https://schema.org/docs/tree.jsonld' );
 
 		$schemas = array_reduce( $definitions->children, [ $this, 'getDirectParent' ], [
 			'Thing' => [ 'Thing', null ],
@@ -101,7 +77,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 * @dataProvider definedSchemaNameProvider()
 	 */
 	public function testSchemaProperties( $schema ) {
-		$definition = self::getData( $schema . '.json', 'https://schema.org/' . $schema . '.jsonld' );
+		$definition = $this->getData( $schema . '.json', 'https://schema.org/' . $schema . '.jsonld' );
 
 		// Return early if there's no @graph definition.
 		if ( ! isset( $definition->{'@graph'} ) ) {
@@ -137,6 +113,30 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 		return array_filter( $schemas, function ( $schema ) {
 			return 'Thing' !== $schema && class_exists( 'Schemify\\Schemas\\' . $schema );
 		}, ARRAY_FILTER_USE_KEY );
+	}
+
+	/**
+	 * Retrieve a data file from local storage or, if the file is either old or missing, retrieve
+	 * it from the given URL.
+	 *
+	 * @param string $filename The filename, relative to the tests/data/ directory.
+	 * @param string $url      The URL to retrieve the original file from.
+	 *
+	 * @return stdClass The decoded JSON from the file.
+	 */
+	protected function getData( $filename, $url ) {
+		$dir  = dirname( __DIR__ ) . '/data/';
+		$file = $dir . $filename;
+
+		// Only download if the cache has expired or the file doesn't exist.
+		if ( ! file_exists( $file ) || self::CACHE_LIFETIME < time() - filemtime( $file ) ) {
+			@mkdir( dirname( $file ) );
+			$fh = fopen( $file, 'wb' );
+			fwrite( $fh, file_get_contents( $url ) );
+			fclose( $fh );
+		}
+
+		return json_decode( file_get_contents( $file ), false );
 	}
 
 	/**
