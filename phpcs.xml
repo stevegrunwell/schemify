@@ -7,8 +7,10 @@
 	<description>Coding standards for Schemify.</description>
 
 	<!-- FILES -->
-	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>tests/coverage/*</exclude-pattern>
+	<exclude-pattern>tests/data/*</exclude-pattern>
 	<exclude-pattern>Gruntfile.js</exclude-pattern>
 
 	<!-- Schemas won't match WordPress standards, and that's okay -->
