@@ -52,7 +52,7 @@ class Organization extends Thing {
 		'seeks',
 		'sponsor',
 		'subOrganization',
-		'taxId',
+		'taxID',
 		'telephone',
 		'vatID',
 	);
