@@ -10,6 +10,9 @@ namespace Test;
 use ReflectionMethod;
 use WP_UnitTestCase;
 
+/**
+ * @group schemaDefinitions
+ */
 class SchemaInheritanceTest extends WP_UnitTestCase {
 
 	/**
@@ -17,7 +20,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 *
 	 * @var array
 	 */
-	protected $missingSchemas = [];
+	protected static $missingSchemas = [];
 
 	/**
 	 * Defines how long data should be cached before being updated (90 days).
@@ -56,12 +59,11 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 * Verify that a Schema has the appropriate *direct* parent.
 	 *
 	 * @dataProvider schemaInheritanceProvider
-	 * @group        schemaDefinitions
 	 */
 	public function testSchemaInheritance( $schema, $parent ) {
 
 		if ( ! class_exists( 'Schemify\\Schemas\\' . $schema ) ) {
-			$this->missingSchemas[] = $schema;
+			self::$missingSchemas[] = $schema;
 			$this->markTestSkipped( sprintf( 'The %s Schema is not defined.', $schema ) );
 		}
 
@@ -97,7 +99,6 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 * @param string $schema The schema name.
 	 *
 	 * @dataProvider definedSchemaNameProvider()
-	 * @group        schemaDefinitions
 	 */
 	public function testSchemaProperties( $schema ) {
 		$definition = self::getData( $schema . '.json', 'https://schema.org/' . $schema . '.jsonld' );
