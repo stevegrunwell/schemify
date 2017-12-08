@@ -97,7 +97,11 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 
 		// Iterate through the properties defined in the Schema definition.
 		$props = array_reduce( $definition->{'@graph'}, function ( $props, $entry ) {
-			if ( isset( $entry->{'@type'}, $entry->{'rdfs:label'} ) && 'rdf:Property' === $entry->{'@type'} ) {
+			if (
+				isset( $entry->{'@type'}, $entry->{'rdfs:label'} )
+				&& 'rdf:Property' === $entry->{'@type'}
+				&& ! isset( $entry->{'schema:isPartOf'} )
+			) {
 				$props[] = is_object( $entry->{'rdfs:label'} ) ? $entry->{'rdfs:label'}->{'@value'} : $entry->{'rdfs:label'};
 			}
 
@@ -185,6 +189,12 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 * @return array The updated $schemas array.
 	 */
 	protected function getDirectParent( $schemas, $schema ) {
+
+		// Bail out if the Schema exists in a layer we're not dealing with.
+		if ( 'core' !== $schema->layer ) {
+			return $schemas;
+		}
+
 		$schemas[ $schema->name ] = [
 			$schema->name,
 			str_replace( 'schema:', '', $schema->{'rdfs:subClassOf'} ),
