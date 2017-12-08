@@ -11,6 +11,15 @@ namespace Schemify\Schemas;
 class WebSite extends CreativeWork {
 
 	/**
+	 * The properties this schema may utilize.
+	 *
+	 * @var array $properties
+	 */
+	protected static $properties = array(
+		'issn',
+	);
+
+	/**
 	 * Retrieve the website's author.
 	 *
 	 * Since a website also has the publisher property, use that instead of calling out a specific
