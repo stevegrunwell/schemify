@@ -32,17 +32,12 @@
 	<rule ref="WordPress.Files.FileName.UnderscoresNotAllowed">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
 	</rule>
-	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+	<rule ref="WordPress.NamingConventions">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
-	<rule ref="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid">
-		<exclude-pattern>includes/schemas/*</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.NamingConventions.ValidVariableName.MemberNotSnakeCase">
-		<exclude-pattern>includes/schemas/*</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar">
-		<exclude-pattern>includes/schemas/*</exclude-pattern>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 
 	<!--

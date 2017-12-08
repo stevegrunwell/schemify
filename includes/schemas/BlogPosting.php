@@ -8,6 +8,6 @@
 
 namespace Schemify\Schemas;
 
-class BlogPosting extends Article {
+class BlogPosting extends SocialMediaPosting {
 
 }

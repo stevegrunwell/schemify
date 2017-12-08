@@ -59,6 +59,7 @@ class Thing implements \JsonSerializable {
 		'alternateName',
 		'description',
 		'disambiguatingDescription',
+		'identifier',
 		'image',
 		'mainEntityOfPage',
 		'name',

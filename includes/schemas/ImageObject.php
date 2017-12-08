@@ -23,15 +23,6 @@ class ImageObject extends MediaObject {
 	);
 
 	/**
-	 * Properties that would have normally been inherited but should not exist in a sub-tree.
-	 *
-	 * @var array $removeProperties
-	 */
-	protected static $removeProperties = array(
-		'image',
-	);
-
-	/**
 	 * Get the image caption.
 	 *
 	 * @param int $post_id The attachment ID.
@@ -84,6 +75,16 @@ class ImageObject extends MediaObject {
 		}
 
 		return $values;
+	}
+
+	/**
+	 * Avoid recursion by making sure an image won't have an image.
+	 *
+	 * @param int $post_id The attachment ID.
+	 * @return void
+	 */
+	public function getImage( $post_id ) {
+		return;
 	}
 
 	/**

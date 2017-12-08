@@ -11,6 +11,24 @@ Schemify has two major branches: `develop` and `master`. The `develop` branch re
 When starting a new feature branch, please be sure to branch off of `develop`; the only time anything is merged into `master` is during a release.
 
 
+## Introducing new Schemas
+
+Eventually, it would be great if Schemify could represent every available Schema. To aid in this process, the `SchemaInheritanceTest` class uses official (albeit experimental) JSON representations of Schema definitions and compares them to the class structure of the plugin.
+
+As these tests require additional downloads (stored in `tests/data/`), they are not run by default. If you're introducing a new Schema to Schemify, please run the following tests:
+
+```sh
+$ phpunit --group=schemaDefinitions
+```
+
+These tests accomplish two things:
+
+1. Verifying the inheritance tree (e.g. ensuring that "Article" extends "CreativeWork", which in-turn extends "Thing").
+2. Analyze the properties used by each Schema to ensure they match the specification.
+
+The first time you run these tests, the test suite **will** take much longer than usual as a side-effect of downloading the individual Schema definitions. Fortunately, these results will be cached for 90 days, so subsequent runs will be *much* faster.
+
+
 ## Unit tests
 
 Schemify strives to provide a high level of useful tests for each corresponding schema, using the [WordPress core test framework](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/) If your contributions are updating any code, _please_ include appropriate tests!
