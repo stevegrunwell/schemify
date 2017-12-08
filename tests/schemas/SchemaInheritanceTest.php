@@ -117,7 +117,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 		$instance = new $class( 1, true );
 		$propList = new ReflectionMethod( $instance, 'getPropertyList' );
 		$propList->setAccessible( true );
-		$difference = array_diff( $propList->invoke( $instance ), $props );
+		$difference = array_diff( $props, $propList->invoke( $instance ) );
 
 		$this->assertEmpty(
 			$difference,
