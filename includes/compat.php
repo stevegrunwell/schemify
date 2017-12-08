@@ -42,7 +42,7 @@ function load_compat_files() {
 		 *
 		 * @param string $plugin The plugin's slug.
 		 */
-		do_action( 'schemify_load_compat_', $slug );
+		do_action( 'schemify_load_compat_' . $slug );
 	}
 }
-add_action( 'init', __NAMESPACE__ . '\load_compat_files' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\load_compat_files' );

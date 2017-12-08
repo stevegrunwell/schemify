@@ -7,6 +7,9 @@
 
 namespace Schemify\Core;
 
+use Exception;
+use Schemify\Schemas\Thing;
+
 /**
  * Build the JSON-LD object for the given post.
  *
@@ -16,7 +19,7 @@ namespace Schemify\Core;
  *                            the current post.
  * @param string $object_type Optional. The type of object to construct a schema for (post, user,
  *                            etc.). Default is 'post'.
- * @return Schema\Thing An instance of a Schema\Thing or one of its sub-classes.
+ * @return Schemify\Schemas\Thing An instance of Thing or one of its sub-classes.
  */
 function build_object( $post_id = 0, $object_type = 'post' ) {
 	if ( ! $post_id ) {
@@ -28,14 +31,14 @@ function build_object( $post_id = 0, $object_type = 'post' ) {
 
 	try {
 		if ( ! class_exists( $class ) ) {
-			throw new \Exception( esc_html( sprintf(
+			throw new Exception( esc_html( sprintf(
 				__( 'Class %s does not exist', 'schemify' ), $class
 			) ) );
 		}
 		$instance = new $class( $post_id, true );
 
-	} catch ( \Exception $e ) {
-		$instance = new \Schemify\Schemas\Thing( $post_id, true );
+	} catch ( Exception $e ) {
+		$instance = new Thing( $post_id, true );
 
 		trigger_error( esc_html( sprintf(
 			__( 'Unable to find schema "%s", falling back to "Thing"', 'schemify' ),

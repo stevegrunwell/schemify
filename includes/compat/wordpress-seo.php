@@ -7,6 +7,8 @@
 
 namespace Schemify\Compat\WordPressSEO;
 
+use Schemify\Core as Core;
+
 /**
  * Add social media profile URLs to WP\User objects.
  *
@@ -50,18 +52,18 @@ add_filter( 'schemify_get_properties_Person', __NAMESPACE__ . '\add_user_profile
  * @return array The possibly-filtered $data array.
  */
 function set_default_image( $data, $schema, $object_id, $is_main ) {
-	if ( ! isset( $data['image'] ) || ! empty( $data['image'] ) || ! $is_main ) {
+	if ( ! array_key_exists( 'image', $data ) || ! empty( $data['image'] ) || ! $is_main ) {
 		return $data;
 	}
 
 	$yoast_social = get_option( 'wpseo_social', array() );
-	$image_url    = isset( $yoast_social['og_default_image'] ) ? $yoast_social['og_default_image'] : null;
+	$image_url    = ! empty( $yoast_social['og_default_image'] ) ? $yoast_social['og_default_image'] : null;
 
-	if ( is_front_page() && isset( $yoast_social['og_frontpage_image'] ) && $yoast_social['og_frontpage_image'] ) {
+	if ( is_front_page() && ! empty( $yoast_social['og_frontpage_image'] ) ) {
 		$image_url = $yoast_social['og_frontpage_image'];
 	}
 
-	$data['image'] = \Schemify\Core\get_media_object_by_url( $image_url, 'ImageObject' );
+	$data['image'] = Core\get_media_object_by_url( $image_url, 'ImageObject' );
 
 	return $data;
 }
