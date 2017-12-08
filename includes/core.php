@@ -29,7 +29,8 @@ function build_object( $post_id = 0, $object_type = 'post' ) {
 	try {
 		if ( ! class_exists( $class ) ) {
 			throw new \Exception( esc_html( sprintf(
-				__( 'Class %s does not exist', 'schemify' ), $class
+				/* Translators: %1$s is the class name. */
+				__( 'Class %1$s does not exist', 'schemify' ), $class
 			) ) );
 		}
 		$instance = new $class( $post_id, true );
@@ -38,7 +39,8 @@ function build_object( $post_id = 0, $object_type = 'post' ) {
 		$instance = new \Schemify\Schemas\Thing( $post_id, true );
 
 		trigger_error( esc_html( sprintf(
-			__( 'Unable to find schema "%s", falling back to "Thing"', 'schemify' ),
+			/* Translators: %1$s is the schema name. */
+			__( 'Unable to find schema "%1$s", falling back to "Thing"', 'schemify' ),
 			esc_attr( $schema )
 		) ), E_USER_WARNING );
 	}
@@ -107,7 +109,7 @@ function get_media_object_by_url( $url, $schema = 'MediaObject' ) {
 	global $wpdb;
 
 	$attachment_id = $wpdb->get_var( $wpdb->prepare(
-		"SELECT ID FROM $wpdb->posts WHERE guid = '%s';",
+		"SELECT ID FROM $wpdb->posts WHERE guid = %s;",
 		$url
 	) );
 

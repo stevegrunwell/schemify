@@ -83,9 +83,7 @@ class ImageObject extends MediaObject {
 	 * @param int $post_id The attachment ID.
 	 * @return void
 	 */
-	public function getImage( $post_id ) {
-		return;
-	}
+	public function getImage( $post_id ) {}
 
 	/**
 	 * Get the height of an image.
