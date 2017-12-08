@@ -120,16 +120,33 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Retrieve an array of *only* defined Schemas (by name).
+	 * Data provider that retrieves an array of *only* defined Schemas (by name).
 	 *
 	 * @return array
 	 */
 	public function definedSchemaNameProvider() {
 		$schemas = $this->schemaInheritanceProvider();
 
+		// Filter out any Schemas that are undefined via code.
 		return array_filter( $schemas, function ( $schema ) {
 			return 'Thing' !== $schema && class_exists( 'Schemify\\Schemas\\' . $schema );
 		}, ARRAY_FILTER_USE_KEY );
+	}
+
+	/**
+	 * Write a report of missing schemas at the end of the run.
+	 *
+	 * @afterClass
+	 */
+	public static function writeMissingSchemaReport() {
+		$file = dirname( __DIR__ ) . '/coverage/missing-schemas.txt';
+
+		@mkdir( dirname( $file ) );
+		$fh = fopen( $file, 'wb' );
+		fwrite( $fh, implode( PHP_EOL, self::$missingSchemas ) );
+		fclose( $fh );
+
+		echo PHP_EOL . PHP_EOL . 'Missing Schema names have been written to ' . $file;
 	}
 
 	/**
