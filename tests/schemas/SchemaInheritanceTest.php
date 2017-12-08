@@ -5,12 +5,14 @@
  * @package Schemify
  */
 
-namespace Test;
+namespace Test\Schemas;
 
 use ReflectionMethod;
 use WP_UnitTestCase;
 
 /**
+ * Test Schemify's Schema definitions against the official specification.
+ *
  * @group schemaDefinitions
  */
 class SchemaInheritanceTest extends WP_UnitTestCase {
@@ -35,14 +37,19 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	 * Verify that a Schema has the appropriate *direct* parent.
 	 *
 	 * @dataProvider schemaInheritanceProvider
+	 *
+	 * @param string      $schema The schema name.
+	 * @param string|null $parent The schema's direct parent name, or NULL in the case of "Thing".
 	 */
 	public function testSchemaInheritance( $schema, $parent ) {
 
+		// Verify that the Schema exists first, otherwise skip the test.
 		if ( ! class_exists( 'Schemify\\Schemas\\' . $schema ) ) {
 			self::$missingSchemas[] = $schema;
 			$this->markTestSkipped( sprintf( 'The %s Schema is not defined.', $schema ) );
 		}
 
+		// Ensure the Schema's direct parent matches $parent.
 		if ( null !== $parent ) {
 			$this->assertEquals(
 				'Schemify\\Schemas\\' . $parent,
@@ -54,6 +61,10 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 
 	/**
 	 * Compile an array of all known Schemas, along with their direct parent.
+	 *
+	 * Each entry in the array will have the format:
+	 *
+	 *     $schema => [ $schema, $parent ]
 	 *
 	 * @return array
 	 */
@@ -72,9 +83,9 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 	/**
 	 * Iterate through each Schema and verify that all properties are accounted for.
 	 *
-	 * @param string $schema The schema name.
-	 *
 	 * @dataProvider definedSchemaNameProvider()
+	 *
+	 * @param string $schema The schema name.
 	 */
 	public function testSchemaProperties( $schema ) {
 		$definition = $this->getData( $schema . '.json', 'https://schema.org/' . $schema . '.jsonld' );
@@ -83,6 +94,8 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 		if ( ! isset( $definition->{'@graph'} ) ) {
 			$this->markTestSkipped( sprintf( 'There are no properties defined for the %s schema.', $schema ) );
 		}
+
+		// Iterate through the properties defined in the Schema definition.
 		$props = array_reduce( $definition->{'@graph'}, function ( $props, $entry ) {
 			if ( isset( $entry->{'@type'}, $entry->{'rdfs:label'} ) && 'rdf:Property' === $entry->{'@type'} ) {
 				$props[] = is_object( $entry->{'rdfs:label'} ) ? $entry->{'rdfs:label'}->{'@value'} : $entry->{'rdfs:label'};
@@ -90,10 +103,14 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 
 			return $props;
 		}, [] );
+
+		// Construct an instance of the Schema to work against.
 		$class    = 'Schemify\\Schemas\\' . $schema;
 		$instance = new $class( 1, true );
 		$propList = new ReflectionMethod( $instance, 'getPropertyList' );
 		$propList->setAccessible( true );
+
+		// Compare the specification against what the Schema class is reporting.
 		$difference = array_diff( $props, $propList->invoke( $instance ) );
 
 		$this->assertEmpty(
