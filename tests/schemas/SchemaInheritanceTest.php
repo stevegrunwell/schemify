@@ -100,7 +100,8 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 			if (
 				isset( $entry->{'@type'}, $entry->{'rdfs:label'} )
 				&& 'rdf:Property' === $entry->{'@type'}
-				&& ! isset( $entry->{'schema:isPartOf'} )
+				&& empty( $entry->{'schema:isPartOf'} )
+				&& empty( $entry->{'schema:supersededBy'} )
 			) {
 				$props[] = is_object( $entry->{'rdfs:label'} ) ? $entry->{'rdfs:label'}->{'@value'} : $entry->{'rdfs:label'};
 			}
