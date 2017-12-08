@@ -116,6 +116,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 
 		// Compare the specification against what the Schema class is reporting.
 		$difference = array_diff( $props, $propList->invoke( $instance ) );
+		sort($difference);
 
 		$this->assertEmpty(
 			$difference,
