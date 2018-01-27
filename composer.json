@@ -15,6 +15,7 @@
         "issues": "https://github.com/stevegrunwell/schemify/issues"
     },
     "require-dev": {
+        "php": "^7.0",
         "mockery/mockery": "^1.0",
         "phpunit/phpunit": "^6.4",
         "stevegrunwell/wp-enforcer": "dev-master"
