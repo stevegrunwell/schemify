@@ -53,7 +53,7 @@ class MediaObject extends CreativeWork {
 
 		// Return early if the media is unattached.
 		if ( ! $parent_post_id ) {
-			return ;
+			return;
 		}
 
 		// Proceed building the parent post's schema.
@@ -69,6 +69,7 @@ class MediaObject extends CreativeWork {
 
 		} catch ( \Exception $e ) {
 			trigger_error( esc_html( sprintf(
+				/* Translators: %1$s is the schema name, %2$s is the error message. */
 				__( 'Unable to load schema %1$s: %2$s', 'schemify' ),
 				$schema,
 				$e->getMessage()

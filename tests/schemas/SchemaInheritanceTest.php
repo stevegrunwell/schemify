@@ -117,7 +117,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 
 		// Compare the specification against what the Schema class is reporting.
 		$difference = array_diff( $props, $propList->invoke( $instance ) );
-		sort($difference);
+		sort( $difference );
 
 		$this->assertEmpty(
 			$difference,
@@ -152,7 +152,7 @@ class SchemaInheritanceTest extends WP_UnitTestCase {
 		fwrite( $fh, implode( PHP_EOL, self::$missingSchemas ) );
 		fclose( $fh );
 
-		echo PHP_EOL . PHP_EOL . 'Missing Schema names have been written to ' . $file;
+		echo esc_html( PHP_EOL . PHP_EOL . 'Missing Schema names have been written to ' . $file );
 	}
 
 	/**

@@ -27,7 +27,8 @@ function add_user_profile_urls( $data, $schema, $object_id ) {
 	}
 
 	// Twitter requires special construction.
-	if ( $twitter = get_user_meta( $object_id, 'twitter', true ) ) {
+	$twitter = get_user_meta( $object_id, 'twitter', true );
+	if ( $twitter ) {
 		$profiles[] = sprintf( 'https://twitter.com/%s', $twitter );
 	}
 

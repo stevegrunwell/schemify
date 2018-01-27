@@ -173,7 +173,8 @@ class Thing implements \JsonSerializable {
 		$cache_key = sprintf( 'schema_%s', $post_id );
 
 		// Return early if we have a cached version.
-		if ( $is_main && ( $cached = wp_cache_get( $cache_key, 'schemify', false ) ) ) {
+		$cached = wp_cache_get( $cache_key, 'schemify', false );
+		if ( $is_main && $cached ) {
 			return $cached;
 		}
 
@@ -186,8 +187,8 @@ class Thing implements \JsonSerializable {
 
 		// Merge in defaults and protected properties.
 		$data = array_merge( array(
-			'@context'    => $is_main ? 'http://schema.org' : null,
-			'@type'       => $this->getSchema(),
+			'@context' => $is_main ? 'http://schema.org' : null,
+			'@type'    => $this->getSchema(),
 		), $data );
 
 		// Cache the result (top-level only) so we don't have to calculate it every time.
