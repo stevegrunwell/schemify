@@ -132,10 +132,20 @@ function get_media_object_by_url( $url, $schema = 'MediaObject' ) {
  */
 function get_json( $post_id = 0, $object_type = 'post' ) {
 	$object = build_object( $post_id, $object_type );
+	$cached = false;
+	if ( isset( $object['cached'] ) ) {
+		$cached = $object['cached'];
+		unset( $object['cached'] );
+	}
 ?>
 
 <script type="application/ld+json">
-<?php echo wp_kses_post( wp_json_encode( $object, JSON_PRETTY_PRINT ) . PHP_EOL ); ?>
+<?php
+	echo wp_kses_post( wp_json_encode( $object, JSON_PRETTY_PRINT ) . PHP_EOL );
+	if ( false !== $cached ) {
+		echo sprintf( '<!-- Cached: %s -->', esc_js( $cached ) );
+	}
+?>
 </script>
 
 <?php
