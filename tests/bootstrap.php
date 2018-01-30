@@ -1,35 +1,30 @@
 <?php
 /**
- * Bootstrap the test suite.
+ * PHPUnit bootstrap file
  *
  * @package Schemify
  */
 
-if ( ! defined( 'PROJECT' ) ) {
-	define( 'PROJECT', __DIR__ . '/../includes/' );
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
+
+if ( ! $_tests_dir ) {
+	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
 }
 
-if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', __DIR__ . '/test-tools/' );
+if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
+	throw new Exception( "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" );
 }
 
-if ( ! file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {
-	throw new PHPUnit_Framework_Exception(
-		'ERROR: You must use Composer to install the test suite\'s dependencies!' . PHP_EOL
-	);
+// Give access to tests_add_filter() function.
+require_once $_tests_dir . '/includes/functions.php';
+
+/**
+ * Manually load the plugin being tested.
+ */
+function _manually_load_plugin() {
+	require dirname( dirname( __FILE__ ) ) . '/schemify.php';
 }
+tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-define( 'MINUTE_IN_SECONDS', 60 );
-define( 'HOUR_IN_SECONDS',   60 * MINUTE_IN_SECONDS );
-define( 'DAY_IN_SECONDS',    24 * HOUR_IN_SECONDS   );
-define( 'WEEK_IN_SECONDS',    7 * DAY_IN_SECONDS    );
-define( 'MONTH_IN_SECONDS',  30 * DAY_IN_SECONDS    );
-define( 'YEAR_IN_SECONDS',  365 * DAY_IN_SECONDS    );
-
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/test-tools/TestCase.php';
-require_once __DIR__ . '/test-tools/TestSchema.php';
-
-WP_Mock::setUsePatchwork( true );
-WP_Mock::bootstrap();
-WP_Mock::tearDown();
+// Start up the WP testing environment.
+require $_tests_dir . '/includes/bootstrap.php';

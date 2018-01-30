@@ -60,6 +60,7 @@ class Thing implements \JsonSerializable {
 		'alternateName',
 		'description',
 		'disambiguatingDescription',
+		'identifier',
 		'image',
 		'mainEntityOfPage',
 		'name',
@@ -189,8 +190,8 @@ class Thing implements \JsonSerializable {
 
 		// Merge in defaults and protected properties.
 		$data = array_merge( array(
-			'@context'    => $is_main ? 'http://schema.org' : null,
-			'@type'       => $this->getSchema(),
+			'@context' => $is_main ? 'http://schema.org' : null,
+			'@type'    => $this->getSchema(),
 		), $data );
 
 		// Cache the result (top-level only) so we don't have to calculate it every time.

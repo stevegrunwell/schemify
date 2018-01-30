@@ -1,25 +1,25 @@
 <phpunit
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
-	processIsolation="false"
-	colors="false">
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
 	<testsuites>
-		<testsuite name="Plugin">
-			<directory suffix="Test.php">./tests/PHPUnit</directory>
+		<testsuite>
+			<directory suffix="Test.php">./tests/</directory>
+			<exclude>./tests/SampleTest.php</exclude>
 		</testsuite>
 	</testsuites>
 	<groups>
-		<include></include>
-		<exclude></exclude>
+		<exclude>
+			<group>schemaDefinitions</group>
+		</exclude>
 	</groups>
 	<filter>
 		<whitelist>
 			<directory suffix=".php">includes</directory>
 		</whitelist>
 	</filter>
-	<php>
-		<ini name="error_reporting" value="32767" />
-		<ini name="display_errors" value="1" />
-		<ini name="display_startup_errors" value="1" />
-	</php>
 </phpunit>

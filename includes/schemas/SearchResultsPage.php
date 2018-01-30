@@ -38,6 +38,7 @@ class SearchResultsPage extends WebPage {
 		global $wp_query;
 
 		return sprintf(
+			/* Translators: %1$d is the number of results, %2$s the query, and %3$s the blog name. */
 			_n(
 				'%1$d search result found for "%2$s" on %3$s',
 				'%1$d search results found for "%2$s" on %3$s',
@@ -58,6 +59,7 @@ class SearchResultsPage extends WebPage {
 	 * @return string The content URL.
 	 */
 	public function getName( $post_id ) {
-		return sprintf( __( 'Search results for "%s"', 'schemify' ), get_search_query() );
+		/* Translators: %1$s is the search query. */
+		return sprintf( __( 'Search results for "%1$s"', 'schemify' ), get_search_query() );
 	}
 }

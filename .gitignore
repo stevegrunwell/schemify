@@ -1,4 +1,7 @@
 build
 dist
 node_modules
+tests/coverage
+tests/data
 vendor
+*.DS_Store

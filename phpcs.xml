@@ -7,31 +7,39 @@
 	<description>Coding standards for Schemify.</description>
 
 	<!-- FILES -->
-	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>tests/coverage/*</exclude-pattern>
+	<exclude-pattern>tests/data/*</exclude-pattern>
 	<exclude-pattern>Gruntfile.js</exclude-pattern>
 
 	<!-- Schemas won't match WordPress standards, and that's okay -->
 	<rule ref="Generic.Files.LowercasedFilename.NotFound">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<rule ref="Squiz.Commenting.ClassComment.Missing">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.Missing">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Generic.Commenting.DocComment.MissingShort">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Generic.PHP.NoSilencedErrors.Discouraged">
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<rule ref="WordPress.Files.FileName.UnderscoresNotAllowed">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
 	</rule>
-	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+	<rule ref="WordPress.NamingConventions">
 		<exclude-pattern>includes/schemas/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
-	<rule ref="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid">
-		<exclude-pattern>includes/schemas/*</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.NamingConventions.ValidVariableName.MemberNotSnakeCase">
-		<exclude-pattern>includes/schemas/*</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar">
-		<exclude-pattern>includes/schemas/*</exclude-pattern>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 
 	<!--
